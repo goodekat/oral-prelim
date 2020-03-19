@@ -1,0 +1,176 @@
+---
+title: "Studies on Explanations of Machine Learning Predictions"
+subtitle: "Statistics PhD Oral Prelim <html><div style='float:left'></div><hr color='7C2529' size=1px width=775px></html> <html><div style='float:left'></div><hr color='B9975B' size=1px width=775px></html>" 
+author: "Katherine Goode"
+institute: "Iowa State University"
+date: "May 6, 2020 <br> <br> ~remember to send out before prelim~ <br> ~50 minute talk~"
+output:
+  xaringan::moon_reader:
+    css: [default, metropolis, metropolis-fonts]
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+<style>
+
+.remark-slide-content {
+  background-color: #FFFFFF;
+  border-top: 80px solid #7C2529;
+  font-size: 24px;
+  font-weight: 300;
+  line-height: 1.5;
+  padding: 1em 2em 1em 2em
+}
+
+.inverse {
+  background-color: #6E6259;
+  border-top: 80px solid #6E6259;
+  text-shadow: none;
+}
+
+.remark-slide-content > h1 {
+  font-family: 'Songti SC';
+  font-weight: normal;
+  font-size: 45px;
+  margin-top: -95px;
+  margin-left: -00px;
+  color: #FFFFFF;
+}
+
+.title-slide {
+  background-color: #FFFFFF;
+  border-top: 80px solid #FFFFFF;
+}
+
+.title-slide > h1  {
+  color: #1A292C;
+  font-size: 40px;
+  text-shadow: none;
+  font-weight: 400;
+  text-align: left;
+  margin-left: 15px;
+  padding-top: 80px;
+}
+
+body {
+  font-family: 'Songti SC';
+}
+
+.remark-slide-number {
+  font-size: 13pt;
+  font-family: 'Songti SC';
+  color: #272822;
+  opacity: 1;
+}
+.inverse .remark-slide-number {
+  font-size: 13pt;
+  font-family: 'Songti SC';
+  color: #FAFAFA;
+  opacity: 1;
+}
+
+</style>
+
+# Overview of Talk
+
+1. Personal Background
+
+2. Overview of Thesis and Literature Review
+
+3. Chapter 1: Visual Diagnostics of a Model Explainer -- Tools for the Assessment of LIME Explanations
+
+4. Chapter 2: Explaining Random Forests using Clustering of Trees
+
+5. Chapter 3: Extensions of Neural Network Explanation Tools to Tabular Data Applications
+
+6. Timeline for Completion
+
+7. Discussion Points
+
+---
+
+class: middle, center, inverse
+
+# Personal Background
+
+---
+
+# Education
+
+**Undergraduate Degree**
+
+- B.A. in Mathematics
+  - Lawrence University (Appleton, WI)
+  - Graduated in 2013
+
+**Graduate Degrees**
+
+- M.S. in Statistics 
+  - University of Wisconsin, Madison (Madison, WI)
+  - Graduated in 2015
+- Ph.D. in Statistics (in progress)
+  - Iowa State University (Ames, IA)  
+  - Started in 2016
+
+---
+
+class: middle, center, inverse
+
+# Overview of Thesis and Literature Review
+
+---
+
+class: middle, center, inverse
+
+# Chapter 1: Visual Diagnostics of a Model Explainer -- Tools for the Assessment of LIME Explanations
+
+---
+
+class: middle, center, inverse
+
+# Chapter 2: Explaining Random Forests using Clustering of Trees
+
+---
+
+class: middle, center, inverse
+
+# Chapter 3: Extensions of Neural Network Explanation Tools to Tabular Data Applications
+
+---
+
+class: middle, center, inverse
+
+# Timeline for Completion
+
+---
+
+class: middle, center, inverse
+
+# Discussion Points
+
+---
+
+# Publication of Chapter 1
+
+How to divide up the material from chapter 1 for publication? Current ideas:
+
+.pull-left[
+**Paper 1: Survey paper on LIME**
+
+- Explain LIME in a statistical context
+- Use visualizations to help explain the procedure
+- Use diagnostic visualizations to assess LIME
+- Highlight issues with LIME
+- Use iris and sine data
+]
+
+.pull-right[
+**Paper 2: Diagnostic plots for LIME**
+
+- Motivate assessment of LIME using the bullet matching data (example of high stakes decision using machine learning)
+- Demonstrate issues found with LIME explanations using diagnostic plots
+- LIME should not be trusted to explain machine learning models when making high stakes decisions 
+]
