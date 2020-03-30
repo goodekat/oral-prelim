@@ -1,5 +1,5 @@
 ---
-title: "Studies on Explanations of Machine Learning Predictions"
+title: "**A Study on Explanations of Machine Learning Predictions**"
 subtitle: "Statistics PhD Oral Prelim <html><div style='float:left'></div><hr color='7C2529' size=1px width=775px></html> <html><div style='float:left'></div><hr color='B9975B' size=1px width=775px></html>" 
 author: "Katherine Goode"
 institute: "Iowa State University"
