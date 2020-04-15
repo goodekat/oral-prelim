@@ -3,3 +3,5 @@
 .RData
 .Ruserdata
 oral-prelim.Rproj
+*.DS_Store
+*figures
