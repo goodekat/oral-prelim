@@ -1,6 +1,5 @@
 ---
-title: "**A Study on Explanations of Machine Learning Predictions**"
-subtitle: "Statistics PhD Oral Prelim <html><div style='float:left'></div><hr color='7C2529' size=1px width=775px></html> <html><div style='float:left'></div><hr color='B9975B' size=1px width=775px></html>" 
+title: "**A Study on Visualizations for Explainable Machine Learning Predictions** <br> Statistics PhD Oral Prelim"
 author: "Katherine Goode"
 institute: "Iowa State University"
 date: "May 6, 2020 <br> <br> ~remember to send out before prelim~ <br> ~50 minute talk~"
@@ -42,7 +41,8 @@ output:
 
 .title-slide {
   background-color: #FFFFFF;
-  border-top: 80px solid #FFFFFF;
+  border-top: 80px solid #7C2529;
+  border-bottom: 30px solid #6E6259;
 }
 
 .title-slide > h1  {
@@ -104,16 +104,35 @@ class: middle, center, inverse
 
 - B.A. in Mathematics
   - Lawrence University (Appleton, WI)
-  - Graduated in 2013
+  - Graduated in June 2013
 
 **Graduate Degrees**
 
 - M.S. in Statistics 
   - University of Wisconsin, Madison (Madison, WI)
-  - Graduated in 2015
+  - Graduated in May 2015
 - Ph.D. in Statistics (in progress)
   - Iowa State University (Ames, IA)  
-  - Started in 2016
+  - Started in January 2016
+
+---
+
+# Time in Ames
+
+**Assistantships**
+
+- Lecturer for STAT 101
+  - Spring 2016
+- AES Statistical Consultant
+  - Summer 2016 - current
+- NREM Research Assistant 
+  - Summer 2019
+  
+**Internship**
+
+- Statistical Sciences Research and Development Intern
+  - Sandia National Labs
+  - December 2019 - current
 
 ---
 
