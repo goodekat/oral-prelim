@@ -49,7 +49,7 @@ class: center, middle, inverse, title-slide
 .title-slide {
   background-color: #FFFFFF;
   border-top: 80px solid #7C2529;
-  border-bottom: 30px solid #6E6259;
+  border-bottom: 20px solid #6E6259;
 }
 
 .title-slide &gt; h1  {
@@ -81,37 +81,9 @@ body {
 
 &lt;/style&gt;
 
-# Overview of Talk
 
-1. Personal Background
-
-2. Overview of Thesis and Literature Review
-
-3. Chapter 1: Visual Diagnostics of a Model Explainer -- Tools for the Assessment of LIME Explanations
-
-4. Chapter 2: Explaining Random Forests using Clustering of Trees
-
-5. Chapter 3: Extensions of Neural Network Explanation Tools to Tabular Data Applications
-
-6. Timeline for Completion
-
-7. Discussion Points
-
----
-
-class: middle, center, inverse
 
 # Personal Background
-
----
-
-# Personal Overview
-
-&lt;img src="./figures/IMG_0604.jpeg" width="50%" /&gt;&lt;img src="./figures/IMG_0288.jpeg" width="50%" /&gt;
-
----
-
-# Academic Overview
 
 .pull-left[
 **Education**
@@ -147,6 +119,22 @@ class: middle, center, inverse
 
 ---
 
+# Overview of Talk
+
+1. Overview of Thesis and Literature Review
+
+2. Chapter 1: Visual Diagnostics of a Model Explainer -- Tools for the Assessment of LIME Explanations
+
+3. Chapter 2: Explaining Random Forests using Clustering of Trees
+
+4. Chapter 3: Extensions of Neural Network Explanation Tools to Tabular Data Applications
+
+5. Timeline for Completion
+
+6. Discussion Points
+
+---
+
 class: middle, center, inverse
 
 # Overview of Thesis and Literature Review
@@ -156,6 +144,108 @@ class: middle, center, inverse
 class: middle, center, inverse
 
 # Chapter 1: Visual Diagnostics of a Model Explainer -- Tools for the Assessment of LIME Explanations
+
+---
+
+# Conceptual Depiction of LIME
+
+Explain the prediction made by a complex model for *one prediction of interest* using an interpretable model
+
+- **L**ocal
+- **I**nterpretable
+- **M**odel-agnostic
+- **E**xplanation
+
+
+
+![](slides_files/figure-html/unnamed-chunk-2-1.png)&lt;!-- --&gt;
+
+---
+
+# Importance of Assessing LIME
+
+LIME adds an additional layer of complexity by using a model that also needs to be assessed. This raises various questions:
+
+- Does the explainer model approximate the complex model well in a local region around the prediction of interest?
+- How to determine an appropriate local region?
+- Is the relationship linear in the specified local region?
+
+![](slides_files/figure-html/unnamed-chunk-3-1.png)&lt;!-- --&gt;
+
+---
+
+# Visualizations for Model Assessment
+
+---
+
+# Three Visualization Categories
+
+**Diagnostics for Individual Explanations**
+
+Visualize the steps taken by LIME to fit the explainer model and plot the model in data space to get a better understanding of the LIME algorithm and an assessment of the claims made at various stages in the creation of the explanation
+
+**Diagnostics for Sets of Explanations**
+
+Visualize a set of explanations associated with a set of predictions to gain insight into the variability in LIME explanations across the feature space and assess the approximations of the explainer models
+
+**Diagnostics for Comparisons of Tuning Parameters**
+
+Visualize sets of explanations associated with the same predictions across applications of LIME using different tuning parameters to assess the variability in explanations
+
+---
+
+# Sine Example Data
+
+
+
+.pull-left[
+`\(x_1\sim Unif(\)` -10, 10 `\()\)`  
+`\(x_2\sim Unif(\)` -10, 10 `\()\)`  
+`\(x_3\sim \mbox{N}(0,1)\)`
+`\(x'_1=x_1\cos(\theta)-x_2\sin(\theta)\)`   
+`\(x'_2=x_1\sin(\theta)+x_2\cos(\theta)\)`   
+`\(\theta=-0.9\)`
+]
+
+.pull-right[
+`$$y=\begin{cases}  1 &amp; \mbox{ if } x'_2 &gt; \sin\left(x'_1\right) \\
+  0 &amp; \mbox{ if } x'_2 \le \sin\left(x'_1\right) \ . %\nolabel
+  \end{cases}$$`
+
+Training data: 500 observations  
+Testing data: 100 observations  
+Black-box model: random forest  
+]
+  
+  
+![](slides_files/figure-html/unnamed-chunk-5-1.png)&lt;!-- --&gt;
+
+
+---
+
+# Diagnostics for Individual Explanations
+
+Step 1: 
+
+---
+
+# Diagnostics for Individual Explanations
+
+Step 2: 
+
+---
+
+# Diagnostics for Individual Explanations
+
+Step 3: 
+
+---
+
+# Diagnostics for Sets of Explanations
+
+---
+
+# Diagnostics for Comparisons of Tuning Parameters
 
 ---
 

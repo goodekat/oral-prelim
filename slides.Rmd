@@ -42,7 +42,7 @@ output:
 .title-slide {
   background-color: #FFFFFF;
   border-top: 80px solid #7C2529;
-  border-bottom: 30px solid #6E6259;
+  border-bottom: 20px solid #6E6259;
 }
 
 .title-slide > h1  {
@@ -74,40 +74,25 @@ body {
 
 </style>
 
-# Overview of Talk
+```{r setup, echo = FALSE, message = FALSE}
+# Packages
+library(cowplot)
+library(dplyr)
+library(forcats)
+library(ggplot2)
+library(glmnet)
+library(gower)
+library(knitr)
+library(latex2exp)
+library(limeaid)
+library(randomForest)
+library(tidyr)
 
-1. Personal Background
-
-2. Overview of Thesis and Literature Review
-
-3. Chapter 1: Visual Diagnostics of a Model Explainer -- Tools for the Assessment of LIME Explanations
-
-4. Chapter 2: Explaining Random Forests using Clustering of Trees
-
-5. Chapter 3: Extensions of Neural Network Explanation Tools to Tabular Data Applications
-
-6. Timeline for Completion
-
-7. Discussion Points
-
----
-
-class: middle, center, inverse
-
-# Personal Background
-
----
-
-# Personal Overview
-
-```{r echo = FALSE, out.width="50%"}
-knitr::include_graphics("./figures/IMG_0604.jpeg")
-knitr::include_graphics("./figures/IMG_0288.jpeg")
+# R markdown options
+opts_chunk$set(echo = FALSE, dpi = 200, cache = TRUE)
 ```
 
----
-
-# Academic Overview
+# Personal Background
 
 .pull-left[
 **Education**
@@ -143,6 +128,22 @@ knitr::include_graphics("./figures/IMG_0288.jpeg")
 
 ---
 
+# Overview of Talk
+
+1. Overview of Thesis and Literature Review
+
+2. Chapter 1: Visual Diagnostics of a Model Explainer -- Tools for the Assessment of LIME Explanations
+
+3. Chapter 2: Explaining Random Forests using Clustering of Trees
+
+4. Chapter 3: Extensions of Neural Network Explanation Tools to Tabular Data Applications
+
+5. Timeline for Completion
+
+6. Discussion Points
+
+---
+
 class: middle, center, inverse
 
 # Overview of Thesis and Literature Review
@@ -152,6 +153,472 @@ class: middle, center, inverse
 class: middle, center, inverse
 
 # Chapter 1: Visual Diagnostics of a Model Explainer -- Tools for the Assessment of LIME Explanations
+
+---
+
+# Conceptual Depiction of LIME
+
+Explain the prediction made by a complex model for *one prediction of interest* using an interpretable model
+
+- **L**ocal
+- **I**nterpretable
+- **M**odel-agnostic
+- **E**xplanation
+
+```{r}
+# Simulate example data
+set.seed(20190624)
+lime_data <-
+  data.frame(
+    feature1 = sort(runif(250, 0, 1)),
+    feature2 = sample(x = 1:250, size = 250, replace = FALSE)) %>%
+  mutate(
+    feature1_stnd = (feature1 - mean(feature1)) / sd(feature1),
+    feature2_stnd = (feature2 - mean(feature2)) / sd(feature2),
+    prediction = if_else(feature1 >= 0 & feature1 < 0.1,
+                         (0.3 * feature1) + rnorm(n(), 0, 0.01),
+                 if_else(feature1 >= 0.1 & feature1 < 0.3,
+                         rbeta(n(), 1, 0.5),
+                 if_else(feature1 >= 0.3 & feature1 < 0.5,
+                         sin(pi* feature1) + rnorm(n(), 0, 0.5),
+                 if_else(feature1 >= 0.5 & feature1 < 0.8,
+                         -(sin(pi* feature1) + rnorm(n(), 0, 0.1)) + 1,
+                 if_else(feature1 >= 0.8 & feature1 < 0.9,
+                         0.5 + runif(n(), -0.5, 0.5),
+                         0.5 + rnorm(n(), 0, 0.3))))))) %>%
+  bind_rows(
+    data.frame(feature1 = rep(1, 30) + rnorm(5, 0, 0.05),
+           feature2 = rep(245, 30) + rnorm(5, 0, 1),
+           prediction = rep(0, 30) + rnorm(5, 0, 0.05)) %>%
+  mutate(feature1_stnd = (feature1 - mean(feature1)) / sd(feature1),
+         feature2_stnd = (feature2 - mean(feature2)) / sd(feature2)))
+
+# Specify a prediction of interest
+prediction_of_interest <-
+  data.frame(feature1 = 0.07, feature2 = 200) %>%
+  mutate(feature1_stnd = (feature1 - mean(lime_data$feature1)) /
+           sd(lime_data$feature1),
+         feature2_stnd = (feature2 - mean(lime_data$feature2)) /
+           sd(lime_data$feature2),
+         prediction = 0.05,
+         color = factor("Prediction \nof Interest"))
+
+# Specify the gower exponents
+good_gower_power <- 50
+bad_gower_power <- 1
+
+# Compute the good distances between the prediction of interest
+# and all other observations
+lime_data$distance_good <-
+  (1 - gower_dist(x = prediction_of_interest %>%
+                    select(feature1_stnd, feature2_stnd),
+                  y = lime_data %>%
+                    select(feature1_stnd,
+                           feature2_stnd)))^good_gower_power
+
+# Compute the bad distances between the prediction of interest
+# and all other observations
+lime_data$distance_bad <-
+  (1 - gower_dist(x = prediction_of_interest %>%
+                    select(feature1_stnd, feature2_stnd),
+                  y = lime_data %>%
+                    select(feature1_stnd,
+                           feature2_stnd)))^bad_gower_power
+
+# Prepare the data for plotting
+lime_data_gathered <- lime_data %>%
+  gather(feature, feature_stnd_value,
+         feature1_stnd:feature2_stnd) %>%
+  gather(distance, distance_value, distance_good:distance_bad) %>%
+  mutate(distance = fct_recode(distance,
+                               "good" = "distance_good",
+                               "bad" = "distance_bad"),
+         feature = fct_recode(feature,
+                              "Feature 1" = "feature1_stnd",
+                              "Feature 2" = "feature2_stnd"))
+
+# Prepare the prediction of interest data for plotting
+prediction_of_interest_gathered <- prediction_of_interest %>%
+  select(-feature1, -feature2) %>%
+  gather(feature, feature_value, feature1_stnd, feature2_stnd) %>%
+  mutate(feature = fct_recode(feature,
+                              "Feature 1" = "feature1_stnd",
+                              "Feature 2" = "feature2_stnd"))
+
+# Fit the good interpretable explainer model
+explainer_good <-
+  glmnet(x = lime_data %>% select(feature1_stnd, feature2_stnd)
+         %>% as.matrix(),
+         y = lime_data$prediction,
+         alpha = 0,
+         lambda = 1,
+         weights = lime_data$distance_good)
+
+# Fit the bad interpretable explainer model
+explainer_bad <-
+  glmnet(x = lime_data %>% select(feature1_stnd, feature2_stnd)
+         %>% as.matrix(),
+         y = lime_data$prediction,
+         alpha = 0,
+         lambda = 1,
+         weights = lime_data$distance_bad)
+
+# Join the coefficients from the explainer model into a dataframe
+coefs_data <- data.frame(case = c("good", "bad"),
+                         b0 = c(coef(explainer_good)[1],
+                                coef(explainer_bad)[1]),
+                         b1 = c(coef(explainer_good)[2],
+                                coef(explainer_bad)[2]),
+                         b2 = c(coef(explainer_good)[3],
+                                coef(explainer_bad)[3])) %>%
+  mutate(feature1 = b0 + b2*prediction_of_interest$feature2_stnd,
+         feature2 = b0 + b1*prediction_of_interest$feature1_stnd) %>%
+  gather(key = feature, value = int, feature1:feature2) %>%
+  mutate(slope = c(coef(explainer_good)[2],
+                   coef(explainer_good)[3],
+                   coef(explainer_bad)[2],
+                   coef(explainer_bad)[3]),
+         feature = fct_recode(feature,
+                              "Feature 1" = "feature1",
+                              "Feature 2" = "feature2"))
+```
+
+```{r fig.width = 8, fig.height = 3, warning = FALSE}
+# Plot of good explainer model
+ggplot() +
+  facet_grid(. ~ feature, switch = "x") +
+  geom_point(data = lime_data_gathered,
+             mapping = aes(x = feature_stnd_value,
+                           y = prediction,
+                           size = distance_value,
+                           alpha = distance_value,
+                           color = distance)) +
+  geom_abline(data = coefs_data %>% filter(case == "good"),
+              mapping = aes(intercept = int, slope = slope),
+              size = 1) +
+  scale_alpha(range = c(0.3, 1)) +
+  scale_color_manual(values = c(NA, "grey30"), guide = FALSE) +
+  geom_point(data = prediction_of_interest_gathered,
+             mapping = aes(x = feature_value,
+                           y = prediction,
+                           fill = color),
+             color = "black",
+             size = 5,
+             shape = 23,
+             alpha = 0.75) +
+  scale_fill_manual(values = "#FAAA72") +
+  geom_text(
+    data = data.frame(feature_stnd_value = 1.2,
+                      prediction = 1.6,
+                      feature = c("Feature 1", "Feature 2"),
+                      slope = c(paste("Slope:",
+                                      coefs_data %>%
+                                        filter(case == "good",
+                                               feature == "Feature 1") %>%
+                                        pull(slope) %>%
+                                        round(3)),
+                                paste("Slope:",
+                                      coefs_data %>%
+                                        filter(case == "good",
+                                               feature == "Feature 2") %>%
+                                        pull(slope) %>%
+                                        round(3)))),
+    mapping = aes(x = feature_stnd_value,
+                  y = prediction,
+                  label = slope),
+    family = "Times",
+    size = 4) +
+  labs(x = "",
+       y = "Black-Box Prediction",
+       #title = "Conceptual Depiction of a Faithful Local Explainer Model",
+       #subtitle = paste("Gower Distance Metric Exponent:", good_gower_power),
+       fill = "",
+       alpha = "Weight",
+       size = "Weight") +
+  theme_linedraw(base_family = "Times", base_size = 10) +
+  theme(panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.text.x = element_blank(),
+        axis.ticks.x = element_blank(),
+        axis.text.y = element_blank(),
+        axis.ticks.y = element_blank(),
+        strip.placement = "outside",
+        strip.background = element_rect(color = "white", fill = "white"),
+        strip.text = element_text(color = 'black', size = 10)) +
+  guides(fill = guide_legend(order = 1),
+         size = guide_legend(order = 2),
+         alpha = guide_legend(order = 2))
+```
+
+---
+
+# Importance of Assessing LIME
+
+LIME adds an additional layer of complexity by using a model that also needs to be assessed. This raises various questions:
+
+- Does the explainer model approximate the complex model well in a local region around the prediction of interest?
+- How to determine an appropriate local region?
+- Is the relationship linear in the specified local region?
+
+```{r fig.width = 8, fig.height = 3, warning = FALSE}
+# Plot of good explainer model
+ggplot() +
+  facet_grid(. ~ feature, switch = "x") +
+  geom_point(data = lime_data_gathered,
+             mapping = aes(x = feature_stnd_value,
+                           y = prediction,
+                           size = distance_value,
+                           alpha = distance_value,
+                           color = distance)) +
+  geom_abline(data = coefs_data %>% filter(case == "bad"),
+              mapping = aes(intercept = int, slope = slope),
+              size = 1) +
+  scale_alpha(range = c(0.3, 1)) +
+  scale_color_manual(values = c("grey30", NA), guide = FALSE) +
+  geom_point(data = prediction_of_interest_gathered,
+             mapping = aes(x = feature_value,
+                           y = prediction,
+                           fill = color),
+             color = "black",
+             size = 5,
+             shape = 23,
+             alpha = 0.75) +
+  scale_fill_manual(values = "#FAAA72") +
+  geom_text(
+    data = data.frame(feature_stnd_value = 1.2,
+                      prediction = 1.6,
+                      feature = c("Feature 1", "Feature 2"),
+                      slope = c(paste("Slope:",
+                                      coefs_data %>%
+                                        filter(case == "bad",
+                                               feature == "Feature 1") %>%
+                                        pull(slope) %>%
+                                        round(3)),
+                                paste("Slope:",
+                                      coefs_data %>%
+                                        filter(case == "bad",
+                                               feature == "Feature 2") %>%
+                                        pull(slope) %>%
+                                        round(3)))),
+    mapping = aes(x = feature_stnd_value,
+                  y = prediction,
+                  label = slope),
+    family = "Times",
+    size = 4) +
+  labs(x = "",
+       y = "Black-Box Prediction",
+       #title = "Conceptual Depiction of an Unfaithful Local Explainer Model",
+       #subtitle = paste("Gower Distance Metric Exponent:", bad_gower_power),
+       fill = "",
+       alpha = "Weight",
+       size = "Weight") +
+  theme_linedraw(base_family = "Times", base_size = 10) +
+  theme(panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.text.x = element_blank(),
+        axis.ticks.x = element_blank(),
+        axis.text.y = element_blank(),
+        axis.ticks.y = element_blank(),
+        strip.placement = "outside",
+        strip.background = element_rect(color = "white", fill = "white"),
+        strip.text = element_text(color = 'black', size = 10)) +
+  guides(fill = guide_legend(order = 1),
+         size = guide_legend(order = 2),
+         alpha = guide_legend(order = 2))
+```
+
+---
+
+# Visualizations for Model Assessment
+
+---
+
+# Three Visualization Categories
+
+**Diagnostics for Individual Explanations**
+
+Visualize the steps taken by LIME to fit the explainer model and plot the model in data space to get a better understanding of the LIME algorithm and an assessment of the claims made at various stages in the creation of the explanation
+
+**Diagnostics for Sets of Explanations**
+
+Visualize a set of explanations associated with a set of predictions to gain insight into the variability in LIME explanations across the feature space and assess the approximations of the explainer models
+
+**Diagnostics for Comparisons of Tuning Parameters**
+
+Visualize sets of explanations associated with the same predictions across applications of LIME using different tuning parameters to assess the variability in explanations
+
+---
+
+# Sine Example Data
+
+```{r}
+# Functions for rotating the data
+rot_x <- function(x, y, theta) (x * cos(theta)) - (y * sin(theta))
+rot_y <- function(x, y, theta) (x * sin(theta)) + (y * cos(theta))
+
+# Generate the data
+theta = -0.9
+min = -10
+max = 10
+set.seed(20190913)
+sine_data <- data.frame(x1 = runif(600, min, max),
+                        x2 = sort(runif(600, min, max))) %>%
+  mutate(x1new = rot_x(x1, x2, theta),
+         x2new = rot_y(x1, x2, theta),
+         y = ifelse(x2new > 5 * sin(x1new), "1", "0")) %>%
+  slice(sample(1:n())) %>%
+  mutate(x3 = rnorm(600),
+         case = 1:600) %>%
+  select(case, everything())
+
+# Separte the data into training and testing parts
+set.seed(20191003)
+rs <- sample(1:600, 500, replace = FALSE)
+sine_data_train <- sine_data[rs,]
+sine_data_test <- sine_data[-rs,]
+
+# Fit a random forest
+set.seed(20191003)
+rfsine <- randomForest(x = sine_data_train %>% select(x1, x2, x3),
+                       y = factor(sine_data_train$y))
+
+# Obtain predictions on the training and testing data
+sine_data_train$rfpred <- predict(rfsine)
+sine_data_train <- cbind(sine_data_train, predict(rfsine, type = "prob"))
+sine_data_train <- sine_data_train %>% rename(rfprob1 = `1`, rfprob0 = `0`)
+sine_data_test$rfpred <- predict(rfsine, sine_data_test %>% select(x1, x2, x3))
+sine_data_test <- cbind(sine_data_test,
+                        predict(rfsine, sine_data_test
+                                %>% select(x1, x2, x3),
+                                type = "prob"))
+sine_data_test <- sine_data_test %>%
+  rename(rfprob1 = `1`, rfprob0 = `0`)
+
+# Extract the prediction of interest from the sine test data
+sine_poi <- sine_data_test %>% filter(y != rfpred, x1 > 0, x1 < 5, x2 > 5)
+```
+
+.pull-left[
+$x_1\sim Unif($ `r min`, `r max` $)$  
+$x_2\sim Unif($ `r min`, `r max` $)$  
+$x_3\sim \mbox{N}(0,1)$
+$x'_1=x_1\cos(\theta)-x_2\sin(\theta)$   
+$x'_2=x_1\sin(\theta)+x_2\cos(\theta)$   
+$\theta=-0.9$
+]
+
+.pull-right[
+$$y=\begin{cases}  1 & \mbox{ if } x'_2 > \sin\left(x'_1\right) \\
+  0 & \mbox{ if } x'_2 \le \sin\left(x'_1\right) \ . %\nolabel
+  \end{cases}$$
+
+Training data: 500 observations  
+Testing data: 100 observations  
+Black-box model: random forest  
+]
+  
+  
+```{r fig.width = 8, fig.height = 3.125}
+# Create points represting the rotated since curve
+sinefun_data <- data.frame(xnew = seq(min(sine_data$x1new),
+                                      max(sine_data$x1new),
+                                      by = 0.01)) %>%
+  mutate(ynew = 5 * sin(xnew)) %>%
+  mutate(x = rot_x(xnew, ynew, -theta),
+         y = rot_y(xnew, ynew, -theta)) %>%
+  filter(y >= -10, y <= 10)
+
+# Specify colors for predictions
+sinecolor0 = "firebrick" #"tomato"
+sinecolor1 = "steelblue" #"darkturquoise"
+
+# Plot the training data observed classes
+sine_plot_obs <- ggplot(sine_data_train, aes(x = x1, y = x2, color = y)) +
+  geom_point(alpha = 0.8) +
+  geom_path(data = sinefun_data, aes(x = x, y = y),
+            color = "black") +
+  scale_colour_manual(values = c(sinecolor0, sinecolor1)) +
+  theme_bw(base_family = "Times", base_size = 10) +
+  labs(x = TeX("$x_1$"),
+       y = TeX("$x_2$"),
+       color = TeX("y"),
+       title = "Training Data")
+
+# Plot the testing data rf predictions
+sine_plot_pred <- ggplot() +
+  geom_point(data = sine_poi %>%
+               mutate(shape = "Prediction \nof Interest"),
+             mapping = aes(x = x1,
+                           y = x2,
+                           #fill = rfprob1,
+                           shape = shape),
+             size = 5,
+             alpha = 0.8,
+             color = "black") +
+  geom_point(data = sine_data_test %>% filter(y != rfpred),
+             mapping = aes(x = x1, y = x2),
+             shape = 1,
+             size = 3,
+             color = "black") +
+  geom_point(data = sine_data_test,
+             mapping =  aes(x = x1,
+                            y = x2,
+                            color = rfprob1,
+                            fill = rfprob1),
+             shape = 21,
+             alpha = 0.8) +
+  geom_path(data = sinefun_data, aes(x = x, y = y),
+            color = "black") +
+  scale_color_gradient2(low = sinecolor0,
+                        mid = '#f7f7f7',
+                        high = sinecolor1,
+                        midpoint = 0.5) +
+  scale_fill_gradient2(low = sinecolor0,
+                        mid = '#f7f7f7',
+                        high = sinecolor1,
+                        midpoint = 0.5) +
+  scale_shape_manual(values = 23) +
+  theme_bw(base_family = "Times", base_size = 10) +
+  labs(x = TeX("$x_1$"),
+       y = TeX("$x_2$"),
+       color = "Random \nForest \nProbability",
+       fill = "Random \nForest \nProbability",
+       title = "Testing Data",
+       shape = "") +
+  guides(shape = guide_legend(order = 1))
+
+# Join the plots
+plot_grid(sine_plot_obs, sine_plot_pred,
+          nrow = 1,
+          rel_widths = c(0.4825, 0.5175))
+```
+
+
+---
+
+# Diagnostics for Individual Explanations
+
+Step 1: 
+
+---
+
+# Diagnostics for Individual Explanations
+
+Step 2: 
+
+---
+
+# Diagnostics for Individual Explanations
+
+Step 3: 
+
+---
+
+# Diagnostics for Sets of Explanations
+
+---
+
+# Diagnostics for Comparisons of Tuning Parameters
 
 ---
 
