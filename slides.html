@@ -4,6 +4,7 @@
     <title>A Study on Visualizations for Explainable Machine Learning Predictions   Statistics PhD Oral Prelim</title>
     <meta charset="utf-8" />
     <meta name="author" content="Katherine Goode" />
+    <meta name="date" content="2020-05-06" />
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/metropolis.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/metropolis-fonts.css" rel="stylesheet" />
@@ -15,7 +16,7 @@ class: center, middle, inverse, title-slide
 # <strong>A Study on Visualizations for Explainable Machine Learning Predictions</strong> <br> Statistics PhD Oral Prelim
 ### Katherine Goode
 ### Iowa State University
-### May 6, 2020 <br> <br> ~remember to send out before prelim~ <br> ~50 minute talk~
+### May 6, 2020
 
 ---
 
@@ -25,7 +26,7 @@ class: center, middle, inverse, title-slide
 .remark-slide-content {
   background-color: #FFFFFF;
   border-top: 80px solid #7C2529;
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 300;
   line-height: 1.5;
   padding: 1em 2em 1em 2em
@@ -79,22 +80,53 @@ body {
   opacity: 1;
 }
 
+.left-desc {
+  width: 40%;
+  height: 92%;
+  float: left;
+}
+.right-plot {
+  width: 59%;
+  float: right;
+  padding-left: 1%;
+}
+
+.tiny{font-size: 30%}
+.small{font-size: 50%}
+.medium{font-size: 75%}
+
 &lt;/style&gt;
 
 
+
+# Questions/Notes
+
+Questions: 
+
+- How much text is appropriate on a slide during an oral prelim?
+- Something is not with my references. How to format the inline references correctly?
+
+Notes: 
+
+- Remember to send out before prelim
+- 50 minute talk
+
+---
 
 # Personal Background
 
 .pull-left[
 **Education**
 
-- B.A. in Mathematics
+B.A. in Mathematics
   - Lawrence University (Appleton, WI)
   - Graduated in June 2013
-- M.S. in Statistics 
+  
+M.S. in Statistics 
   - University of Wisconsin, Madison
   - Graduated in May 2015
-- Ph.D. in Statistics (in progress)
+  
+Ph.D. in Statistics (in progress)
   - Iowa State University
   - Started in January 2016
 ]
@@ -103,17 +135,18 @@ body {
 
 **Assistantships**
 
-- Lecturer for STAT 101
+Lecturer for STAT 101
   - Spring 2016
-- AES Statistical Consultant
+
+AES Statistical Consultant
   - Summer 2016 - current
-- NREM Research Assistant 
+
+NREM Research Assistant 
   - Summer 2019
   
 **Internship**
 
-- Statistical Sciences Research and Development Intern
-  - Sandia National Labs
+Statistical Sciences Research and Development Intern at Sandia National Labs
   - December 2019 - current
 ]
 
@@ -121,7 +154,7 @@ body {
 
 # Overview of Talk
 
-1. Overview of Thesis and Literature Review
+1. Background and Overview of Thesis
 
 2. Chapter 1: Visual Diagnostics of a Model Explainer -- Tools for the Assessment of LIME Explanations
 
@@ -137,7 +170,85 @@ body {
 
 class: middle, center, inverse
 
-# Overview of Thesis and Literature Review
+# Background and Overview of Thesis
+
+---
+
+# Explainable Machine Learning
+
+- Many machine learning models are considered "black-boxes", because it is not possible to directly interpret them. 
+
+- An area of research in explainable machine learning has developed as a result.
+
+- The goal with explainable machine learning is to provide methods to explain predictions made by black-box models.
+
+- The Eurpean General Data Protection Regulation (GDPR) implemented in 2018 has probably played a role in an increase of methods in recent years.
+
+---
+
+# Explainability versus Interpretability
+
+There are not accepted definitions for *explainability* and *interpretability* in the literature. I will use the following definitions.
+
+.pull-left[
+**Interpretability** is the ability to directly use the parameters of a model to understand the mechanism of how the model makes predictions
+
+- a linear model coefficient: indicates the amount the response variable changes based on a change in the predictor variable
+  
+&lt;br&gt;
+
+$$\hat{y}=\hat{\beta}_0+\hat{\beta}_1x_1+\cdots+\hat{\beta}_px_p $$
+]
+
+.pull-right[
+**Explainability** is the ability to use the model in an indirect manner to understand the relationships in the data captured by the mode
+
+- LIME: model agnostic method that uses a surrogate model
+
+&lt;div class="figure"&gt;
+&lt;img src="figures/lime.png" alt="Figure from LIME paper (Ribeiro 2016)" width="276" /&gt;
+&lt;p class="caption"&gt;Figure from LIME paper (Ribeiro 2016)&lt;/p&gt;
+&lt;/div&gt;
+
+]
+
+---
+
+# Model-Agnostic Methods
+
+**Global Methods**
+
+**Local Methods**
+
+---
+
+# Assessment of Model-Agnostic Methods
+
+- Laugel
+- Rudin
+
+---
+
+# Model-Specific Methods
+
+---
+
+# Overview of Dissertation Chapters
+
+Chapter 1
+
+- Focus on the model-agnostic explainer model method of LIME
+- Discuss the importance of assessing LIME explanations
+- Suggest the use of visualizations for the assessment of LIME and provide many example visualizations
+
+Chapter 2
+
+- Visualizations for the explainability of random forest models
+- Use clustering to identify key tree structures within the random forest
+
+Chapter 3
+
+- Visualizations for the explainability of neural networks with functional data
 
 ---
 
@@ -147,18 +258,78 @@ class: middle, center, inverse
 
 ---
 
+# Motivation for this Research
+
+.pull-left[
+Hare, Hofmann, and Carriquiry [HHC16]:
+- Interested in providing quantitative evidence to determine whether two bullets were fired from the same gun
+- Use high definition scans of striations on bullet lands to extract "signatures" 
+- Compute similarity features to compare two signatures
+]
+
+.pull-right[
+&lt;img src="figures/gun.png" width="50%" /&gt;&lt;img src="figures/bullet.png" width="50%" /&gt;
+]
+
+&lt;img src="figures/striae.png" width="50%" /&gt;&lt;img src="figures/signatures.png" width="50%" /&gt;
+
+---
+
+# Motivation for this Research
+
+Hare, Hofmann, and Carriquiry [HHC16] fit a random forest model with nine signature similarity features.
+
+&lt;img src="figures/bullet_pcp.png" width="85%" style="display: block; margin: auto;" /&gt;
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt;   &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; FALSE &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; TRUE &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Classification Error &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; FALSE &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 81799 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 21 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0002567 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; TRUE &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 363 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 845 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.3004967 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+
+# Motivation for this Research
+
+We were interested in providing an explanation for specific signatures comparisons, so we tried applying LIME. However, we found unreasonable results, which led to an assessment of LIME.
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-6-1.png" width="85%" style="display: block; margin: auto;" /&gt;
+
+---
+
 # Conceptual Depiction of LIME
 
-Explain the prediction made by a complex model for *one prediction of interest* using an interpretable model
+LIME was introduced by Ribeiro, Singh, and Guestrin [RSG16].
 
 - **L**ocal
 - **I**nterpretable
 - **M**odel-agnostic
 - **E**xplanation
 
+**Concept**: Explain the prediction made by a complex model for *one prediction of interest* using an interpretable model focused on a local region near the prediction of interest
 
 
-![](slides_files/figure-html/unnamed-chunk-2-1.png)&lt;!-- --&gt;
+
+![](slides_files/figure-html/unnamed-chunk-8-1.png)&lt;!-- --&gt;
 
 ---
 
@@ -170,27 +341,29 @@ LIME adds an additional layer of complexity by using a model that also needs to 
 - How to determine an appropriate local region?
 - Is the relationship linear in the specified local region?
 
-![](slides_files/figure-html/unnamed-chunk-3-1.png)&lt;!-- --&gt;
+&lt;br&gt;
+
+![](slides_files/figure-html/unnamed-chunk-9-1.png)&lt;!-- --&gt;
 
 ---
 
 # Visualizations for Model Assessment
 
----
+Ribeiro, Singh, and Guestrin [RSG16] make the following set of claims regarding the performance of LIME:
 
-# Three Visualization Categories
+- *Interpretability*: Easy to interpret the explainer model to provide meaningful explanations
 
-**Diagnostics for Individual Explanations**
+- *Faithfulness*: Explainer model sufficiently captures the relationship between the complex model predictions and the features in the local region around a prediction of interest
 
-Visualize the steps taken by LIME to fit the explainer model and plot the model in data space to get a better understanding of the LIME algorithm and an assessment of the claims made at various stages in the creation of the explanation
+- *Linearity*: Using a ridge regression as the explainer model assumes a linear relationship between complex model predictions and the features
 
-**Diagnostics for Sets of Explanations**
+- *Localness*: Explanations are local in regards to a prediction of interest
 
-Visualize a set of explanations associated with a set of predictions to gain insight into the variability in LIME explanations across the feature space and assess the approximations of the explainer models
+We suggest the use of visualizations to assess the claims made by LIME, which we have organized into three categories:
 
-**Diagnostics for Comparisons of Tuning Parameters**
-
-Visualize sets of explanations associated with the same predictions across applications of LIME using different tuning parameters to assess the variability in explanations
+- *Diagnostics for individual explanations*
+- *Diagnostics for sets of explanations*
+- *Diagnostics for comparisons of tuning parameters*
 
 ---
 
@@ -199,53 +372,270 @@ Visualize sets of explanations associated with the same predictions across appli
 
 
 .pull-left[
+Training data: 500 observations  
+Testing data: 100 observations  
+Black-box model: random forest
+  
 `\(x_1\sim Unif(\)` -10, 10 `\()\)`  
 `\(x_2\sim Unif(\)` -10, 10 `\()\)`  
 `\(x_3\sim \mbox{N}(0,1)\)`
+]
+
+.pull-right[
+`$$y=\begin{cases}  blue &amp; \mbox{ if } x'_2 &gt; \sin\left(x'_1\right) \\
+  red &amp; \mbox{ if } x'_2 \le \sin\left(x'_1\right) \ . %\nolabel
+  \end{cases}$$`
+where  
 `\(x'_1=x_1\cos(\theta)-x_2\sin(\theta)\)`   
 `\(x'_2=x_1\sin(\theta)+x_2\cos(\theta)\)`   
 `\(\theta=-0.9\)`
 ]
 
-.pull-right[
-`$$y=\begin{cases}  1 &amp; \mbox{ if } x'_2 &gt; \sin\left(x'_1\right) \\
-  0 &amp; \mbox{ if } x'_2 \le \sin\left(x'_1\right) \ . %\nolabel
-  \end{cases}$$`
+![](slides_files/figure-html/unnamed-chunk-11-1.png)&lt;!-- --&gt;
 
-Training data: 500 observations  
-Testing data: 100 observations  
-Black-box model: random forest  
+---
+
+# Diagnostics for Individual Explanations
+
+Overview visualization of the LIME explanation for the prediction of interest from the *lime* R package
+
+
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-13-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Diagnostics for Individual Explanations
+
+.left-desc[
+**Step 1a**: Data Simulation
+
+*lime* R package default procedure:
+
+- Sample 4999 observations uniformly from 4 quantile bins for each feature in the training data 
+  
+**Corresponding Diagnostic:**  
+*Training Data Plot*
+
+- Scatterplot of the two features selected by *lime*
+- Points are the training data observations colored by the observed response
+- Grid of lines represents the boundaries of the 4 quantile bins
 ]
+
+.right-plot[
+![](slides_files/figure-html/unnamed-chunk-14-1.png)&lt;!-- --&gt;
+]
+
+---
+
+# Diagnostics for Individual Explanations
+
+.left-desc[
+**Step 1b**: Complex Model Predictions
   
-  
-![](slides_files/figure-html/unnamed-chunk-5-1.png)&lt;!-- --&gt;
+- Apply complex model to simulated data to obtain predictions
 
+**Corresponding Diagnostic:** *Untransformed Simulated Data Plot*
+
+- Scatterplot of the simulated data features denoted by `\(x'_1\)` and `\(x'_2\)`
+- Points are colored by the random forest predictions (for 'blue')
+- Grid of lines represents the boundaries of the 4 quantile bins
+- Prediction of interest location indicated by the diamond
+]
+
+.right-plot[
+![](slides_files/figure-html/unnamed-chunk-15-1.png)&lt;!-- --&gt;
+]
+---
+
+# Diagnostics for Individual Explanations
+
+.left-desc[
+**Step 1c**: Interpretability Transformation
+
+- Convert continuous features to binary variables based on whether the observation falls in the same quantile bin as the prediction of interest or not
+
+**Corresponding Diagnostic:** *Interpretability Transformed Simulated Data Plot*
+
+- Scatterplot of the simulated data features
+- Rectangular region shades represent the interpretability transformed feature value
+- Prediction of interest location indicated by the diamond
+]
+
+.right-plot[
+
+
+![](slides_files/figure-html/unnamed-chunk-17-1.png)&lt;!-- --&gt;
+]
+---
+
+# Diagnostics for Individual Explanations
+
+.left-desc[
+**Step 2a**: Assign Weights
+
+- Assign weights to simulated data based on proximity to the prediction of interest (using the untransformed feature values)
+- *lime* R package uses Gower distance metric  by default
+
+**Corresponding Diagnostic:**  
+*Proximity Weights Plot*
+
+- Each hexagon contains the average of the weights of the observations located within the corresponding region
+- Prediction of interest location indicated by the diamond
+
+]
+
+.right-plot[
+![](slides_files/figure-html/unnamed-chunk-18-1.png)&lt;!-- --&gt;
+]
+---
+
+# Diagnostics for Individual Explanations
+
+.left-desc[
+**Step 2b**: Feature Selection
+
+- Ridge regression model
+  - reponse: complex model predictions from the simulated data 
+  - features: interpretability transformed simulated data features
+- *lime* R package uses forward selection by default for less than 6 features specified (user specifies the number of features)
+
+**Corresponding Diagnostic:**  
+*Feature Selection Comparison Plot*
+
+- Tile plot showing feature selected by various methods in *lime*
+]
+
+.right-plot[
+![](slides_files/figure-html/unnamed-chunk-19-1.png)&lt;!-- --&gt;
+]
 
 ---
 
 # Diagnostics for Individual Explanations
 
-Step 1: 
+.left-desc[
+**Step 2c**: Fit Explainer Model
+
+- Ridge regression model
+  - reponse: complex model predictions from the simulated data 
+  - features: interpretability transformed simulated data features selected during feature selection
+
+**Corresponding Diagnostic:**  
+*Explainer Model Prediction Plot*
+
+- Color of a rectangular region represents the explainer model prediction for the region
+
+]
+
+.right-plot[
+![](slides_files/figure-html/unnamed-chunk-20-1.png)&lt;!-- --&gt;
+]
 
 ---
 
 # Diagnostics for Individual Explanations
 
-Step 2: 
+.left-desc[
+**Step 2c**: Fit Explainer Model (continued)
+
+**Corresponding Diagnostic:**  
+*Explainer Model Residual Plot*
+
+- Residual plot for the explainer model
+- Some jittering has been added to the points in the x-direction
+]
+
+.right-plot[
+![](slides_files/figure-html/unnamed-chunk-21-1.png)&lt;!-- --&gt;
+]
+---
+
+# Diagnostics for Individual Explanations
+
+
+.pull-left[
+**Step 3**: Explainer Model Interpretation
+
+- Interpret the explainer model to explain the complex model prediction
+]
+
+.pull-right[
+**Corresponding Diagnostic:** *Explanation Plot*
+
+- Scatter plot of the simulated data ($x'_2$ versus `\(x'_1\)`)
+- Solid lines depict the division of the feature space by the interpretability transformation
+]
+
+![](slides_files/figure-html/unnamed-chunk-22-1.png)&lt;!-- --&gt;
 
 ---
 
 # Diagnostics for Individual Explanations
 
-Step 3: 
+**Extensions to Higher Dimensions**
 
 ---
 
 # Diagnostics for Sets of Explanations
 
+![](slides_files/figure-html/unnamed-chunk-23-1.png)&lt;!-- --&gt;
+
 ---
 
-# Diagnostics for Comparisons of Tuning Parameters
+# Diagnostics for Sets of Explanations
+
+![](slides_files/figure-html/unnamed-chunk-24-1.png)&lt;!-- --&gt;
+
+---
+
+# Diagnostics for Sets of Explanations
+
+.left-desc[]
+
+.right-plot[
+![](slides_files/figure-html/unnamed-chunk-25-1.png)&lt;!-- --&gt;
+]
+
+---
+
+# Diagnostics for Sets of Explanations
+
+.left-desc[]
+
+.right-plot[
+![](slides_files/figure-html/unnamed-chunk-26-1.png)&lt;!-- --&gt;
+]
+
+---
+
+# Diagnostics for Sets of Explanations
+
+.left-desc[]
+
+.right-plot[
+![](slides_files/figure-html/unnamed-chunk-27-1.png)&lt;!-- --&gt;
+]
+
+---
+
+# .medium[Diagnostics for Comparisons of Tuning Parameters]
+
+.left-desc[]
+
+.right-plot[
+![](slides_files/figure-html/unnamed-chunk-28-1.png)&lt;!-- --&gt;
+]
+
+---
+
+# .medium[Diagnostics for Comparisons of Tuning Parameters]
+
+.left-desc[]
+
+.right-plot[
+![](slides_files/figure-html/unnamed-chunk-29-1.png)&lt;!-- --&gt;
+]
 
 ---
 
@@ -294,6 +684,24 @@ How to divide up the material from chapter 1 for publication? Current ideas:
 - Demonstrate issues found with LIME explanations using diagnostic plots
 - LIME should not be trusted to explain machine learning models when making high stakes decisions 
 ]
+
+---
+
+# References
+
+
+```
+## Hare, E, H. Hofmann, and A. Carriquiry (2016). "Automatic Matching of
+## Bullet Lands". In: _Annals of Applied Statistics_. DOI:
+## [http://adsabs.harvard.edu/abs/2016arXiv160105788H](https://doi.org/http%3A%2F%2Fadsabs.harvard.edu%2Fabs%2F2016arXiv160105788H).
+## arXiv: 1601.05788 [stat.AP].
+## 
+## Ribeiro, M. T., S. Singh, and C. Guestrin (2016). ""Why Should I Trust
+## You?": Explaining the Predictions of Any Classifier". In: _Proceedings
+## of the 22nd ACM SIGKDD International Conference on Knowledge Discovery
+## and Data Mining, San Francisco, CA, USA, August 13-17, 2016_. , pp.
+## 1135-1144.
+```
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
