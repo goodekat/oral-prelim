@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="" xml:lang="">
   <head>
-    <title>A Study on Visualizations for Explainable Machine Learning Predictions   Statistics PhD Oral Prelim</title>
+    <title>Studies on Visualization Methods for Explainable Machine Learning   Statistics PhD Oral Prelim</title>
     <meta charset="utf-8" />
     <meta name="author" content="Katherine Goode" />
     <meta name="date" content="2020-05-06" />
@@ -13,7 +13,7 @@
     <textarea id="source">
 class: center, middle, inverse, title-slide
 
-# <strong>A Study on Visualizations for Explainable Machine Learning Predictions</strong> <br> Statistics PhD Oral Prelim
+# <strong>Studies on Visualization Methods for Explainable Machine Learning</strong> <br> Statistics PhD Oral Prelim
 ### Katherine Goode
 ### Iowa State University
 ### May 6, 2020
@@ -104,7 +104,15 @@ body {
 Questions: 
 
 - How much text is appropriate on a slide during an oral prelim?
-- Something is not with my references. How to format the inline references correctly?
+- Complete sentences or not for the oral prelim?
+- Are the references formatted okay?
+- How much time should I spend discussing previous explainable machine learning methods/how many should I mention?
+- Title?
+- Should I say I'm focusing on "explainable machine learning" or "visualization techniques for explainable machine learning"
+
+Ideas:
+
+- Could turn explainable machine learning methods into a visualization or table to make it more digestible
 
 Notes: 
 
@@ -133,20 +141,19 @@ Ph.D. in Statistics (in progress)
 
 .pull-right[
 
-**Assistantships**
+**Assistantships/Internship**
 
-Lecturer for STAT 101
+- Lecturer for STAT 101 
   - Spring 2016
-
-AES Statistical Consultant
+- AES Statistical Consultant 
   - Summer 2016 - current
-
-NREM Research Assistant 
+- NREM Research Assistant 
   - Summer 2019
   
 **Internship**
 
-Statistical Sciences Research and Development Intern at Sandia National Labs
+Sandia National Labs
+  - Statistical Sciences Research and Development Intern
   - December 2019 - current
 ]
 
@@ -156,11 +163,14 @@ Statistical Sciences Research and Development Intern at Sandia National Labs
 
 1. Background and Overview of Thesis
 
-2. Chapter 1: Visual Diagnostics of a Model Explainer -- Tools for the Assessment of LIME Explanations
+2. Detailed explanation of Chapter 1
+  - Visual Diagnostics of a Model Explainer -- Tools for the Assessment of LIME Explanations
 
-3. Chapter 2: Explaining Random Forests using Clustering of Trees
+3. Plan for Chapter 2
+  - Explaining Random Forests using Clustering of Trees
 
-4. Chapter 3: Extensions of Neural Network Explanation Tools to Tabular Data Applications
+4. Ideas for Chapter 3
+  - Extensions of Neural Network Explanation Tools to Tabular Data Applications
 
 5. Timeline for Completion
 
@@ -178,75 +188,161 @@ class: middle, center, inverse
 
 - Many machine learning models are considered "black-boxes", because it is not possible to directly interpret them. 
 
-- An area of research in explainable machine learning has developed as a result.
+- An area of research in explainable machine learning has developed as a result .medium[(Gilpin, Bau, Yuan, et al., 2018; Guidotti, Monreale, Ruggieri, et al., 2018; Ming, 2017; Mohseni, Zarei, and Ragan, 2018; Molnar, 2019)].
 
 - The goal with explainable machine learning is to provide methods to explain predictions made by black-box models.
 
-- The Eurpean General Data Protection Regulation (GDPR) implemented in 2018 has probably played a role in an increase of methods in recent years.
+- The European General Data Protection Regulation (GDPR) implemented in 2018 includes a "right to explanation", which is pertinent to the way in which machine learning models are used in Europe (Goodman and Flaxman, 2016).
+
+  - Goodman and Flaxman (2016) point out, "It is reasonable to suppose that any adequate explanation would, at a minimum, provide an account of how input features relate to predictions, allowing one to answer questions such as: Is the model more or less likely to recommend a loan if the applicant is a minority?"
 
 ---
 
 # Explainability versus Interpretability
 
-There are not accepted definitions for *explainability* and *interpretability* in the literature. I will use the following definitions.
+There are no accepted definitions for *explainability* and *interpretability* in the literature .small[(Gilpin, Bau, Yuan, et al., 2018; Lipton, 2016; Molnar, 2019; Montavon, Samek, and Müller, 2017; Murdoch, Singh, Kumbier, et al., 2019; Rudin, 2018)]. I will use the following definitions.
 
 .pull-left[
-**Interpretability** is the ability to directly use the parameters of a model to understand the mechanism of how the model makes predictions
+**Interpretability** is the ability to directly use the parameters of a model to understand the mechanism of how the model makes predictions.
 
-- a linear model coefficient: indicates the amount the response variable changes based on a change in the predictor variable
+- A linear model coefficient indicates the amount the response variable changes based on a change in the predictor variable when all other predictor variables are held constant.
   
-&lt;br&gt;
-
 $$\hat{y}=\hat{\beta}_0+\hat{\beta}_1x_1+\cdots+\hat{\beta}_px_p $$
 ]
 
 .pull-right[
-**Explainability** is the ability to use the model in an indirect manner to understand the relationships in the data captured by the mode
+**Explainability** is the ability to use the model in an indirect manner to understand the relationships in the data captured by the model.
 
-- LIME: model agnostic method that uses a surrogate model
+- LIME uses a surrogate model to understand the relationship between the complex model predictions and predictor variables in a local region (Ribeiro, Singh, and Guestrin, 2016).
 
-&lt;div class="figure"&gt;
-&lt;img src="figures/lime.png" alt="Figure from LIME paper (Ribeiro 2016)" width="276" /&gt;
-&lt;p class="caption"&gt;Figure from LIME paper (Ribeiro 2016)&lt;/p&gt;
-&lt;/div&gt;
+&lt;img src="figures/lime.png" width="65%" style="display: block; margin: auto;" /&gt;
 
 ]
 
 ---
 
-# Model-Agnostic Methods
+# Model Agnostic Methods
+
+.pull-left[
+**General Model Visualizations**
+
+.medium[
+- Removing the blindfold .medium[(Wickham, Cook, and Hofmann, 2015)]
+  - Plot the model in dataspace
+  - Plot members of a model collection
+  - Explore the fitting process
+]
 
 **Global Methods**
 
+.medium[
+- Partial dependence plots .medium[(Friedman, 2001)] and extensions:
+  - Interactive partial dependence plots .medium[(Krause, Perer, and Ng, 2016)]
+  - Individual conditional expectation plots .medium[(Goldstein, Kapelner, Bleich, et al., 2013)]
+  - Accumulated local effect plots .medium[(Apley and Zhu, 2016)]
+  - Feature interaction plots .medium[(Friedman and Popescu, 2008; Greenwell, Boehmke, and McCarthy, 2018; Hooker, 2004)]
+- Parallel coordinate plots .medium[(Jiang, Liu, and Chen, 2019)]
+- Global feature importance plots .medium[(Fisher, Rudin, and Dominici, 2018; Altmann, Toloşi, Sander, et al., 2010; Casalicchio, Molnar, and Bischl, 2019)]
+- Global surrogate models .medium[(Molnar, 2019)]
+]
+]
+
+.pull-right[
 **Local Methods**
 
+.medium[
+- Individual conditional importance plots .medium[(Casalicchio, Molnar, and Bischl, 2019)]
+- LIME .medium[(Ribeiro, Singh, and Guestrin, 2016)]
+- Anchors (scoped rules) .medium[(Ribeiro, Singh, and Guestrin, 2018)]
+- Shapely values .medium[]
+- SHAP .medium[(Lundberg and Lee, 2017)]
+- breakDown .medium[(Staniak and Biecek, 2018)]
+]
+
+**Example Based Explanations**
+
+.medium[
+- Counterfactual examples .medium[(Wachter, Mittelstadt, and Russell, 2017; Martens and Provost, 2014; Looveren and Klaise, 2019; Laugel, Lesot, Marsala, et al., 2017)]
+- Adversarial examples .medium[(Szegedy, Zaremba, Sutskever, et al., 2013; Goodfellow, Shlens, and Szegedy, 2014; Biggio and Roli, 2018)]
+- Prototypes and criticisms .medium[]
+- Influential instances .medium[(Koh and Liang, 2017)]
+]
+]
+
 ---
 
-# Assessment of Model-Agnostic Methods
+# Model Specific Methods
 
-- Laugel
-- Rudin
+.pull-left[
+**Random Forests**
+
+.medium[
+- Random forest impurity based feature importance .medium[(Breiman, 2001)]
+- Sectioned scatterplots .medium[(Urbanek, 2008)]
+- Trace plots of trees .medium[(Urbanek, 2008)]
+- Simplified model .medium[(Hara and Hayashi, 2016a)]
+- Forest floor visualizations .medium[(Welling, Refsgaard, Brockhoff, et al., 2016)]
+- Interactive visualizations .medium[(Beckett, 2018; da
+Silva, Cook, and Lee, 2017)]
+]
+
+**Neural Networks**
+
+.medium[
+- Extracting tree structures .medium[(Craven and Shavlik, 1996)]
+- Saliency maps .medium[(Simonyan, Vedaldi, and Zisserman, 2013)]
+- Feature visualization .medium[(Olah, Mordvintsev, and Schubert, 2017)]
+- Grand tours .medium[(Li, Zhao, and Scheidegger, 2020)]
+- Flows .medium[(Halnaut, Giot, Bourqui, et al., 2020)]
+]
+]
+
+.pull-right[
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="./figures/rf-splits.png" alt="Sectioned scatterplot from Urbanek (2008)." width="60%" /&gt;
+&lt;p class="caption"&gt;Sectioned scatterplot from Urbanek (2008).&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="./figures/saliency.png" alt="Saliency maps from Simonyan, Vedaldi, and Zisserman (2013)." width="60%" /&gt;
+&lt;p class="caption"&gt;Saliency maps from Simonyan, Vedaldi, and Zisserman (2013).&lt;/p&gt;
+&lt;/div&gt;
+]
 
 ---
 
-# Model-Specific Methods
+# .medium[Assessment of Explainable Machine Learning Methods]
+
+**General Assessment**
+
+- Rudin (2018) argues against the use of black-box models to make high stakes decisions since all "explanations must be wrong". Rudin (2018) also makes the following claims:
+
+  - The trade-off between accuracy and interpretability is a myth
+  - Interpretable models can have just as good accuracy as "black-box" models
+  - Explanations may not be faithful to the original model, make sense, or be detailed enough to understand the "black-box" model
+
+**Method Specific Assessments**
+
+- Laugel, Renard, Lesot, et al. (2018) consider how to appropriately choose a local region for the local surrogate model with the method of LIME.
+- Laugel, Renard, Lesot, et al. (2018) consider issues with unjustified counterfactual examples.
+- Kindermans, Hooker, Adebayo, et al. (2017) show how saliency maps can change when a transformation is applied to the input data that has no effect on the model.
 
 ---
 
 # Overview of Dissertation Chapters
 
-Chapter 1
+**Chapter 1**
 
 - Focus on the model-agnostic explainer model method of LIME
 - Discuss the importance of assessing LIME explanations
 - Suggest the use of visualizations for the assessment of LIME and provide many example visualizations
 
-Chapter 2
+**Chapter 2**
 
 - Visualizations for the explainability of random forest models
 - Use clustering to identify key tree structures within the random forest
 
-Chapter 3
+**Chapter 3**
 
 - Visualizations for the explainability of neural networks with functional data
 
@@ -258,10 +354,10 @@ class: middle, center, inverse
 
 ---
 
-# Motivation for this Research
+# Motivation
 
 .pull-left[
-Hare, Hofmann, and Carriquiry [HHC16]:
+Hare, Hofmann, and Carriquiry (2016):
 - Interested in providing quantitative evidence to determine whether two bullets were fired from the same gun
 - Use high definition scans of striations on bullet lands to extract "signatures" 
 - Compute similarity features to compare two signatures
@@ -274,10 +370,10 @@ Hare, Hofmann, and Carriquiry [HHC16]:
 &lt;img src="figures/striae.png" width="50%" /&gt;&lt;img src="figures/signatures.png" width="50%" /&gt;
 
 ---
+ 
+# Motivation
 
-# Motivation for this Research
-
-Hare, Hofmann, and Carriquiry [HHC16] fit a random forest model with nine signature similarity features.
+Hare, Hofmann, and Carriquiry (2016) fit a random forest model with nine signature similarity features.
 
 &lt;img src="figures/bullet_pcp.png" width="85%" style="display: block; margin: auto;" /&gt;
 
@@ -308,17 +404,17 @@ Hare, Hofmann, and Carriquiry [HHC16] fit a random forest model with nine signat
 
 ---
 
-# Motivation for this Research
+# Motivation
 
 We were interested in providing an explanation for specific signatures comparisons, so we tried applying LIME. However, we found unreasonable results, which led to an assessment of LIME.
 
-&lt;img src="slides_files/figure-html/unnamed-chunk-6-1.png" width="85%" style="display: block; margin: auto;" /&gt;
+&lt;img src="slides_files/figure-html/unnamed-chunk-8-1.png" width="85%" style="display: block; margin: auto;" /&gt;
 
 ---
 
 # Conceptual Depiction of LIME
 
-LIME was introduced by Ribeiro, Singh, and Guestrin [RSG16].
+LIME was introduced by Ribeiro, Singh, and Guestrin (2016).
 
 - **L**ocal
 - **I**nterpretable
@@ -329,13 +425,13 @@ LIME was introduced by Ribeiro, Singh, and Guestrin [RSG16].
 
 
 
-![](slides_files/figure-html/unnamed-chunk-8-1.png)&lt;!-- --&gt;
+![](slides_files/figure-html/unnamed-chunk-10-1.png)&lt;!-- --&gt;
 
 ---
 
 # Importance of Assessing LIME
 
-LIME adds an additional layer of complexity by using a model that also needs to be assessed. This raises various questions:
+LIME adds an additional layer of complexity by using a model that also needs to be assessed, which raises various questions:
 
 - Does the explainer model approximate the complex model well in a local region around the prediction of interest?
 - How to determine an appropriate local region?
@@ -343,13 +439,13 @@ LIME adds an additional layer of complexity by using a model that also needs to 
 
 &lt;br&gt;
 
-![](slides_files/figure-html/unnamed-chunk-9-1.png)&lt;!-- --&gt;
+![](slides_files/figure-html/unnamed-chunk-11-1.png)&lt;!-- --&gt;
 
 ---
 
 # Visualizations for Model Assessment
 
-Ribeiro, Singh, and Guestrin [RSG16] make the following set of claims regarding the performance of LIME:
+Ribeiro, Singh, and Guestrin (2016) make the following set of claims regarding the performance of LIME:
 
 - *Interpretability*: Easy to interpret the explainer model to provide meaningful explanations
 
@@ -391,7 +487,7 @@ where
 `\(\theta=-0.9\)`
 ]
 
-![](slides_files/figure-html/unnamed-chunk-11-1.png)&lt;!-- --&gt;
+![](slides_files/figure-html/unnamed-chunk-13-1.png)&lt;!-- --&gt;
 
 ---
 
@@ -401,7 +497,7 @@ Overview visualization of the LIME explanation for the prediction of interest fr
 
 
 
-&lt;img src="slides_files/figure-html/unnamed-chunk-13-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+&lt;img src="slides_files/figure-html/unnamed-chunk-15-1.png" width="80%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -423,7 +519,7 @@ Overview visualization of the LIME explanation for the prediction of interest fr
 ]
 
 .right-plot[
-![](slides_files/figure-html/unnamed-chunk-14-1.png)&lt;!-- --&gt;
+![](slides_files/figure-html/unnamed-chunk-16-1.png)&lt;!-- --&gt;
 ]
 
 ---
@@ -444,7 +540,7 @@ Overview visualization of the LIME explanation for the prediction of interest fr
 ]
 
 .right-plot[
-![](slides_files/figure-html/unnamed-chunk-15-1.png)&lt;!-- --&gt;
+![](slides_files/figure-html/unnamed-chunk-17-1.png)&lt;!-- --&gt;
 ]
 ---
 
@@ -465,7 +561,7 @@ Overview visualization of the LIME explanation for the prediction of interest fr
 .right-plot[
 
 
-![](slides_files/figure-html/unnamed-chunk-17-1.png)&lt;!-- --&gt;
+![](slides_files/figure-html/unnamed-chunk-19-1.png)&lt;!-- --&gt;
 ]
 ---
 
@@ -486,7 +582,7 @@ Overview visualization of the LIME explanation for the prediction of interest fr
 ]
 
 .right-plot[
-![](slides_files/figure-html/unnamed-chunk-18-1.png)&lt;!-- --&gt;
+![](slides_files/figure-html/unnamed-chunk-20-1.png)&lt;!-- --&gt;
 ]
 ---
 
@@ -496,7 +592,7 @@ Overview visualization of the LIME explanation for the prediction of interest fr
 **Step 2b**: Feature Selection
 
 - Ridge regression model
-  - reponse: complex model predictions from the simulated data 
+  - response: complex model predictions from the simulated data 
   - features: interpretability transformed simulated data features
 - *lime* R package uses forward selection by default for less than 6 features specified (user specifies the number of features)
 
@@ -507,7 +603,7 @@ Overview visualization of the LIME explanation for the prediction of interest fr
 ]
 
 .right-plot[
-![](slides_files/figure-html/unnamed-chunk-19-1.png)&lt;!-- --&gt;
+![](slides_files/figure-html/unnamed-chunk-21-1.png)&lt;!-- --&gt;
 ]
 
 ---
@@ -518,7 +614,7 @@ Overview visualization of the LIME explanation for the prediction of interest fr
 **Step 2c**: Fit Explainer Model
 
 - Ridge regression model
-  - reponse: complex model predictions from the simulated data 
+  - response: complex model predictions from the simulated data 
   - features: interpretability transformed simulated data features selected during feature selection
 
 **Corresponding Diagnostic:**  
@@ -529,7 +625,7 @@ Overview visualization of the LIME explanation for the prediction of interest fr
 ]
 
 .right-plot[
-![](slides_files/figure-html/unnamed-chunk-20-1.png)&lt;!-- --&gt;
+![](slides_files/figure-html/unnamed-chunk-22-1.png)&lt;!-- --&gt;
 ]
 
 ---
@@ -543,11 +639,11 @@ Overview visualization of the LIME explanation for the prediction of interest fr
 *Explainer Model Residual Plot*
 
 - Residual plot for the explainer model
-- Some jittering has been added to the points in the x-direction
+- Some jitter has been added to the points in the x-direction
 ]
 
 .right-plot[
-![](slides_files/figure-html/unnamed-chunk-21-1.png)&lt;!-- --&gt;
+![](slides_files/figure-html/unnamed-chunk-23-1.png)&lt;!-- --&gt;
 ]
 ---
 
@@ -567,7 +663,7 @@ Overview visualization of the LIME explanation for the prediction of interest fr
 - Solid lines depict the division of the feature space by the interpretability transformation
 ]
 
-![](slides_files/figure-html/unnamed-chunk-22-1.png)&lt;!-- --&gt;
+![](slides_files/figure-html/unnamed-chunk-24-1.png)&lt;!-- --&gt;
 
 ---
 
@@ -579,33 +675,13 @@ Overview visualization of the LIME explanation for the prediction of interest fr
 
 # Diagnostics for Sets of Explanations
 
-![](slides_files/figure-html/unnamed-chunk-23-1.png)&lt;!-- --&gt;
-
----
-
-# Diagnostics for Sets of Explanations
-
-![](slides_files/figure-html/unnamed-chunk-24-1.png)&lt;!-- --&gt;
-
----
-
-# Diagnostics for Sets of Explanations
-
-.left-desc[]
-
-.right-plot[
 ![](slides_files/figure-html/unnamed-chunk-25-1.png)&lt;!-- --&gt;
-]
 
 ---
 
 # Diagnostics for Sets of Explanations
 
-.left-desc[]
-
-.right-plot[
 ![](slides_files/figure-html/unnamed-chunk-26-1.png)&lt;!-- --&gt;
-]
 
 ---
 
@@ -619,7 +695,7 @@ Overview visualization of the LIME explanation for the prediction of interest fr
 
 ---
 
-# .medium[Diagnostics for Comparisons of Tuning Parameters]
+# Diagnostics for Sets of Explanations
 
 .left-desc[]
 
@@ -629,12 +705,32 @@ Overview visualization of the LIME explanation for the prediction of interest fr
 
 ---
 
-# .medium[Diagnostics for Comparisons of Tuning Parameters]
+# Diagnostics for Sets of Explanations
 
 .left-desc[]
 
 .right-plot[
 ![](slides_files/figure-html/unnamed-chunk-29-1.png)&lt;!-- --&gt;
+]
+
+---
+
+# .medium[Diagnostics for Comparisons of Tuning Parameters]
+
+.left-desc[]
+
+.right-plot[
+![](slides_files/figure-html/unnamed-chunk-30-1.png)&lt;!-- --&gt;
+]
+
+---
+
+# .medium[Diagnostics for Comparisons of Tuning Parameters]
+
+.left-desc[]
+
+.right-plot[
+![](slides_files/figure-html/unnamed-chunk-31-1.png)&lt;!-- --&gt;
 ]
 
 ---
@@ -645,9 +741,67 @@ class: middle, center, inverse
 
 ---
 
+# Motivation
+
+- Since LIME did not provide reasonable explanations for the bullet matching random forest from the study by (Hare, Hofmann, and Carriquiry, 2016), it is still of interest to visualize the random forest to gain insight into the predictions. 
+
+- It is particularly of interest to provide explanations for incorrect predictions.
+
+---
+
+# Current Ideas
+
+**Classification Tree as a Global Explainer Model**
+
+---
+
+# Current Ideas
+
+**Clustering to Identify Key Tree Paths in the Random Forest**
+
+---
+
 class: middle, center, inverse
 
 # Chapter 3: Extensions of Neural Network Explanation Tools to Tabular Data Applications
+
+---
+
+# Motivation
+
+- The majority of research associated with explainable machine learning for neural networks is focused on image data.
+
+- We are working with a Bayesian neural network applied to functional data. It is of interest to use visualizations to provide explanations for the predictions made by the model.
+
+.center[*Include figure of functional data here*]
+
+---
+
+# Current Approaches
+
+**Feature Visualization**
+
+---
+
+# Current Approaches 
+
+**Permutation Feature Importance**
+
+---
+
+# Ideas for Future Work
+
+Feature visualization adjustments
+  - Visualize the functional principal components
+  
+Develop extensions of other explainable neural network methods that have been developed for image data
+  - Saliency maps and partial dependence plots
+
+Visualizations of the paths of an observation through the network
+  - Application/extension of flow such as the figure below from (Halnaut, Giot, Bourqui, et al., 2020)
+
+&lt;img src="figures/flow.png" width="50%" style="display: block; margin: auto;" /&gt;
+
 
 ---
 
@@ -689,19 +843,262 @@ How to divide up the material from chapter 1 for publication? Current ideas:
 
 # References
 
+**Need to format this eventually using `start` and `end` options**
 
-```
-## Hare, E, H. Hofmann, and A. Carriquiry (2016). "Automatic Matching of
-## Bullet Lands". In: _Annals of Applied Statistics_. DOI:
-## [http://adsabs.harvard.edu/abs/2016arXiv160105788H](https://doi.org/http%3A%2F%2Fadsabs.harvard.edu%2Fabs%2F2016arXiv160105788H).
-## arXiv: 1601.05788 [stat.AP].
-## 
-## Ribeiro, M. T., S. Singh, and C. Guestrin (2016). ""Why Should I Trust
-## You?": Explaining the Predictions of Any Classifier". In: _Proceedings
-## of the 22nd ACM SIGKDD International Conference on Knowledge Discovery
-## and Data Mining, San Francisco, CA, USA, August 13-17, 2016_. , pp.
-## 1135-1144.
-```
+.medium[
+Altmann, A, L. Toloşi, O. Sander, et al.
+(2010). "Permutation importance: a
+corrected feature importance measure".
+In: _Bioinformatics_ 26.10, pp.
+1340-1347. ISSN: 1367-4803. DOI:
+[10.1093/bioinformatics/btq134](https://doi.org/10.1093%2Fbioinformatics%2Fbtq134).
+
+Apley, D. W. and J. Zhu (2016).
+"Visualizing the Effects of Predictor
+Variables in Black Box Supervised
+Learning Models".
+
+Beckett, C. (2018). "Rfviz: An
+Interactive Visualization Package for
+Random Forests in R". In:
+_DigitalCommons@USU All Graduate Plan B
+and otherReports_.
+
+Biggio, B. and F. Roli (2018). "Wild
+Patterns: Ten Years After the Rise of
+Adversarial Machine Learning". In:
+_Pattern Recognition_ 84, pp. 317-331.
+ISSN: 0031-3203. DOI:
+[10.1016/j.patcog.2018.07.023](https://doi.org/10.1016%2Fj.patcog.2018.07.023).
+
+Breiman, L. (2001). "Random Forests". In:
+_Machine Learning_ 45.1, pp. 5-32. ISSN:
+0885-6125. DOI:
+[10.1023/a:1010933404324](https://doi.org/10.1023%2Fa%3A1010933404324).
+
+Casalicchio, G, C. Molnar, and B. Bischl
+(2019). "Visualizing the Feature
+Importance for Black Box Models" , pp.
+655-670. ISSN: 2190-5053. DOI:
+[10.1007/978-3-030-10925-7\_40](https://doi.org/10.1007%2F978-3-030-10925-7%5C_40).
+
+Craven, M. W. and J. W. Shavlik (1996).
+"Extracting Tree-Structured
+Representations of Trained Networks". In:
+_Advances in Neural Information
+Processing Systems_ 8.
+
+Fisher, A, C. Rudin, and F. Dominici
+(2018). "Model Class Reliance: Variable
+Importance Measures for any Machine
+Learning Model Class, from the “Rashomon”
+Perspective".
+
+Friedman, J. H. (2001). "Greedy function
+approximation: A gradient boosting
+machine." In: _The Annals of Statistics_
+29.5. ISSN: 0090-5364. DOI:
+[10.1214/aos/1013203451](https://doi.org/10.1214%2Faos%2F1013203451).
+
+Friedman, J. H. and B. E. Popescu (2008).
+"Predictive learning via rule ensembles".
+In: _The Annals of Applied Statistics_
+2.3, pp. 916-954. ISSN: 1932-6157. DOI:
+[10.1214/07-aoas148](https://doi.org/10.1214%2F07-aoas148).
+
+Gilpin, L. H, D. Bau, B. Z. Yuan, et al.
+(2018). "Explaining Explanations: An
+Overview of Interpretability of Machine
+Learning".
+
+Goldstein, A, A. Kapelner, J. Bleich, et
+al. (2013). "Peeking Inside the Black
+Box: Visualizing Statistical Learning
+with Plots of Individual Conditional
+Expectation".
+
+Goodfellow, I. J, J. Shlens, and C.
+Szegedy (2014). "Explaining and
+Harnessing Adversarial Examples". In:
+_arXiv_.
+
+Goodman, B. and S. Flaxman (2016).
+"European Union regulations on
+algorithmic decision-making and a "right
+to explanation"".
+
+Greenwell, B. M, B. C. Boehmke, and A. J.
+McCarthy (2018). "A Simple and Effective
+Model-Based Variable Importance Measure".
+
+Guidotti, R, A. Monreale, S. Ruggieri, et
+al. (2018). "A Survey Of Methods For
+Explaining Black Box Models".
+
+Halnaut, A, R. Giot, R. Bourqui, et al.
+(2020). "Deep Dive into Deep Neural
+Networks with Flows" , pp. 231-239. DOI:
+[10.5220/0008989702310239](https://doi.org/10.5220%2F0008989702310239).
+
+Hara, S. and K. Hayashi (2016a). "Making
+Tree Ensembles Interpretable".
+
+Hare, E, H. Hofmann, and A. Carriquiry
+(2016). "Automatic Matching of Bullet
+Lands". In: _Annals of Applied
+Statistics_. DOI:
+[http://adsabs.harvard.edu/abs/2016arXiv160105788H](https://doi.org/http%3A%2F%2Fadsabs.harvard.edu%2Fabs%2F2016arXiv160105788H).
+
+Hooker, G. (2004). "Discovering additive
+structure in black box functions" , p.
+575. DOI:
+[10.1145/1014052.1014122](https://doi.org/10.1145%2F1014052.1014122).
+
+Jiang, L, S. Liu, and C. Chen (2019).
+"Recent research advances on interactive
+machine learning". In: _Journal of
+Visualization_ 22.2, pp. 401-417. ISSN:
+1343-8875. DOI:
+[10.1007/s12650-018-0531-1](https://doi.org/10.1007%2Fs12650-018-0531-1).
+
+Kindermans, P, S. Hooker, J. Adebayo, et
+al. (2017). "The (Un)reliability of
+saliency methods".
+
+Koh, P. W. and P. Liang (2017).
+"Understanding Black-box Predictions via
+Influence Functions". In: _arXiv_.
+
+Krause, J, A. Perer, and K. Ng (2016).
+"Interacting with Predictions: Visual
+Inspection of Black-box Machine Learning
+Models" , pp. 5686-5697. DOI:
+[10.1145/2858036.2858529](https://doi.org/10.1145%2F2858036.2858529).
+
+Laugel, T, M. Lesot, C. Marsala, et al.
+(2017). "Inverse Classification for
+Comparison-based Interpretability in
+Machine Learning". In: _arXiv_.
+
+Laugel, T, X. Renard, M. Lesot, et al.
+(2018). "Defining Locality for Surrogates
+in Post-hoc Interpretablity". In: _CoRR_
+abs/1806.07498. URL:
+[http://arxiv.org/abs/1806.07498](http://arxiv.org/abs/1806.07498).
+
+Li, M, Z. Zhao, and C. Scheidegger
+(2020). "Visualizing Neural Networks with
+the Grand Tour". In: _Distill_.
+https://distill.pub/2020/grand-tour. DOI:
+[10.23915/distill.00025](https://doi.org/10.23915%2Fdistill.00025).
+
+Lipton, Z. C. (2016). "The Mythos of
+Model Interpretability".
+
+Looveren, A. V. and J. Klaise (2019).
+"Interpretable Counterfactual
+Explanations Guided by Prototypes". In:
+_arXiv_.
+
+Lundberg, S. and S. Lee (2017). "A
+Unified Approach to Interpreting Model
+Predictions".
+
+Martens, D. and F. Provost (2014).
+"Explaining Data-Driven Document
+Classifications". In: _MIS Quarterly_
+38.1, pp. 73-99. ISSN: 0276-7783. DOI:
+[10.25300/misq/2014/38.1.04](https://doi.org/10.25300%2Fmisq%2F2014%2F38.1.04).
+
+Ming, Y. (2017). "A Survey on
+Visualization for Explainable
+Classifiers".
+
+Mohseni, S, N. Zarei, and E. D. Ragan
+(2018). "A Survey of Evaluation Methods
+and Measures for Interpretable Machine
+Learning".
+
+Molnar, C. (2019). _Interpretable Machine
+Learning_.
+
+Montavon, G, W. Samek, and K. Müller
+(2017). "Methods for Interpreting and
+Understanding Deep Neural Networks".
+
+Murdoch, W. J, C. Singh, K. Kumbier, et
+al. (2019). "Interpretable machine
+learning: definitions, methods, and
+applications". In: _arXiv_. DOI:
+[10.1073/pnas.1900654116](https://doi.org/10.1073%2Fpnas.1900654116).
+
+Olah, C, A. Mordvintsev, and L. Schubert
+(2017). "Feature Visualization". In:
+_Distill_.
+https://distill.pub/2017/feature-visualization.
+DOI:
+[10.23915/distill.00007](https://doi.org/10.23915%2Fdistill.00007).
+
+Ribeiro, M. T., S. Singh, and C. Guestrin
+(2016). ""Why Should I Trust You?":
+Explaining the Predictions of Any
+Classifier". In: _Proceedings of the 22nd
+ACM SIGKDD International Conference on
+Knowledge Discovery and Data Mining, San
+Francisco, CA, USA, August 13-17, 2016_.
+, pp. 1135-1144.
+
+Ribeiro, M. T, S. Singh, and C. Guestrin
+(2018). "Anchors: High-Precision
+Model-Agnostic Explanations".
+
+Rudin, C. (2018). "Stop Explaining Black
+Box Machine Learning Models for High
+Stakes Decisions and Use Interpretable
+Models Instead".
+
+Silva, N. da, D. Cook, and E. Lee (2017).
+"Interactive Graphics for Visually
+Diagnosing Forest Classifiers in R".
+
+Simonyan, K, A. Vedaldi, and A. Zisserman
+(2013). "Deep Inside Convolutional
+Networks: Visualising Image
+Classification Models and Saliency Maps".
+
+Staniak, M. and P. Biecek (2018).
+"Explanations of model predictions with
+live and breakDown packages". In: _arXiv_
+10.2, p. 395. DOI:
+[10.32614/rj-2018-072](https://doi.org/10.32614%2Frj-2018-072).
+
+Szegedy, C, W. Zaremba, I. Sutskever, et
+al. (2013). "Intriguing properties of
+neural networks".
+
+Urbanek, S. (2008). "Visualizing Trees
+and Forests". In: _Handbook of data
+visualization_. Ed. by A. U. Chun-houh
+Chen Wolfgang Härdle , pp. 243-266. ISBN:
+9783540330363.
+
+Wachter, S, B. Mittelstadt, and C.
+Russell (2017). "Counterfactual
+Explanations without Opening the Black
+Box: Automated Decisions and the GDPR".
+
+Welling, S. H, H. H. F. Refsgaard, P. B.
+Brockhoff, et al. (2016). "Forest Floor
+Visualizations of Random Forests".
+
+Wickham, H, D. Cook, and H. Hofmann
+(2015). "Visualizing statistical models:
+Removing the blindfold". In: _Statistical
+Analysis and Data Mining: The ASA Data
+Science Journal_ 8.4, pp. 203-225. ISSN:
+1932-1872. DOI:
+[10.1002/sam.11271](https://doi.org/10.1002%2Fsam.11271).
+]
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
