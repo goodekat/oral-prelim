@@ -188,7 +188,7 @@ class: middle, center, inverse
 
 - Many machine learning models are considered "black-boxes", because it is not possible to directly interpret them. 
 
-- An area of research in explainable machine learning has developed as a result .medium[(Gilpin, Bau, Yuan, et al., 2018; Guidotti, Monreale, Ruggieri, et al., 2018; Ming, 2017; Mohseni, Zarei, and Ragan, 2018; Molnar, 2019)].
+- An area of research in explainable machine learning has developed as a result .medium[(Gilpin, Bau, Yuan, Bajwa, Specter, and Kagal, 2018; Guidotti, Monreale, Ruggieri, Turini, Pedreschi, and Giannotti, 2018; Ming, 2017; Mohseni, Zarei, and Ragan, 2018; Molnar, 2019)].
 
 - The goal with explainable machine learning is to provide methods to explain predictions made by black-box models.
 
@@ -200,7 +200,7 @@ class: middle, center, inverse
 
 # Explainability versus Interpretability
 
-There are no accepted definitions for *explainability* and *interpretability* in the literature .small[(Gilpin, Bau, Yuan, et al., 2018; Lipton, 2016; Molnar, 2019; Montavon, Samek, and Müller, 2017; Murdoch, Singh, Kumbier, et al., 2019; Rudin, 2018)]. I will use the following definitions.
+There are no accepted definitions for *explainability* and *interpretability* in the literature .small[(Gilpin, Bau, Yuan, et al., 2018; Lipton, 2016; Molnar, 2019; Montavon, Samek, and Müller, 2017; Murdoch, Singh, Kumbier, Abbasi-Asl, and Yu, 2019; Rudin, 2018)]. I will use the following definitions.
 
 .pull-left[
 **Interpretability** is the ability to directly use the parameters of a model to understand the mechanism of how the model makes predictions.
@@ -238,11 +238,11 @@ $$\hat{y}=\hat{\beta}_0+\hat{\beta}_1x_1+\cdots+\hat{\beta}_px_p $$
 .medium[
 - Partial dependence plots .medium[(Friedman, 2001)] and extensions:
   - Interactive partial dependence plots .medium[(Krause, Perer, and Ng, 2016)]
-  - Individual conditional expectation plots .medium[(Goldstein, Kapelner, Bleich, et al., 2013)]
+  - Individual conditional expectation plots .medium[(Goldstein, Kapelner, Bleich, and Pitkin, 2013)]
   - Accumulated local effect plots .medium[(Apley and Zhu, 2016)]
   - Feature interaction plots .medium[(Friedman and Popescu, 2008; Greenwell, Boehmke, and McCarthy, 2018; Hooker, 2004)]
 - Parallel coordinate plots .medium[(Jiang, Liu, and Chen, 2019)]
-- Global feature importance plots .medium[(Fisher, Rudin, and Dominici, 2018; Altmann, Toloşi, Sander, et al., 2010; Casalicchio, Molnar, and Bischl, 2019)]
+- Global feature importance plots .medium[(Fisher, Rudin, and Dominici, 2018; Altmann, Toloşi, Sander, and Lengauer, 2010; Casalicchio, Molnar, and Bischl, 2019)]
 - Global surrogate models .medium[(Molnar, 2019)]
 ]
 ]
@@ -262,8 +262,8 @@ $$\hat{y}=\hat{\beta}_0+\hat{\beta}_1x_1+\cdots+\hat{\beta}_px_p $$
 **Example Based Explanations**
 
 .medium[
-- Counterfactual examples .medium[(Wachter, Mittelstadt, and Russell, 2017; Martens and Provost, 2014; Looveren and Klaise, 2019; Laugel, Lesot, Marsala, et al., 2017)]
-- Adversarial examples .medium[(Szegedy, Zaremba, Sutskever, et al., 2013; Goodfellow, Shlens, and Szegedy, 2014; Biggio and Roli, 2018)]
+- Counterfactual examples .medium[(Wachter, Mittelstadt, and Russell, 2017; Martens and Provost, 2014; Looveren and Klaise, 2019; Laugel, Lesot, Marsala, Renard, and Detyniecki, 2017)]
+- Adversarial examples .medium[(Szegedy, Zaremba, Sutskever, Bruna, Erhan, Goodfellow, and Fergus, 2013; Goodfellow, Shlens, and Szegedy, 2014; Biggio and Roli, 2018)]
 - Prototypes and criticisms .medium[]
 - Influential instances .medium[(Koh and Liang, 2017)]
 ]
@@ -281,7 +281,7 @@ $$\hat{y}=\hat{\beta}_0+\hat{\beta}_1x_1+\cdots+\hat{\beta}_px_p $$
 - Sectioned scatterplots .medium[(Urbanek, 2008)]
 - Trace plots of trees .medium[(Urbanek, 2008)]
 - Simplified model .medium[(Hara and Hayashi, 2016a)]
-- Forest floor visualizations .medium[(Welling, Refsgaard, Brockhoff, et al., 2016)]
+- Forest floor visualizations .medium[(Welling, Refsgaard, Brockhoff, and Clemmensen, 2016)]
 - Interactive visualizations .medium[(Beckett, 2018; da
 Silva, Cook, and Lee, 2017)]
 ]
@@ -293,7 +293,7 @@ Silva, Cook, and Lee, 2017)]
 - Saliency maps .medium[(Simonyan, Vedaldi, and Zisserman, 2013)]
 - Feature visualization .medium[(Olah, Mordvintsev, and Schubert, 2017)]
 - Grand tours .medium[(Li, Zhao, and Scheidegger, 2020)]
-- Flows .medium[(Halnaut, Giot, Bourqui, et al., 2020)]
+- Flows .medium[(Halnaut, Giot, Bourqui, and Auber, 2020)]
 ]
 ]
 
@@ -323,9 +323,9 @@ Silva, Cook, and Lee, 2017)]
 
 **Method Specific Assessments**
 
-- Laugel, Renard, Lesot, et al. (2018) consider how to appropriately choose a local region for the local surrogate model with the method of LIME.
+- Laugel, Renard, Lesot, Marsala, and Detyniecki (2018) consider how to appropriately choose a local region for the local surrogate model with the method of LIME.
 - Laugel, Renard, Lesot, et al. (2018) consider issues with unjustified counterfactual examples.
-- Kindermans, Hooker, Adebayo, et al. (2017) show how saliency maps can change when a transformation is applied to the input data that has no effect on the model.
+- Kindermans, Hooker, Adebayo, Alber, Schütt, Dähne, Erhan, and Kim (2017) show how saliency maps can change when a transformation is applied to the input data that has no effect on the model.
 
 ---
 
@@ -846,256 +846,187 @@ How to divide up the material from chapter 1 for publication? Current ideas:
 **Need to format this eventually using `start` and `end` options**
 
 .medium[
-Altmann, A, L. Toloşi, O. Sander, et al.
-(2010). "Permutation importance: a
-corrected feature importance measure".
-In: _Bioinformatics_ 26.10, pp.
-1340-1347. ISSN: 1367-4803. DOI:
+Altmann, A, L. Toloşi, O. Sander, et al. (2010). "Permutation
+importance: a corrected feature importance measure". In:
+_Bioinformatics_ 26.10, pp. 1340-1347. ISSN: 1367-4803. DOI:
 [10.1093/bioinformatics/btq134](https://doi.org/10.1093%2Fbioinformatics%2Fbtq134).
 
-Apley, D. W. and J. Zhu (2016).
-"Visualizing the Effects of Predictor
-Variables in Black Box Supervised
-Learning Models".
+Apley, D. W. and J. Zhu (2016). "Visualizing the Effects of Predictor
+Variables in Black Box Supervised Learning Models".
 
-Beckett, C. (2018). "Rfviz: An
-Interactive Visualization Package for
-Random Forests in R". In:
-_DigitalCommons@USU All Graduate Plan B
-and otherReports_.
+Beckett, C. (2018). "Rfviz: An Interactive Visualization Package for
+Random Forests in R". In: _DigitalCommons@USU All Graduate Plan B and
+otherReports_.
 
-Biggio, B. and F. Roli (2018). "Wild
-Patterns: Ten Years After the Rise of
-Adversarial Machine Learning". In:
-_Pattern Recognition_ 84, pp. 317-331.
-ISSN: 0031-3203. DOI:
+Biggio, B. and F. Roli (2018). "Wild Patterns: Ten Years After the Rise
+of Adversarial Machine Learning". In: _Pattern Recognition_ 84, pp.
+317-331. ISSN: 0031-3203. DOI:
 [10.1016/j.patcog.2018.07.023](https://doi.org/10.1016%2Fj.patcog.2018.07.023).
 
-Breiman, L. (2001). "Random Forests". In:
-_Machine Learning_ 45.1, pp. 5-32. ISSN:
-0885-6125. DOI:
+Breiman, L. (2001). "Random Forests". In: _Machine Learning_ 45.1, pp.
+5-32. ISSN: 0885-6125. DOI:
 [10.1023/a:1010933404324](https://doi.org/10.1023%2Fa%3A1010933404324).
 
-Casalicchio, G, C. Molnar, and B. Bischl
-(2019). "Visualizing the Feature
-Importance for Black Box Models" , pp.
-655-670. ISSN: 2190-5053. DOI:
+Casalicchio, G, C. Molnar, and B. Bischl (2019). "Visualizing the
+Feature Importance for Black Box Models" , pp. 655-670. ISSN:
+2190-5053. DOI:
 [10.1007/978-3-030-10925-7\_40](https://doi.org/10.1007%2F978-3-030-10925-7%5C_40).
 
-Craven, M. W. and J. W. Shavlik (1996).
-"Extracting Tree-Structured
-Representations of Trained Networks". In:
-_Advances in Neural Information
-Processing Systems_ 8.
+Craven, M. W. and J. W. Shavlik (1996). "Extracting Tree-Structured
+Representations of Trained Networks". In: _Advances in Neural
+Information Processing Systems_ 8.
 
-Fisher, A, C. Rudin, and F. Dominici
-(2018). "Model Class Reliance: Variable
-Importance Measures for any Machine
-Learning Model Class, from the “Rashomon”
-Perspective".
+Fisher, A, C. Rudin, and F. Dominici (2018). "Model Class Reliance:
+Variable Importance Measures for any Machine Learning Model Class, from
+the “Rashomon” Perspective".
 
-Friedman, J. H. (2001). "Greedy function
-approximation: A gradient boosting
-machine." In: _The Annals of Statistics_
-29.5. ISSN: 0090-5364. DOI:
+Friedman, J. H. (2001). "Greedy function approximation: A gradient
+boosting machine." In: _The Annals of Statistics_ 29.5. ISSN:
+0090-5364. DOI:
 [10.1214/aos/1013203451](https://doi.org/10.1214%2Faos%2F1013203451).
 
-Friedman, J. H. and B. E. Popescu (2008).
-"Predictive learning via rule ensembles".
-In: _The Annals of Applied Statistics_
-2.3, pp. 916-954. ISSN: 1932-6157. DOI:
+Friedman, J. H. and B. E. Popescu (2008). "Predictive learning via rule
+ensembles". In: _The Annals of Applied Statistics_ 2.3, pp. 916-954.
+ISSN: 1932-6157. DOI:
 [10.1214/07-aoas148](https://doi.org/10.1214%2F07-aoas148).
 
-Gilpin, L. H, D. Bau, B. Z. Yuan, et al.
-(2018). "Explaining Explanations: An
-Overview of Interpretability of Machine
-Learning".
+Gilpin, L. H, D. Bau, B. Z. Yuan, et al. (2018). "Explaining
+Explanations: An Overview of Interpretability of Machine Learning".
 
-Goldstein, A, A. Kapelner, J. Bleich, et
-al. (2013). "Peeking Inside the Black
-Box: Visualizing Statistical Learning
-with Plots of Individual Conditional
-Expectation".
+Goldstein, A, A. Kapelner, J. Bleich, et al. (2013). "Peeking Inside
+the Black Box: Visualizing Statistical Learning with Plots of
+Individual Conditional Expectation".
 
-Goodfellow, I. J, J. Shlens, and C.
-Szegedy (2014). "Explaining and
-Harnessing Adversarial Examples". In:
-_arXiv_.
+Goodfellow, I. J, J. Shlens, and C. Szegedy (2014). "Explaining and
+Harnessing Adversarial Examples". In: _arXiv_.
 
-Goodman, B. and S. Flaxman (2016).
-"European Union regulations on
-algorithmic decision-making and a "right
-to explanation"".
+Goodman, B. and S. Flaxman (2016). "European Union regulations on
+algorithmic decision-making and a "right to explanation"".
 
-Greenwell, B. M, B. C. Boehmke, and A. J.
-McCarthy (2018). "A Simple and Effective
-Model-Based Variable Importance Measure".
+Greenwell, B. M, B. C. Boehmke, and A. J. McCarthy (2018). "A Simple
+and Effective Model-Based Variable Importance Measure".
 
-Guidotti, R, A. Monreale, S. Ruggieri, et
-al. (2018). "A Survey Of Methods For
-Explaining Black Box Models".
+Guidotti, R, A. Monreale, S. Ruggieri, et al. (2018). "A Survey Of
+Methods For Explaining Black Box Models".
 
-Halnaut, A, R. Giot, R. Bourqui, et al.
-(2020). "Deep Dive into Deep Neural
-Networks with Flows" , pp. 231-239. DOI:
+Halnaut, A, R. Giot, R. Bourqui, et al. (2020). "Deep Dive into Deep
+Neural Networks with Flows" , pp. 231-239. DOI:
 [10.5220/0008989702310239](https://doi.org/10.5220%2F0008989702310239).
 
-Hara, S. and K. Hayashi (2016a). "Making
-Tree Ensembles Interpretable".
+Hara, S. and K. Hayashi (2016a). "Making Tree Ensembles Interpretable".
 
-Hare, E, H. Hofmann, and A. Carriquiry
-(2016). "Automatic Matching of Bullet
-Lands". In: _Annals of Applied
-Statistics_. DOI:
+Hare, E, H. Hofmann, and A. Carriquiry (2016). "Automatic Matching of
+Bullet Lands". In: _Annals of Applied Statistics_. DOI:
 [http://adsabs.harvard.edu/abs/2016arXiv160105788H](https://doi.org/http%3A%2F%2Fadsabs.harvard.edu%2Fabs%2F2016arXiv160105788H).
 
-Hooker, G. (2004). "Discovering additive
-structure in black box functions" , p.
-575. DOI:
+Hooker, G. (2004). "Discovering additive structure in black box
+functions" , p. 575. DOI:
 [10.1145/1014052.1014122](https://doi.org/10.1145%2F1014052.1014122).
 
-Jiang, L, S. Liu, and C. Chen (2019).
-"Recent research advances on interactive
-machine learning". In: _Journal of
-Visualization_ 22.2, pp. 401-417. ISSN:
-1343-8875. DOI:
+Jiang, L, S. Liu, and C. Chen (2019). "Recent research advances on
+interactive machine learning". In: _Journal of Visualization_ 22.2, pp.
+401-417. ISSN: 1343-8875. DOI:
 [10.1007/s12650-018-0531-1](https://doi.org/10.1007%2Fs12650-018-0531-1).
 
-Kindermans, P, S. Hooker, J. Adebayo, et
-al. (2017). "The (Un)reliability of
-saliency methods".
+Kindermans, P, S. Hooker, J. Adebayo, et al. (2017). "The
+(Un)reliability of saliency methods".
 
-Koh, P. W. and P. Liang (2017).
-"Understanding Black-box Predictions via
-Influence Functions". In: _arXiv_.
+Koh, P. W. and P. Liang (2017). "Understanding Black-box Predictions
+via Influence Functions". In: _arXiv_.
 
-Krause, J, A. Perer, and K. Ng (2016).
-"Interacting with Predictions: Visual
-Inspection of Black-box Machine Learning
-Models" , pp. 5686-5697. DOI:
+Krause, J, A. Perer, and K. Ng (2016). "Interacting with Predictions:
+Visual Inspection of Black-box Machine Learning Models" , pp.
+5686-5697. DOI:
 [10.1145/2858036.2858529](https://doi.org/10.1145%2F2858036.2858529).
 
-Laugel, T, M. Lesot, C. Marsala, et al.
-(2017). "Inverse Classification for
-Comparison-based Interpretability in
-Machine Learning". In: _arXiv_.
+Laugel, T, M. Lesot, C. Marsala, et al. (2017). "Inverse Classification
+for Comparison-based Interpretability in Machine Learning". In:
+_arXiv_.
 
-Laugel, T, X. Renard, M. Lesot, et al.
-(2018). "Defining Locality for Surrogates
-in Post-hoc Interpretablity". In: _CoRR_
-abs/1806.07498. URL:
+Laugel, T, X. Renard, M. Lesot, et al. (2018). "Defining Locality for
+Surrogates in Post-hoc Interpretablity". In: _CoRR_ abs/1806.07498.
+URL:
 [http://arxiv.org/abs/1806.07498](http://arxiv.org/abs/1806.07498).
 
-Li, M, Z. Zhao, and C. Scheidegger
-(2020). "Visualizing Neural Networks with
-the Grand Tour". In: _Distill_.
+Li, M, Z. Zhao, and C. Scheidegger (2020). "Visualizing Neural Networks
+with the Grand Tour". In: _Distill_.
 https://distill.pub/2020/grand-tour. DOI:
 [10.23915/distill.00025](https://doi.org/10.23915%2Fdistill.00025).
 
-Lipton, Z. C. (2016). "The Mythos of
-Model Interpretability".
+Lipton, Z. C. (2016). "The Mythos of Model Interpretability".
 
-Looveren, A. V. and J. Klaise (2019).
-"Interpretable Counterfactual
-Explanations Guided by Prototypes". In:
-_arXiv_.
+Looveren, A. V. and J. Klaise (2019). "Interpretable Counterfactual
+Explanations Guided by Prototypes". In: _arXiv_.
 
-Lundberg, S. and S. Lee (2017). "A
-Unified Approach to Interpreting Model
-Predictions".
+Lundberg, S. and S. Lee (2017). "A Unified Approach to Interpreting
+Model Predictions".
 
-Martens, D. and F. Provost (2014).
-"Explaining Data-Driven Document
-Classifications". In: _MIS Quarterly_
-38.1, pp. 73-99. ISSN: 0276-7783. DOI:
+Martens, D. and F. Provost (2014). "Explaining Data-Driven Document
+Classifications". In: _MIS Quarterly_ 38.1, pp. 73-99. ISSN: 0276-7783.
+DOI:
 [10.25300/misq/2014/38.1.04](https://doi.org/10.25300%2Fmisq%2F2014%2F38.1.04).
 
-Ming, Y. (2017). "A Survey on
-Visualization for Explainable
+Ming, Y. (2017). "A Survey on Visualization for Explainable
 Classifiers".
 
-Mohseni, S, N. Zarei, and E. D. Ragan
-(2018). "A Survey of Evaluation Methods
-and Measures for Interpretable Machine
-Learning".
+Mohseni, S, N. Zarei, and E. D. Ragan (2018). "A Survey of Evaluation
+Methods and Measures for Interpretable Machine Learning".
 
-Molnar, C. (2019). _Interpretable Machine
-Learning_.
+Molnar, C. (2019). _Interpretable Machine Learning_.
 
-Montavon, G, W. Samek, and K. Müller
-(2017). "Methods for Interpreting and
-Understanding Deep Neural Networks".
+Montavon, G, W. Samek, and K. Müller (2017). "Methods for Interpreting
+and Understanding Deep Neural Networks".
 
-Murdoch, W. J, C. Singh, K. Kumbier, et
-al. (2019). "Interpretable machine
-learning: definitions, methods, and
-applications". In: _arXiv_. DOI:
+Murdoch, W. J, C. Singh, K. Kumbier, et al. (2019). "Interpretable
+machine learning: definitions, methods, and applications". In: _arXiv_.
+DOI:
 [10.1073/pnas.1900654116](https://doi.org/10.1073%2Fpnas.1900654116).
 
-Olah, C, A. Mordvintsev, and L. Schubert
-(2017). "Feature Visualization". In:
-_Distill_.
-https://distill.pub/2017/feature-visualization.
-DOI:
+Olah, C, A. Mordvintsev, and L. Schubert (2017). "Feature
+Visualization". In: _Distill_.
+https://distill.pub/2017/feature-visualization. DOI:
 [10.23915/distill.00007](https://doi.org/10.23915%2Fdistill.00007).
 
-Ribeiro, M. T., S. Singh, and C. Guestrin
-(2016). ""Why Should I Trust You?":
-Explaining the Predictions of Any
-Classifier". In: _Proceedings of the 22nd
-ACM SIGKDD International Conference on
-Knowledge Discovery and Data Mining, San
-Francisco, CA, USA, August 13-17, 2016_.
-, pp. 1135-1144.
+Ribeiro, M. T., S. Singh, and C. Guestrin (2016). ""Why Should I Trust
+You?": Explaining the Predictions of Any Classifier". In: _Proceedings
+of the 22nd ACM SIGKDD International Conference on Knowledge Discovery
+and Data Mining, San Francisco, CA, USA, August 13-17, 2016_. , pp.
+1135-1144.
 
-Ribeiro, M. T, S. Singh, and C. Guestrin
-(2018). "Anchors: High-Precision
-Model-Agnostic Explanations".
+Ribeiro, M. T, S. Singh, and C. Guestrin (2018). "Anchors:
+High-Precision Model-Agnostic Explanations".
 
-Rudin, C. (2018). "Stop Explaining Black
-Box Machine Learning Models for High
-Stakes Decisions and Use Interpretable
-Models Instead".
+Rudin, C. (2018). "Stop Explaining Black Box Machine Learning Models
+for High Stakes Decisions and Use Interpretable Models Instead".
 
-Silva, N. da, D. Cook, and E. Lee (2017).
-"Interactive Graphics for Visually
-Diagnosing Forest Classifiers in R".
+Silva, N. da, D. Cook, and E. Lee (2017). "Interactive Graphics for
+Visually Diagnosing Forest Classifiers in R".
 
-Simonyan, K, A. Vedaldi, and A. Zisserman
-(2013). "Deep Inside Convolutional
-Networks: Visualising Image
-Classification Models and Saliency Maps".
+Simonyan, K, A. Vedaldi, and A. Zisserman (2013). "Deep Inside
+Convolutional Networks: Visualising Image Classification Models and
+Saliency Maps".
 
-Staniak, M. and P. Biecek (2018).
-"Explanations of model predictions with
-live and breakDown packages". In: _arXiv_
-10.2, p. 395. DOI:
+Staniak, M. and P. Biecek (2018). "Explanations of model predictions
+with live and breakDown packages". In: _arXiv_ 10.2, p. 395. DOI:
 [10.32614/rj-2018-072](https://doi.org/10.32614%2Frj-2018-072).
 
-Szegedy, C, W. Zaremba, I. Sutskever, et
-al. (2013). "Intriguing properties of
-neural networks".
+Szegedy, C, W. Zaremba, I. Sutskever, et al. (2013). "Intriguing
+properties of neural networks".
 
-Urbanek, S. (2008). "Visualizing Trees
-and Forests". In: _Handbook of data
-visualization_. Ed. by A. U. Chun-houh
-Chen Wolfgang Härdle , pp. 243-266. ISBN:
-9783540330363.
+Urbanek, S. (2008). "Visualizing Trees and Forests". In: _Handbook of
+data visualization_. Ed. by A. U. Chun-houh Chen Wolfgang Härdle , pp.
+243-266. ISBN: 9783540330363.
 
-Wachter, S, B. Mittelstadt, and C.
-Russell (2017). "Counterfactual
-Explanations without Opening the Black
-Box: Automated Decisions and the GDPR".
+Wachter, S, B. Mittelstadt, and C. Russell (2017). "Counterfactual
+Explanations without Opening the Black Box: Automated Decisions and the
+GDPR".
 
-Welling, S. H, H. H. F. Refsgaard, P. B.
-Brockhoff, et al. (2016). "Forest Floor
-Visualizations of Random Forests".
+Welling, S. H, H. H. F. Refsgaard, P. B. Brockhoff, et al. (2016).
+"Forest Floor Visualizations of Random Forests".
 
-Wickham, H, D. Cook, and H. Hofmann
-(2015). "Visualizing statistical models:
-Removing the blindfold". In: _Statistical
-Analysis and Data Mining: The ASA Data
-Science Journal_ 8.4, pp. 203-225. ISSN:
+Wickham, H, D. Cook, and H. Hofmann (2015). "Visualizing statistical
+models: Removing the blindfold". In: _Statistical Analysis and Data
+Mining: The ASA Data Science Journal_ 8.4, pp. 203-225. ISSN:
 1932-1872. DOI:
 [10.1002/sam.11271](https://doi.org/10.1002%2Fsam.11271).
 ]
