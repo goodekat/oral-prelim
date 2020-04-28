@@ -2270,3 +2270,4 @@ How to divide up the material from chapter 1 for publication? Current ideas:
 PrintBibliography(myBib)
 ```
 ]
+
