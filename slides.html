@@ -215,7 +215,7 @@ $$\hat{y}=\hat{\beta}_0+\hat{\beta}_1x_1+\cdots+\hat{\beta}_px_p $$
 
 - LIME uses a surrogate model to understand the relationship between the complex model predictions and predictor variables in a local region (Ribeiro, Singh, and Guestrin, 2016).
 
-&lt;img src="figures/lime.png" width="65%" style="display: block; margin: auto;" /&gt;
+&lt;img src="figures/lime.png" width="50%" style="display: block; margin: auto;" /&gt;
 
 ]
 
@@ -576,8 +576,9 @@ Overview visualization of the LIME explanation for the prediction of interest fr
 **Corresponding Diagnostic:**  
 *Proximity Weights Plot*
 
-- Each hexagon contains the average of the weights of the observations located within the corresponding region
+- Each hexagon contains the average of the weights of the observations located within the hexagon
 - Prediction of interest location indicated by the diamond
+- Solid lines are the interpretability transformation boundaries
 
 ]
 
@@ -645,25 +646,47 @@ Overview visualization of the LIME explanation for the prediction of interest fr
 .right-plot[
 ![](slides_files/figure-html/unnamed-chunk-23-1.png)&lt;!-- --&gt;
 ]
+
+---
+
+# Diagnostics for Individual Explanations
+
+.left-desc[
+**Step 3a**: Explainer Model Interpretation
+
+- Interpret the explainer model to explain the complex model prediction
+
+**Corresponding Diagnostic:** *Explanation Plot*
+
+- Adaptation of the explanation plot from *lime* R package
+- Length of bars represents the magnitude of explainer model coefficients
+- Color of bars represents the value of the explainer model coefficients
+]
+
+.right-plot[
+![](slides_files/figure-html/unnamed-chunk-24-1.png)&lt;!-- --&gt;
+]
+
 ---
 
 # Diagnostics for Individual Explanations
 
 
-.pull-left[
-**Step 3**: Explainer Model Interpretation
+.left-desc[
+**Step 3b**: Explainer Model Interpretation (continued)
 
 - Interpret the explainer model to explain the complex model prediction
+
+**Corresponding Diagnostic:** *Complex and Explainer Model Comparison Plot*
+
+- Scatter plot of the simulated data
+- Solid lines depict the interpretability transformation boundaries
+- Line color represents whether the corresponding explainer model coefficients supports a random forest prediction of 'blue' (blue) or not (red)
 ]
 
-.pull-right[
-**Corresponding Diagnostic:** *Explanation Plot*
-
-- Scatter plot of the simulated data ($x'_2$ versus `\(x'_1\)`)
-- Solid lines depict the division of the feature space by the interpretability transformation
+.right-plot[
+![](slides_files/figure-html/unnamed-chunk-25-1.png)&lt;!-- --&gt;
 ]
-
-![](slides_files/figure-html/unnamed-chunk-24-1.png)&lt;!-- --&gt;
 
 ---
 
@@ -671,51 +694,25 @@ Overview visualization of the LIME explanation for the prediction of interest fr
 
 **Extensions to Higher Dimensions**
 
----
-
-# Diagnostics for Sets of Explanations
-
-![](slides_files/figure-html/unnamed-chunk-25-1.png)&lt;!-- --&gt;
-
----
-
-# Diagnostics for Sets of Explanations
-
 ![](slides_files/figure-html/unnamed-chunk-26-1.png)&lt;!-- --&gt;
 
----
-
-# Diagnostics for Sets of Explanations
-
-.left-desc[]
-
-.right-plot[
 ![](slides_files/figure-html/unnamed-chunk-27-1.png)&lt;!-- --&gt;
-]
 
 ---
 
 # Diagnostics for Sets of Explanations
 
-.left-desc[]
-
-.right-plot[
 ![](slides_files/figure-html/unnamed-chunk-28-1.png)&lt;!-- --&gt;
-]
 
 ---
 
 # Diagnostics for Sets of Explanations
 
-.left-desc[]
-
-.right-plot[
 ![](slides_files/figure-html/unnamed-chunk-29-1.png)&lt;!-- --&gt;
-]
 
 ---
 
-# .medium[Diagnostics for Comparisons of Tuning Parameters]
+# Diagnostics for Sets of Explanations
 
 .left-desc[]
 
@@ -725,12 +722,42 @@ Overview visualization of the LIME explanation for the prediction of interest fr
 
 ---
 
-# .medium[Diagnostics for Comparisons of Tuning Parameters]
+# Diagnostics for Sets of Explanations
 
 .left-desc[]
 
 .right-plot[
 ![](slides_files/figure-html/unnamed-chunk-31-1.png)&lt;!-- --&gt;
+]
+
+---
+
+# Diagnostics for Sets of Explanations
+
+.left-desc[]
+
+.right-plot[
+![](slides_files/figure-html/unnamed-chunk-32-1.png)&lt;!-- --&gt;
+]
+
+---
+
+# .medium[Diagnostics for Comparisons of Tuning Parameters]
+
+.left-desc[]
+
+.right-plot[
+![](slides_files/figure-html/unnamed-chunk-33-1.png)&lt;!-- --&gt;
+]
+
+---
+
+# .medium[Diagnostics for Comparisons of Tuning Parameters]
+
+.left-desc[]
+
+.right-plot[
+![](slides_files/figure-html/unnamed-chunk-34-1.png)&lt;!-- --&gt;
 ]
 
 ---

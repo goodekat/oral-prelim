@@ -240,7 +240,7 @@ $$\hat{y}=\hat{\beta}_0+\hat{\beta}_1x_1+\cdots+\hat{\beta}_px_p $$
 
 - LIME uses a surrogate model to understand the relationship between the complex model predictions and predictor variables in a local region `r Citep(myBib, "ribeiro:2016")`.
 
-```{r out.width = "65%", fig.align = "center"}
+```{r out.width = "50%", fig.align = "center"}
 include_graphics("figures/lime.png")
 ```
 
@@ -1206,8 +1206,9 @@ ggplot() +
 **Corresponding Diagnostic:**  
 *Proximity Weights Plot*
 
-- Each hexagon contains the average of the weights of the observations located within the corresponding region
+- Each hexagon contains the average of the weights of the observations located within the hexagon
 - Prediction of interest location indicated by the diamond
+- Solid lines are the interpretability transformation boundaries
 
 ]
 
@@ -1221,6 +1222,14 @@ ggplot() +
                            z = weights),
              fun = mean,
              bins = 20) +
+  geom_vline(xintercept = sine_poi_bounds %>% 
+               filter(feature == "x1") %>% 
+               select (lower, upper) %>% 
+               as.numeric()) +
+  geom_hline(yintercept = sine_poi_bounds %>% 
+               filter(feature == "x2") %>% 
+               select (lower, upper) %>% 
+               as.numeric()) +
   geom_point(data = sine_poi %>%
                mutate(shape = "Prediction \nof Interest"),
              mapping = aes(x = x1, y = x2, shape = shape),
@@ -1375,27 +1384,70 @@ ggplot(sine_poi_perms, aes(x = exppred, y = resid)) +
   gg_procedure
 ```
 ]
+
+---
+
+# Diagnostics for Individual Explanations
+
+.left-desc[
+**Step 3a**: Explainer Model Interpretation
+
+- Interpret the explainer model to explain the complex model prediction
+
+**Corresponding Diagnostic:** *Explanation Plot*
+
+- Adaptation of the explanation plot from *lime* R package
+- Length of bars represents the magnitude of explainer model coefficients
+- Color of bars represents the value of the explainer model coefficients
+]
+
+.right-plot[
+```{r warning = FALSE}
+sine_poi_lime_default %>% 
+  select(feature_weight, feature_desc) %>%
+  bind_rows(data.frame(feature_weight = 
+                         sine_poi_lime_default$model_intercept[1],
+                       feature_desc = "Intercept")) %>%
+  mutate(feature_magnitude = abs(feature_weight)) %>%
+  ggplot(aes(x = feature_desc, 
+             y = feature_magnitude,
+             fill = feature_weight)) + 
+  geom_col() + 
+  coord_flip() + 
+  labs(y = "Explainer Model Coefficient Magnitude",
+       x = "Explainer Model Feature",
+       fill = "Explainer \nModel \nCoefficient \nValue",
+       title = "Explanation Plot") + 
+  scale_fill_gradient2(low = sinecolor_red,
+                        mid = '#f7f7f7',
+                        high = sinecolor_blue,
+                        midpoint = 0,
+                        limits = c(-1, 1)) +
+  gg_procedure
+```
+]
+
 ---
 
 # Diagnostics for Individual Explanations
 
 
-.pull-left[
-**Step 3**: Explainer Model Interpretation
+.left-desc[
+**Step 3b**: Explainer Model Interpretation (continued)
 
 - Interpret the explainer model to explain the complex model prediction
+
+**Corresponding Diagnostic:** *Complex and Explainer Model Comparison Plot*
+
+- Scatter plot of the simulated data
+- Solid lines depict the interpretability transformation boundaries
+- Line color represents whether the corresponding explainer model coefficients supports a random forest prediction of 'blue' (blue) or not (red)
 ]
 
-.pull-right[
-**Corresponding Diagnostic:** *Explanation Plot*
-
-- Scatter plot of the simulated data ($x'_2$ versus $x'_1$)
-- Solid lines depict the division of the feature space by the interpretability transformation
-]
-
-```{r fig.wigth = 8, fig.height = 3.125}
+.right-plot[
+```{r}
 # My plot of lime explanation boundaries
-full <- ggplot() +
+ggplot() +
   geom_point(data = sine_poi_perms,
              mapping = aes(x = x1,
                            y = x2,
@@ -1436,93 +1488,227 @@ full <- ggplot() +
                         high = sinecolor_blue,
                         midpoint = 0.5,
                         limits = c(0, 1)) +
-  theme_bw(base_family = "Times", base_size = 10) +
-  labs(x = TeX("x'_1"),
-       y = TeX("x'_2"),
-       size = "Weight") +
-  guides(fill = FALSE, color = FALSE, shape = FALSE) +
-  theme(legend.position = "bottom")
-
-# My plot of lime explanation boundaries
-zoomedin <- ggplot() +
-  geom_rect(data = sine_poi_bounds %>% filter(feature == "x1"),
-            mapping = aes(xmin = lower,
-                          xmax = upper,
-                          ymin = -Inf,
-                          ymax = Inf),
-            alpha = 0.25,
-            fill = NA,
-            color = "firebrick") +
-  geom_rect(data = sine_poi_bounds %>% filter(feature == "x2"),
-            mapping = aes(xmin = -Inf,
-                          xmax = Inf,
-                          ymin = lower,
-                          ymax = upper),
-            alpha = 0.25,
-            fill = NA,
-            color = "steelblue") +
-  geom_point(data = sine_poi_region_perms,
-             mapping = aes(x = x1,
-                           y = x2,
-                           color = rfpred,
-                           size = weights),
-             alpha = 0.8) +
-  geom_point(data = sine_poi %>%
-               mutate(shape = "Prediction \nof Interest"),
-             mapping = aes(x = x1, y = x2, fill = rfprob_blue, shape = shape),
-             size = 7,
-             alpha = 0.8) +
-  scale_size(range = c(1, 3)) +
-  scale_shape_manual(values = 23) +
-  scale_fill_gradient2(low = sinecolor_red,
-                        mid = '#f7f7f7',
-                        high = sinecolor_blue,
-                        midpoint = 0.5,
-                        limits = c(0, 1)) +
-  scale_color_gradient2(low = sinecolor_red,
-                        mid = '#f7f7f7',
-                        high = sinecolor_blue,
-                        midpoint = 0.5,
-                        limits = c(0, 1)) +
-  theme_bw(base_family = "Times", base_size = 10) +
   labs(x = TeX("x'_1"),
        y = TeX("x'_2"),
        color = "Random \nForest \nProbability \nfor 'blue'",
        fill = "Random \nForest \nProbability \nfor 'blue'",
        fill = "",
        size = "Weight",
-       shape = "") +
-  guides(shape = guide_legend(order = 1)) +
-  xlim(sine_poi_bounds$lower[2], sine_poi_bounds$upper[2]) +
-  ylim(sine_poi_bounds$lower[1], max(sine_poi_perms$x2))
-
-# Legend steps
-full_weight_legend <- get_legend(full)
-full_noleg <- full + theme(legend.position = "none")
-sine_exp_legend <- get_legend(zoomedin + guides(size = FALSE))
-zoomedin_weight_legend <- get_legend(zoomedin +
-  guides(color = FALSE, fill = FALSE, shape = FALSE) +
-  theme(legend.position = "bottom"))
-zoomedin_noleg <- zoomedin + theme(legend.position = "none")
-blank <- ggplot() + theme_void()
-
-# Join plots and legends
-step3a_plots <- plot_grid(full_noleg, zoomedin_noleg, sine_exp_legend,
-          nrow = 1,
-          rel_widths = c(0.43, 0.42, 0.15))
-step3a_weights <- plot_grid(full_weight_legend, zoomedin_weight_legend, blank,
-          nrow = 1,
-          rel_widths = c(0.425, 0.425, 0.15))
-plot_grid(step3a_plots, step3a_weights,
-          nrow = 2,
-          rel_heights = c(0.925, 0.075))
+       shape = "",
+       title = "Complex and Explainer Model Comparison Plot") +
+  guides(shape = guide_legend(order = 1)) + 
+  gg_procedure
 ```
+]
 
 ---
 
 # Diagnostics for Individual Explanations
 
 **Extensions to Higher Dimensions**
+
+```{r fig.width = 14, fig.height = 4}
+# Plot of the training and simulated data with bins
+sine_lime_default_bin_cuts$x3 <- sine_lime_explain$lime[[3]]$bin_cuts$x3[2:4]
+
+bins_sim_x1x2 <- ggplot() +
+  geom_point(data = sine_poi_perms,
+             mapping = aes(x = x1,
+                           y = x2,
+                           fill = rfpred,
+                           color = rfpred),
+             alpha = 0.8,
+             shape = 21) +
+  geom_vline(xintercept = sine_lime_default_bin_cuts$x1) +
+  geom_hline(yintercept = sine_lime_default_bin_cuts$x2) +
+  geom_point(data = sine_poi %>% mutate(shape = "Prediction \nof Interest"),
+             mapping = aes(x = x1,
+                           y = x2,
+                           fill = rfprob_blue,
+                           shape = shape),
+             color = "black",
+             size = 5,
+             alpha = 0.8) +
+  scale_fill_gradient2(low = sinecolor_red,
+                        mid = '#f7f7f7',
+                        high = sinecolor_blue,
+                        midpoint = 0.5) +
+  scale_color_gradient2(low = sinecolor_red,
+                        mid = '#f7f7f7',
+                        high = sinecolor_blue,
+                        midpoint = 0.5) +
+  scale_shape_manual(values = 23) +
+  labs(x = TeX("$x'_1$"),
+       y = TeX("$x'_2$"),
+       fill = "Random \nForest \nProbability",
+       color = "Random \nForest \nProbability",
+       shape = "",
+       title = "Untransformed Simulated Data Plots") +
+  guides(shape = guide_legend(order = 1)) +
+  gg_procedure + 
+  theme(legend.position = "none")
+
+bins_sim_x1x3 <- ggplot() +
+  geom_point(data = sine_poi_perms,
+             mapping = aes(x = x1,
+                           y = x3,
+                           fill = rfpred,
+                           color = rfpred),
+             alpha = 0.8,
+             shape = 21) +
+  geom_vline(xintercept = sine_lime_default_bin_cuts$x1) +
+  geom_hline(yintercept = sine_lime_default_bin_cuts$x3) +
+  geom_point(data = sine_poi %>% mutate(shape = "Prediction \nof Interest"),
+             mapping = aes(x = x1,
+                           y = x3,
+                           fill = rfprob_blue,
+                           shape = shape),
+             color = "black",
+             size = 5,
+             alpha = 0.8) +
+  scale_fill_gradient2(low = sinecolor_red,
+                        mid = '#f7f7f7',
+                        high = sinecolor_blue,
+                        midpoint = 0.5) +
+  scale_color_gradient2(low = sinecolor_red,
+                        mid = '#f7f7f7',
+                        high = sinecolor_blue,
+                        midpoint = 0.5) +
+  scale_shape_manual(values = 23) +
+  labs(x = TeX("$x'_1$"),
+       y = TeX("$x'_3$"),
+       fill = "Random \nForest \nProbability",
+       color = "Random \nForest \nProbability",
+       shape = "",
+       title = "") +
+  guides(shape = guide_legend(order = 1)) +
+  gg_procedure + 
+  theme(legend.position = "none")
+
+bins_sim_x2x3 <- ggplot() +
+  geom_point(data = sine_poi_perms,
+             mapping = aes(x = x2,
+                           y = x3,
+                           fill = rfpred,
+                           color = rfpred),
+             alpha = 0.8,
+             shape = 21) +
+  geom_vline(xintercept = sine_lime_default_bin_cuts$x2) +
+  geom_hline(yintercept = sine_lime_default_bin_cuts$x3) +
+  geom_point(data = sine_poi %>% mutate(shape = "Prediction \nof Interest"),
+             mapping = aes(x = x2,
+                           y = x3,
+                           fill = rfprob_blue,
+                           shape = shape),
+             color = "black",
+             size = 5,
+             alpha = 0.8) +
+  scale_fill_gradient2(low = sinecolor_red,
+                        mid = '#f7f7f7',
+                        high = sinecolor_blue,
+                        midpoint = 0.5) +
+  scale_color_gradient2(low = sinecolor_red,
+                        mid = '#f7f7f7',
+                        high = sinecolor_blue,
+                        midpoint = 0.5) +
+  scale_shape_manual(values = 23) +
+  labs(x = TeX("$x'_2$"),
+       y = TeX("$x'_3$"),
+       fill = "Random \nForest \nProbability",
+       color = "Random \nForest \nProbability",
+       shape = "",
+       title = "") +
+  guides(shape = guide_legend(order = 1)) +
+  gg_procedure
+
+bins_sim_leg <- get_legend(bins_sim_x2x3)
+bins_sim_x2x3 <- bins_sim_x2x3 + theme(legend.position = "none")
+
+plot_grid(bins_sim_x1x2, bins_sim_x1x3, bins_sim_x2x3, bins_sim_leg,
+          nrow = 1,
+          rel_widths = c(0.29, 0.29, 0.29, 0.13))
+```
+
+```{r fig.width = 14, fig.height = 4}
+# Hex plots of the mean weights of the simulated values
+weights_x1x2 <- ggplot() +
+  stat_summary_hex(data = sine_poi_perms,
+             mapping = aes(x = x1,
+                           y = x2,
+                           z = weights),
+             fun = mean,
+             bins = 20) +
+  geom_point(data = sine_poi %>%
+               mutate(shape = "Prediction \nof Interest"),
+             mapping = aes(x = x1, y = x2, shape = shape),
+             fill = sinecolor_blue,
+             size = 5,
+             alpha = 0.8) +
+  scale_fill_gradient(low = "grey90", high = "grey10") +
+  scale_shape_manual(values = 23) +
+  labs(x = TeX("x'_1"),
+       y = TeX("x'_2"),
+       shape = "",
+       title = "Proximity Weights Plots",
+       fill = "Weight") +
+  guides(shape = guide_legend(order = 1)) +
+  gg_procedure +
+  theme(legend.position = "none")
+
+weights_x1x3 <- ggplot() +
+  stat_summary_hex(data = sine_poi_perms,
+             mapping = aes(x = x1,
+                           y = x3,
+                           z = weights),
+             fun = mean,
+             bins = 20) +
+  geom_point(data = sine_poi %>%
+               mutate(shape = "Prediction \nof Interest"),
+             mapping = aes(x = x1, y = x3, shape = shape),
+             fill = sinecolor_blue,
+             size = 5,
+             alpha = 0.8) +
+  scale_fill_gradient(low = "grey90", high = "grey10") +
+  scale_shape_manual(values = 23) +
+  labs(x = TeX("x'_1"),
+       y = TeX("x'_3"),
+       shape = "",
+       title = "",
+       fill = "Weight") +
+  guides(shape = guide_legend(order = 1)) +
+  gg_procedure +
+  theme(legend.position = "none")
+
+weights_x2x3 <- ggplot() +
+  stat_summary_hex(data = sine_poi_perms,
+             mapping = aes(x = x2,
+                           y = x3,
+                           z = weights),
+             fun = mean,
+             bins = 20) +
+  geom_point(data = sine_poi %>%
+               mutate(shape = "Prediction \nof Interest"),
+             mapping = aes(x = x2, y = x3, shape = shape),
+             fill = sinecolor_blue,
+             size = 5,
+             alpha = 0.8) +
+  scale_fill_gradient(low = "grey90", high = "grey10") +
+  scale_shape_manual(values = 23) +
+  labs(x = TeX("x'_2"),
+       y = TeX("x'_3"),
+       shape = "",
+       title = "",
+       fill = "Weight") +
+  guides(shape = guide_legend(order = 1)) +
+  gg_procedure
+
+weights_legend <- get_legend(weights_x2x3)
+weights_x2x3 <- weights_x2x3 + theme(legend.position = "none")
+
+plot_grid(weights_x1x2, weights_x1x3, weights_x2x3, weights_legend,
+          nrow = 1,
+          rel_widths = c(0.29, 0.29, 0.29, 0.13))
+```
 
 ---
 
