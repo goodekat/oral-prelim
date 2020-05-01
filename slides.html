@@ -38,6 +38,12 @@ class: center, middle, inverse, title-slide
   text-shadow: none;
 }
 
+.inverse-sub {
+  background-color: #707372;
+  border-top: 80px solid #707372;
+  text-shadow: none;
+}
+
 .remark-slide-content &gt; h1 {
   font-family: 'Songti SC';
   font-weight: normal;
@@ -73,8 +79,16 @@ body {
   color: #272822;
   opacity: 1;
 }
+
 .inverse .remark-slide-number {
   font-size: 13pt;
+  font-family: 'Songti SC';
+  color: #FAFAFA;
+  opacity: 1;
+}
+
+.inverse .remark-slide-number {
+  font-size: 11pt;
   font-family: 'Songti SC';
   color: #FAFAFA;
   opacity: 1;
@@ -107,17 +121,6 @@ a, a &gt; code {
 
 
 
-# Questions/Notes
-
-Questions: 
-
-Notes: 
-
-- Remember to send out before prelim
-- 50 minute talk
-
----
-
 # Personal Background
 
 .pull-left[
@@ -140,7 +143,7 @@ Ph.D. in Statistics (in progress)
 
 **Teaching**
 
-- Teaching assisstant at UW Madison
+- Teaching assistant at UW Madison
 - Lecturer at Lawrence University
 - Lecturer at ISU
 
@@ -191,7 +194,7 @@ class: middle, center, inverse
 - Led to research area of explainable machine learning 
 
   - Goal: provide methods to explain predictions made by black-box models
-  - Method overview papers/books: .medium[(Gilpin, Bau, Yuan, et al., 2018; Guidotti, Monreale, Ruggieri, et al., 2018; Ming, 2017; Mohseni, Zarei, and Ragan, 2018; Molnar, 2019)].
+  - Method overview papers/books: .medium[(Gilpin, Bau, Yuan, Bajwa, Specter, and Kagal, 2018; Guidotti, Monreale, Ruggieri, Turini, Pedreschi, and Giannotti, 2018; Ming, 2017; Mohseni, Zarei, and Ragan, 2018; Molnar, 2019)].
 
 - European General Data Protection Regulation (GDPR) implemented in 2018 includes a "right to explanation"
 
@@ -201,15 +204,15 @@ class: middle, center, inverse
 
 # Explainability versus Interpretability
 
-No accepted definitions for explainability and interpretability .medium[(Gilpin, Bau, Yuan, et al., 2018; Lipton, 2016; Molnar, 2019; Montavon, Samek, and Müller, 2017; Murdoch, Singh, Kumbier, et al., 2019)]  
+No accepted definitions for explainability and interpretability .medium[(Gilpin, Bau, Yuan, et al., 2018; Lipton, 2016; Molnar, 2019; Montavon, Samek, and Müller, 2017; Murdoch, Singh, Kumbier, Abbasi-Asl, and Yu, 2019)]  
 
-My definitions .medium[(implicity used by Rudin (2018) and Ribeiro, Singh, and Guestrin (2016))]:
+My definitions .medium[(implicitly used by Rudin (2018) and Ribeiro, Singh, and Guestrin (2016))]:
 
 .pull-left[
 **Interpretability** is the ability to .blue[directly use model parameters] to understand the .red[mechanism of how the model makes predictions].
 
 - Linear regression model
-$$\hat{y}=\hat{\beta}_0+\hat{\beta}_1x_1+\cdots+\hat{\beta}_px_p $$
+`$$\hat{y}=\hat{\beta}_0+\hat{\beta}_1x_1+\cdots+\hat{\beta}_px_p$$`
 ]
 
 .pull-right[
@@ -226,21 +229,21 @@ $$\hat{y}=\hat{\beta}_0+\hat{\beta}_1x_1+\cdots+\hat{\beta}_px_p $$
 # Model Agnostic Methods
 
 .pull-left[
-**General Model Visualizations**: .blue[Strategies for understanding any model]
+**General Model Visualizations**: .red[Strategies for understanding any model]
 
 .medium[
 - Removing the blindfold .small[(Wickham, Cook, and Hofmann, 2015)]
 ]
 
-**Global Methods**: .blue[Explaination for model as a whole]
+**Global Methods**: .red[Explanation for model as a whole]
 
 .medium[
 - Partial dependence plots .small[(Friedman, 2001)] and extensions:
   - Interactive partial dependence plots .small[(Krause, Perer, and Ng, 2016)]
-  - Individual conditional expectation plots .small[(Goldstein, Kapelner, Bleich, et al., 2013)]
+  - Individual conditional expectation plots .small[(Goldstein, Kapelner, Bleich, and Pitkin, 2013)]
   - Accumulated local effect plots .small[(Apley and Zhu, 2016)]
   - Feature interaction plots .small[(Friedman and Popescu, 2008; Greenwell, Boehmke, and McCarthy, 2018; Hooker, 2004)]
-- Global feature importance plots .small[(Fisher, Rudin, and Dominici, 2018; Altmann, Toloşi, Sander, et al., 2010; Casalicchio, Molnar, and Bischl, 2019)]
+- Global feature importance plots .small[(Fisher, Rudin, and Dominici, 2018; Altmann, Toloşi, Sander, and Lengauer, 2010; Casalicchio, Molnar, and Bischl, 2019)]
 - Global surrogate models .small[(Molnar, 2019)]
 ]
 
@@ -263,7 +266,7 @@ $$\hat{y}=\hat{\beta}_0+\hat{\beta}_1x_1+\cdots+\hat{\beta}_px_p $$
 # Model Agnostic Methods
 
 .pull-left[
-**Local Methods**: .blue[Explanation for an individual prediction]
+**Local Methods**: .red[Explanation for an individual prediction]
 
 .medium[
 - Individual conditional importance plots .small[(Casalicchio, Molnar, and Bischl, 2019)]
@@ -274,11 +277,11 @@ $$\hat{y}=\hat{\beta}_0+\hat{\beta}_1x_1+\cdots+\hat{\beta}_px_p $$
 - breakDown .small[(Staniak and Biecek, 2018)]
 ]
 
-**Example Based**: .blue[Explanations based on examples from the data]
+**Example Based**: .red[Explanations based on examples from the data]
 
 .medium[
-- Counterfactual examples .small[(Wachter, Mittelstadt, and Russell, 2017; Martens and Provost, 2014; Looveren and Klaise, 2019; Laugel, Lesot, Marsala, et al., 2017)]
-- Adversarial examples .small[(Szegedy, Zaremba, Sutskever, et al., 2013; Goodfellow, Shlens, and Szegedy, 2014; Biggio and Roli, 2018; Su, Vargas, and Sakurai, 2019)]
+- Counterfactual examples .small[(Wachter, Mittelstadt, and Russell, 2017; Martens and Provost, 2014; Looveren and Klaise, 2019; Laugel, Lesot, Marsala, Renard, and Detyniecki, 2017)]
+- Adversarial examples .small[(Szegedy, Zaremba, Sutskever, Bruna, Erhan, Goodfellow, and Fergus, 2013; Goodfellow, Shlens, and Szegedy, 2014; Biggio and Roli, 2018; Su, Vargas, and Sakurai, 2019)]
 - Prototypes and criticisms .small[]
 - Influential instances .small[(Koh and Liang, 2017)]
 ]
@@ -307,7 +310,7 @@ $$\hat{y}=\hat{\beta}_0+\hat{\beta}_1x_1+\cdots+\hat{\beta}_px_p $$
 - Sectioned scatterplots .small[(Urbanek, 2008)]
 - Trace plots of trees .small[(Urbanek, 2008)]
 - Simplified model .small[(Hara and Hayashi, 2016a)]
-- Forest floor visualizations .small[(Welling, Refsgaard, Brockhoff, et al., 2016)]
+- Forest floor visualizations .small[(Welling, Refsgaard, Brockhoff, and Clemmensen, 2016)]
 - Interactive visualizations .small[(Beckett, 2018; da
 Silva, Cook, and Lee, 2017)]
 ]
@@ -319,7 +322,7 @@ Silva, Cook, and Lee, 2017)]
 - Saliency maps .small[(Simonyan, Vedaldi, and Zisserman, 2013)]
 - Feature visualization .small[(Olah, Mordvintsev, and Schubert, 2017)]
 - Grand tours .small[(Li, Zhao, and Scheidegger, 2020)]
-- Flows .small[(Halnaut, Giot, Bourqui, et al., 2020)]
+- Flows .small[(Halnaut, Giot, Bourqui, and Auber, 2020)]
 ]
 ]
 
@@ -342,7 +345,7 @@ Silva, Cook, and Lee, 2017)]
 .pull-left[
 **General**
 
-.red[Arguement against black box model explanations] (Rudin, 2018):
+.red[Argument against black box model explanations] (Rudin, 2018):
   - "Explanations must be wrong."
   - Explanations may not:
       - be faithful to the original model
@@ -355,13 +358,13 @@ Silva, Cook, and Lee, 2017)]
 .pull-right[
 **Method Specific**
 
-.red[Assessment of LIME] (Laugel, Renard, Lesot, et al., 2018):
+.red[Assessment of LIME] (Laugel, Renard, Lesot, Marsala, and Detyniecki, 2018):
   - How to choose a local region?
   
 .red[Assessment of counterfactual examples] (Laugel, Renard, Lesot, et al., 2018):
   - Issues with unjustified counterfactual examples
 
-.red[Assessment of saliency maps] (Kindermans, Hooker, Adebayo, et al., 2017):
+.red[Assessment of saliency maps] (Kindermans, Hooker, Adebayo, Alber, Schütt, Dähne, Erhan, and Kim, 2017):
   - Transformation to input data affects saliency map but not model
 ]
 
@@ -374,20 +377,20 @@ Silva, Cook, and Lee, 2017)]
 - Discuss importance of assessing LIME
 - Suggest the use of visualizations for assessment and provide example visualizations
 
+&lt;br&gt;
+
 **Chapter 2: Visualizations for Explaining Random Forests**
 
 - Use clustering to identify key tree structures within the random forest
 - Improve visualizations for use of trees as global surrogate models
+
+&lt;br&gt;
 
 **Chapter 3: Visualizations for Explaining Neural Networks**
 
 - Project for my internship with Sandia National Labs
 - Application with functional data
 - Visualizations for the explaining and understanding the models
-
-&lt;br&gt;
-
-&lt;img src="./figures/sandia-note.png" width="80%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -401,7 +404,7 @@ class: middle, center, inverse
 
 .pull-left[
 Hare, Hofmann, and Carriquiry (2016):
-- Interested in providing quantitative evidence to determine whether two bullets were fired from the same gun
+- Want to provide quantitative evidence for whether two bullets were fired from the same gun
 - Use high definition scans of striations on bullet lands to extract "signatures" 
 - Compute similarity features to compare two signatures
 ]
@@ -431,11 +434,11 @@ Hare, Hofmann, and Carriquiry (2016) approach:
 
 **Attempt**: Applied LIME
 
-**Result**: Unreasonable explanations (LIME explanation does not agree with random forest prediction)
+**Result**: Unreasonable explanations (e.g., LIME explanation does not agree with random forest prediction)
 
 **Example**: Known non-match
 
-&lt;img src="slides_files/figure-html/unnamed-chunk-12-1.png" width="65%" style="display: block; margin: auto;" /&gt;
+&lt;img src="slides_files/figure-html/unnamed-chunk-12-1.png" width="60%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -479,6 +482,7 @@ Questions raised:
 - Explainer model a good approximation?
 - Appropriate local region?
 - Relationship linear in the local region?
+- Which tuning parameter settings to use when applying LIME?
 ]
 
 &lt;br&gt;
@@ -489,7 +493,7 @@ Questions raised:
 
 # Visualizations for Model Assessment
 
-Claims made about LIME Ribeiro, Singh, and Guestrin (2016):
+Claims made about LIME (Ribeiro, Singh, and Guestrin, 2016):
 
 - .red[**Interpretability**]: Easy to interpret the explainer model to provide meaningful explanations
 
@@ -537,9 +541,21 @@ where
 
 ---
 
+class: inverse-sub, middle, center
+
+# Set 1 of Visualizations: Diagnostics for Individual Explanations
+
+---
+
 # Diagnostics for Individual Explanations
 
-Overview visualization of the LIME explanation for the prediction of interest from the *lime* R package
+Applied LIME using *lime* R package (Pedersen and Benesty, 2020) 
+
+- To prediction of interest
+- Number of features to return in explanation: 2
+- Default tuning parameters settings
+
+*lime* R package visualization of the explanation:
 
 
 
@@ -552,16 +568,15 @@ Overview visualization of the LIME explanation for the prediction of interest fr
 .left-desc[
 **Step 1a**: Data Simulation
 
-*lime* R package default procedure:
-
 - Sample 4999 observations uniformly from 4 quantile bins for each feature in the training data 
   
 **Corresponding Diagnostic:**  
 *Training Data Plot*
 
-- Scatterplot of the two features selected by *lime*
-- Points are the training data observations colored by the observed response
-- Grid of lines represents the boundaries of the 4 quantile bins
+- .red[Axes]: two features selected by LIME
+- .red[Points]: training data 
+- .red[Color]: observed response
+- .red[Lines]: 4 quantile bins boundaries
 ]
 
 .right-plot[
@@ -579,10 +594,12 @@ Overview visualization of the LIME explanation for the prediction of interest fr
 
 **Corresponding Diagnostic:** *Untransformed Simulated Data Plot*
 
-- Scatterplot of the simulated data features denoted by `\(x'_1\)` and `\(x'_2\)`
-- Points are colored by the random forest predictions (for 'blue')
-- Grid of lines represents the boundaries of the 4 quantile bins
-- Prediction of interest location indicated by the diamond
+- .red[Axes]: simulated data features ( `\(x'_1\)` and `\(x'_2\)` )
+- .red[Points]: simulated data
+- .red[Diamond]: prediction of interest
+- .red[Color]: random forest prediction (for 'blue')
+- .red[Lines]: 4 quantile bins boundaries
+
 ]
 
 .right-plot[
@@ -597,11 +614,13 @@ Overview visualization of the LIME explanation for the prediction of interest fr
 
 - Convert continuous features to binary variables based on whether the observation falls in the same quantile bin as the prediction of interest or not
 
-**Corresponding Diagnostic:** *Interpretability Transformed Simulated Data Plot*
+**Corresponding Diagnostic:** *Transformed Simulated Data Plot*
 
-- Scatterplot of the simulated data features
-- Rectangular region shades represent the interpretability transformed feature value
-- Prediction of interest location indicated by the diamond
+- .red[Axes]: Simulated data features
+- .red[Points]: simulated data
+- .red[Diamond]: prediction of interest
+- .red[Color]: random forest prediction (for 'blue')
+- .red[Rectangle Shades]: interpretability transformed feature regions
 ]
 
 .right-plot[
@@ -616,15 +635,16 @@ Overview visualization of the LIME explanation for the prediction of interest fr
 .left-desc[
 **Step 2a**: Assign Weights
 
-- Assign weights to simulated data based on proximity to the prediction of interest (using the untransformed feature values)
-- *lime* R package uses Gower distance metric  by default
+- Assign weights to simulated data based on proximity to the prediction of interest (using untransformed feature values)
+- Gower distance metric 
 
 **Corresponding Diagnostic:**  
 *Proximity Weights Plot*
 
-- Each hexagon contains the average of the weights of the observations located within the hexagon
-- Prediction of interest location indicated by the diamond
-- Solid lines are the interpretability transformation boundaries
+- .red[Axes]: Simulated data features
+- .red[Rectangle Color]: average weight within hexagon region
+- .red[Lines]: interpretability transformation boundaries
+- .red[Diamond]: prediction of interest
 
 ]
 
@@ -638,15 +658,16 @@ Overview visualization of the LIME explanation for the prediction of interest fr
 .left-desc[
 **Step 2b**: Feature Selection
 
-- Ridge regression model
-  - response: complex model predictions from the simulated data 
-  - features: interpretability transformed simulated data features
-- *lime* R package uses forward selection by default for less than 6 features specified (user specifies the number of features)
-
+- Ridge regression model fit to simulated data
+  - Response: complex model predictions
+  - Features: interpretability transformed features
+- Forward selection (if less than 6 features specified)
+  
 **Corresponding Diagnostic:**  
 *Feature Selection Comparison Plot*
 
-- Tile plot showing feature selected by various methods in *lime*
+- .red[Axes]: Training data features versus feature selection method
+- .red[Tile Color]: indicates if feature selected
 ]
 
 .right-plot[
@@ -660,14 +681,17 @@ Overview visualization of the LIME explanation for the prediction of interest fr
 .left-desc[
 **Step 2c**: Fit Explainer Model
 
-- Ridge regression model
-  - response: complex model predictions from the simulated data 
-  - features: interpretability transformed simulated data features selected during feature selection
+- Ridge regression model fit to simulated data
+  - Response: complex model predictions
+  - Features: selected interpretability transformed features
 
 **Corresponding Diagnostic:**  
 *Explainer Model Prediction Plot*
 
-- Color of a rectangular region represents the explainer model prediction for the region
+- .red[Axes]: simulated data features
+- .red[Diamond]: prediction of interest 
+- .red[Rectangle]: Interpretability transformed regions
+- .red[Color]: explainer model prediction
 
 ]
 
@@ -686,7 +710,7 @@ Overview visualization of the LIME explanation for the prediction of interest fr
 *Explainer Model Residual Plot*
 
 - Residual plot for the explainer model
-- Some jitter has been added to the points in the x-direction
+- Points have been jittered in the x-direction
 ]
 
 .right-plot[
@@ -700,13 +724,15 @@ Overview visualization of the LIME explanation for the prediction of interest fr
 .left-desc[
 **Step 3a**: Explainer Model Interpretation
 
-- Interpret the explainer model to explain the complex model prediction
+- Interpret coefficients of explainer model
+- Explains complex model prediction
 
 **Corresponding Diagnostic:** *Explanation Plot*
 
-- Adaptation of the explanation plot from *lime* R package
-- Length of bars represents the magnitude of explainer model coefficients
-- Color of bars represents the value of the explainer model coefficients
+- Adaptation of plot from *lime* R package
+- .red[Axes]: Explainer model (interpretability transformed) feature versus explainer model coefficient
+- .red[Bar Length]: magnitude of explainer model coefficients
+- .red[Bar Color]: value of the explainer model coefficients
 ]
 
 .right-plot[
@@ -721,13 +747,15 @@ Overview visualization of the LIME explanation for the prediction of interest fr
 .left-desc[
 **Step 3b**: Explainer Model Interpretation (continued)
 
-- Interpret the explainer model to explain the complex model prediction
-
 **Corresponding Diagnostic:** *Complex and Explainer Model Comparison Plot*
 
-- Scatter plot of the simulated data
-- Solid lines depict the interpretability transformation boundaries
-- Line color represents whether the corresponding explainer model coefficients supports a random forest prediction of 'blue' (blue) or not (red)
+- .red[Axes]: simulated data features
+- .red[Points]: simulated data 
+- .red[Diamond]: prediction of interest
+- .red[Point Color]: random forest prediction (for 'blue') 
+- .red[Point Size]: proximity weight
+- .red[Lines]: interpretability transformation boundaries
+- .red[Line Color]: explainer coefficient supports a random forest prediction of 'blue' (blue) or not (red)
 ]
 
 .right-plot[
@@ -746,13 +774,36 @@ Overview visualization of the LIME explanation for the prediction of interest fr
 
 ---
 
-# Diagnostics for Sets of Explanations
+class: inverse-sub, middle, center
 
-![](slides_files/figure-html/unnamed-chunk-32-1.png)&lt;!-- --&gt;
+# Set 2 of Visualizations: Diagnostics for Sets of Explanations
 
 ---
 
 # Diagnostics for Sets of Explanations
+
+Applied LIME using *lime* R package (Pedersen and Benesty, 2020) 
+
+- All test data observations
+- Number of features to return in explanation: 2
+- Default tuning parameters settings
+
+Plot of all explanations from *lime* R package: 
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-32-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Diagnostics for Sets of Explanations
+
+**Explanation Set Plot**
+
+Provides an overview of groupings of LIME explanations
+
+- Adaptation to the *lime* plot of all explanations
+- .red[Y-axis]: Interpretability transformed features
+- .red[X-axis]: Observation in the data set
+- .red[Tile Color]: Ridge regression coefficient from the corresponding model
 
 ![](slides_files/figure-html/unnamed-chunk-33-1.png)&lt;!-- --&gt;
 
@@ -760,17 +811,30 @@ Overview visualization of the LIME explanation for the prediction of interest fr
 
 # Diagnostics for Sets of Explanations
 
-.left-desc[]
+**Aggregated Coefficient Plots**
 
-.right-plot[
+Provides a summary of explainer model coefficients across the set of explanations within quantile bin regions
+
+- .red[Axes]: Test data features
+- .red[Cells]: Intersections of quantile bins
+- .red[Color]: Average of ridge regression coefficients (or sum of ridge regression coefficients) for observations within a cell
+
 ![](slides_files/figure-html/unnamed-chunk-34-1.png)&lt;!-- --&gt;
-]
 
 ---
 
 # Diagnostics for Sets of Explanations
 
-.left-desc[]
+.left-desc[
+**Explainer Prediction Distribution Plot**
+
+Shows the relationship between the explainer model predictions and the quantile bins
+
+- .red[Axes]: Test data features
+- .red[Points]: Test data observations
+- .red[Color]: Explainer model prediction
+- .red[Lines]: Quantile bin boundaries
+]
 
 .right-plot[
 ![](slides_files/figure-html/unnamed-chunk-35-1.png)&lt;!-- --&gt;
@@ -780,7 +844,18 @@ Overview visualization of the LIME explanation for the prediction of interest fr
 
 # Diagnostics for Sets of Explanations
 
-.left-desc[]
+.left-desc[
+**Complex and Explainer Model Prediction Comparison Plot**
+
+Shows the relationship between the explainer model and complex model predictions
+
+- .red[Y-Axis]: Explainer model predictions
+- .red[X-Axis]: Complex model predictions
+- .red[Points]: Observations from the test data
+- .red[Color]: Corresponding explainer model `\(R^2\)`
+- .red[Dashed Line]: 1-1 line
+- .red.[Solid Line]: Loess smoother fit to the points
+]
 
 .right-plot[
 ![](slides_files/figure-html/unnamed-chunk-36-1.png)&lt;!-- --&gt;
@@ -788,9 +863,20 @@ Overview visualization of the LIME explanation for the prediction of interest fr
 
 ---
 
-# .medium[Diagnostics for Comparisons of Tuning Parameters]
+# Diagnostics for Sets of Explanations
 
-.left-desc[]
+.left-desc[
+**Quantile Grid Prediction Comparison Plot**
+
+Shows the relationship between the average explainer model predictions within a quantile bins cell and the complex model predictions
+
+- .red[Axes]: Test data features
+- .red[Points]: Test data observations
+- .red[Point Color]: Explainer model prediction
+- .red[Cells]: Intersections of quantile bins
+- .red[Cell Color]: Average explainer model prediction
+- .red[Black Circles]: Identify observations misclassified by the complex model
+]
 
 .right-plot[
 ![](slides_files/figure-html/unnamed-chunk-37-1.png)&lt;!-- --&gt;
@@ -798,17 +884,89 @@ Overview visualization of the LIME explanation for the prediction of interest fr
 
 ---
 
+class: inverse-sub, middle, center
+
+# Set 3 of Visualizations: Diagnostics for Comparisons of Tuning Parameters
+
+---
+
 # .medium[Diagnostics for Comparisons of Tuning Parameters]
 
-.left-desc[]
+Applied LIME using *lime* R package (Pedersen and Benesty, 2020)
+- All test data observations  
+- Number of features to return in explanation: 2
+- Multiple applications of LIME for each observation
+  - 2 to 6 quantile bins
+  - Kernel density simulation
+
+Plot of all explanations from *lime* R package: 
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-38-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# .medium[Diagnostics for Comparisons of Tuning Parameters]
+
+.left-desc[
+**Feature Heatmap Plot**
+
+Provides an overview of the features selected by LIME across observations and tuning parameters
+
+- .red[Y-Axis]: Test data observation
+- .red[X-Axis]: Data simulation method
+- .red[Y-Facet]: LIME feature order selection (first, second, etc.)
+- .red[X-Facet]: Density based or bin based simulation method
+- .red[Color]: Feature selected
+
+]
 
 .right-plot[
-![](slides_files/figure-html/unnamed-chunk-38-1.png)&lt;!-- --&gt;
+![](slides_files/figure-html/unnamed-chunk-39-1.png)&lt;!-- --&gt;
+]
+
+---
+
+# .medium[Diagnostics for Comparisons of Tuning Parameters]
+
+## Metrics for the Assessment of LIME
+
+Define the following:
+
+**Average Fidelity** (Ribeiro, Singh, and Guestrin, 2016): 
+
+**Average `\(R^2\)`**:
+
+**MSEE (Mean Squared Explanation Error)**:
+
+---
+
+# .medium[Diagnostics for Comparisons of Tuning Parameters]
+
+.left-desc[
+**Assessment Metric Plot**
+
+Visualization of assessment metrics for comparing tuning parameter performance
+
+- .red[Y-Axis]: Metric value
+- .red[X-Axis]: Data simulation method
+- .red[Y-Facet]: Metric type
+- .red[X-Facet]: Density based or bin based simulation method
+- .red[Point]: Represents application of LIME to a set of observations
+- .red[Color]: Rank of the application based on metric value (within a metric)
+
+]
+
+.right-plot[
+![](slides_files/figure-html/unnamed-chunk-40-1.png)&lt;!-- --&gt;
 ]
 
 ---
 
 # R package: limeaid
+
+---
+
+# Application of Visual Diagnostics to Bullet Random Forest
 
 ---
 
@@ -846,7 +1004,9 @@ class: middle, center, inverse
 
 # Application from Sandia National Labs
 
-&lt;img src="./figures/fun-data.png" width="100%" style="display: block; margin: auto;" /&gt;
+&lt;img src="./figures/fun-data.png" width="90%" style="display: block; margin: auto;" /&gt;
+
+&lt;img src="./figures/sandia-note.png" width="80%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -959,135 +1119,130 @@ importance: a corrected feature importance measure". In:
 _Bioinformatics_ 26.10, pp. 1340-1347. ISSN: 1367-4803. DOI:
 [10.1093/bioinformatics/btq134](https://doi.org/10.1093%2Fbioinformatics%2Fbtq134).
 
-Apley, D. W. and J. Zhu (2016). "Visualizing the Effects of
-Predictor Variables in Black Box Supervised Learning Models".
+Apley, D. W. and J. Zhu (2016). "Visualizing the Effects of Predictor
+Variables in Black Box Supervised Learning Models".
 
-Beckett, C. (2018). "Rfviz: An Interactive Visualization
-Package for Random Forests in R". In: _DigitalCommons@USU All
-Graduate Plan B and otherReports_.
+Beckett, C. (2018). "Rfviz: An Interactive Visualization Package for
+Random Forests in R". In: _DigitalCommons@USU All Graduate Plan B and
+otherReports_.
 
-Biggio, B. and F. Roli (2018). "Wild Patterns: Ten Years After
-the Rise of Adversarial Machine Learning". In: _Pattern
-Recognition_ 84, pp. 317-331. ISSN: 0031-3203. DOI:
+Biggio, B. and F. Roli (2018). "Wild Patterns: Ten Years After the Rise
+of Adversarial Machine Learning". In: _Pattern Recognition_ 84, pp.
+317-331. ISSN: 0031-3203. DOI:
 [10.1016/j.patcog.2018.07.023](https://doi.org/10.1016%2Fj.patcog.2018.07.023).
 
-Breiman, L. (2001). "Random Forests". In: _Machine Learning_
-45.1, pp. 5-32. ISSN: 0885-6125. DOI:
+Breiman, L. (2001). "Random Forests". In: _Machine Learning_ 45.1, pp.
+5-32. ISSN: 0885-6125. DOI:
 [10.1023/a:1010933404324](https://doi.org/10.1023%2Fa%3A1010933404324).
 
-Casalicchio, G, C. Molnar, and B. Bischl (2019). "Visualizing
-the Feature Importance for Black Box Models" , pp. 655-670.
-ISSN: 2190-5053. DOI:
+Casalicchio, G, C. Molnar, and B. Bischl (2019). "Visualizing the
+Feature Importance for Black Box Models" , pp. 655-670. ISSN:
+2190-5053. DOI:
 [10.1007/978-3-030-10925-7\_40](https://doi.org/10.1007%2F978-3-030-10925-7%5C_40).
 
-Craven, M. W. and J. W. Shavlik (1996). "Extracting
-Tree-Structured Representations of Trained Networks". In:
-_Advances in Neural Information Processing Systems_ 8.
+Craven, M. W. and J. W. Shavlik (1996). "Extracting Tree-Structured
+Representations of Trained Networks". In: _Advances in Neural
+Information Processing Systems_ 8.
 
-Fisher, A, C. Rudin, and F. Dominici (2018). "Model Class
-Reliance: Variable Importance Measures for any Machine
-Learning Model Class, from the “Rashomon” Perspective".
+Fisher, A, C. Rudin, and F. Dominici (2018). "Model Class Reliance:
+Variable Importance Measures for any Machine Learning Model Class, from
+the “Rashomon” Perspective".
 
-Friedman, J. H. (2001). "Greedy function approximation: A
-gradient boosting machine." In: _The Annals of Statistics_
-29.5. ISSN: 0090-5364. DOI:
+Friedman, J. H. (2001). "Greedy function approximation: A gradient
+boosting machine." In: _The Annals of Statistics_ 29.5. ISSN:
+0090-5364. DOI:
 [10.1214/aos/1013203451](https://doi.org/10.1214%2Faos%2F1013203451).
 
-Friedman, J. H. and B. E. Popescu (2008). "Predictive learning
-via rule ensembles". In: _The Annals of Applied Statistics_
-2.3, pp. 916-954. ISSN: 1932-6157. DOI:
+Friedman, J. H. and B. E. Popescu (2008). "Predictive learning via rule
+ensembles". In: _The Annals of Applied Statistics_ 2.3, pp. 916-954.
+ISSN: 1932-6157. DOI:
 [10.1214/07-aoas148](https://doi.org/10.1214%2F07-aoas148).
 
 Gilpin, L. H, D. Bau, B. Z. Yuan, et al. (2018). "Explaining
-Explanations: An Overview of Interpretability of Machine
-Learning".
+Explanations: An Overview of Interpretability of Machine Learning".
 
-Goldstein, A, A. Kapelner, J. Bleich, et al. (2013). "Peeking
-Inside the Black Box: Visualizing Statistical Learning with
-Plots of Individual Conditional Expectation".
+Goldstein, A, A. Kapelner, J. Bleich, et al. (2013). "Peeking Inside
+the Black Box: Visualizing Statistical Learning with Plots of
+Individual Conditional Expectation".
 
-Goodfellow, I. J, J. Shlens, and C. Szegedy (2014).
-"Explaining and Harnessing Adversarial Examples". In: _arXiv_.
+Goodfellow, I. J, J. Shlens, and C. Szegedy (2014). "Explaining and
+Harnessing Adversarial Examples". In: _arXiv_.
 
-Goodman, B. and S. Flaxman (2016). "European Union regulations
-on algorithmic decision-making and a "right to explanation"".
+Goodman, B. and S. Flaxman (2016). "European Union regulations on
+algorithmic decision-making and a "right to explanation"".
 
-Greenwell, B. M, B. C. Boehmke, and A. J. McCarthy (2018). "A
-Simple and Effective Model-Based Variable Importance Measure".
+Greenwell, B. M, B. C. Boehmke, and A. J. McCarthy (2018). "A Simple
+and Effective Model-Based Variable Importance Measure".
 
-Guidotti, R, A. Monreale, S. Ruggieri, et al. (2018). "A
-Survey Of Methods For Explaining Black Box Models".
+Guidotti, R, A. Monreale, S. Ruggieri, et al. (2018). "A Survey Of
+Methods For Explaining Black Box Models".
 
-Halnaut, A, R. Giot, R. Bourqui, et al. (2020). "Deep Dive
-into Deep Neural Networks with Flows" , pp. 231-239. DOI:
+Halnaut, A, R. Giot, R. Bourqui, et al. (2020). "Deep Dive into Deep
+Neural Networks with Flows" , pp. 231-239. DOI:
 [10.5220/0008989702310239](https://doi.org/10.5220%2F0008989702310239).
 
-Hara, S. and K. Hayashi (2016a). "Making Tree Ensembles
-Interpretable".
+Hara, S. and K. Hayashi (2016a). "Making Tree Ensembles Interpretable".
 
-Hare, E, H. Hofmann, and A. Carriquiry (2016). "Automatic
-Matching of Bullet Lands". In: _Annals of Applied Statistics_.
-DOI:
+Hare, E, H. Hofmann, and A. Carriquiry (2016). "Automatic Matching of
+Bullet Lands". In: _Annals of Applied Statistics_. DOI:
 [http://adsabs.harvard.edu/abs/2016arXiv160105788H](https://doi.org/http%3A%2F%2Fadsabs.harvard.edu%2Fabs%2F2016arXiv160105788H).
 
-Hooker, G. (2004). "Discovering additive structure in black
-box functions" , p. 575. DOI:
+Hooker, G. (2004). "Discovering additive structure in black box
+functions" , p. 575. DOI:
 [10.1145/1014052.1014122](https://doi.org/10.1145%2F1014052.1014122).
 
 Kindermans, P, S. Hooker, J. Adebayo, et al. (2017). "The
 (Un)reliability of saliency methods".
 
-Koh, P. W. and P. Liang (2017). "Understanding Black-box
-Predictions via Influence Functions". In: _arXiv_.
+Koh, P. W. and P. Liang (2017). "Understanding Black-box Predictions
+via Influence Functions". In: _arXiv_.
 
-Krause, J, A. Perer, and K. Ng (2016). "Interacting with
-Predictions: Visual Inspection of Black-box Machine Learning
-Models" , pp. 5686-5697. DOI:
+Krause, J, A. Perer, and K. Ng (2016). "Interacting with Predictions:
+Visual Inspection of Black-box Machine Learning Models" , pp.
+5686-5697. DOI:
 [10.1145/2858036.2858529](https://doi.org/10.1145%2F2858036.2858529).
 
-Laugel, T, M. Lesot, C. Marsala, et al. (2017). "Inverse
-Classification for Comparison-based Interpretability in
-Machine Learning". In: _arXiv_.
+Laugel, T, M. Lesot, C. Marsala, et al. (2017). "Inverse Classification
+for Comparison-based Interpretability in Machine Learning". In:
+_arXiv_.
 
-Laugel, T, X. Renard, M. Lesot, et al. (2018). "Defining
-Locality for Surrogates in Post-hoc Interpretablity". In:
-_CoRR_ abs/1806.07498. URL:
+Laugel, T, X. Renard, M. Lesot, et al. (2018). "Defining Locality for
+Surrogates in Post-hoc Interpretablity". In: _CoRR_ abs/1806.07498.
+URL:
 [http://arxiv.org/abs/1806.07498](http://arxiv.org/abs/1806.07498).
 
-Li, M, Z. Zhao, and C. Scheidegger (2020). "Visualizing Neural
-Networks with the Grand Tour". In: _Distill_.
+Li, M, Z. Zhao, and C. Scheidegger (2020). "Visualizing Neural Networks
+with the Grand Tour". In: _Distill_.
 https://distill.pub/2020/grand-tour. DOI:
 [10.23915/distill.00025](https://doi.org/10.23915%2Fdistill.00025).
 
 Lipton, Z. C. (2016). "The Mythos of Model Interpretability".
 
-Looveren, A. V. and J. Klaise (2019). "Interpretable
-Counterfactual Explanations Guided by Prototypes". In:
-_arXiv_.
+Looveren, A. V. and J. Klaise (2019). "Interpretable Counterfactual
+Explanations Guided by Prototypes". In: _arXiv_.
 
-Lundberg, S. and S. Lee (2017). "A Unified Approach to
-Interpreting Model Predictions".
+Lundberg, S. and S. Lee (2017). "A Unified Approach to Interpreting
+Model Predictions".
 
-Martens, D. and F. Provost (2014). "Explaining Data-Driven
-Document Classifications". In: _MIS Quarterly_ 38.1, pp.
-73-99. ISSN: 0276-7783. DOI:
+Martens, D. and F. Provost (2014). "Explaining Data-Driven Document
+Classifications". In: _MIS Quarterly_ 38.1, pp. 73-99. ISSN: 0276-7783.
+DOI:
 [10.25300/misq/2014/38.1.04](https://doi.org/10.25300%2Fmisq%2F2014%2F38.1.04).
 
 Ming, Y. (2017). "A Survey on Visualization for Explainable
 Classifiers".
 
-Mohseni, S, N. Zarei, and E. D. Ragan (2018). "A Survey of
-Evaluation Methods and Measures for Interpretable Machine
-Learning".
+Mohseni, S, N. Zarei, and E. D. Ragan (2018). "A Survey of Evaluation
+Methods and Measures for Interpretable Machine Learning".
 
 Molnar, C. (2019). _Interpretable Machine Learning_.
 
-Montavon, G, W. Samek, and K. Müller (2017). "Methods for
-Interpreting and Understanding Deep Neural Networks".
+Montavon, G, W. Samek, and K. Müller (2017). "Methods for Interpreting
+and Understanding Deep Neural Networks".
 
-Murdoch, W. J, C. Singh, K. Kumbier, et al. (2019).
-"Interpretable machine learning: definitions, methods, and
-applications". In: _arXiv_. DOI:
+Murdoch, W. J, C. Singh, K. Kumbier, et al. (2019). "Interpretable
+machine learning: definitions, methods, and applications". In: _arXiv_.
+DOI:
 [10.1073/pnas.1900654116](https://doi.org/10.1073%2Fpnas.1900654116).
 
 Olah, C, A. Mordvintsev, and L. Schubert (2017). "Feature
@@ -1095,57 +1250,64 @@ Visualization". In: _Distill_.
 https://distill.pub/2017/feature-visualization. DOI:
 [10.23915/distill.00007](https://doi.org/10.23915%2Fdistill.00007).
 
-Ribeiro, M. T., S. Singh, and C. Guestrin (2016). ""Why Should
-I Trust You?": Explaining the Predictions of Any Classifier".
-In: _Proceedings of the 22nd ACM SIGKDD International
-Conference on Knowledge Discovery and Data Mining, San
-Francisco, CA, USA, August 13-17, 2016_. , pp. 1135-1144.
+Pedersen, T. L. and M. Benesty (2020). _lime: Local Interpretable
+Model-Agnostic Explanations_. https://lime.data-imaginist.com,
+https://github.com/thomasp85/lime.
+
+Ribeiro, M. T., S. Singh, and C. Guestrin (2016). ""Why Should I Trust
+You?": Explaining the Predictions of Any Classifier". In: _Proceedings
+of the 22nd ACM SIGKDD International Conference on Knowledge Discovery
+and Data Mining, San Francisco, CA, USA, August 13-17, 2016_. , pp.
+1135-1144.
 
 Ribeiro, M. T, S. Singh, and C. Guestrin (2018). "Anchors:
 High-Precision Model-Agnostic Explanations".
 
-Rudin, C. (2018). "Stop Explaining Black Box Machine Learning
-Models for High Stakes Decisions and Use Interpretable Models
-Instead".
+Rudin, C. (2018). "Stop Explaining Black Box Machine Learning Models
+for High Stakes Decisions and Use Interpretable Models Instead".
 
-Silva, N. da, D. Cook, and E. Lee (2017). "Interactive
-Graphics for Visually Diagnosing Forest Classifiers in R".
+Silva, N. da, D. Cook, and E. Lee (2017). "Interactive Graphics for
+Visually Diagnosing Forest Classifiers in R".
 
 Simonyan, K, A. Vedaldi, and A. Zisserman (2013). "Deep Inside
-Convolutional Networks: Visualising Image Classification
-Models and Saliency Maps".
+Convolutional Networks: Visualising Image Classification Models and
+Saliency Maps".
 
-Staniak, M. and P. Biecek (2018). "Explanations of model
-predictions with live and breakDown packages". In: _arXiv_
-10.2, p. 395. DOI:
+Staniak, M. and P. Biecek (2018). "Explanations of model predictions
+with live and breakDown packages". In: _arXiv_ 10.2, p. 395. DOI:
 [10.32614/rj-2018-072](https://doi.org/10.32614%2Frj-2018-072).
 
-Su, J, D. V. Vargas, and K. Sakurai (2019). "One Pixel Attack
-for Fooling Deep Neural Networks". In: _IEEE Transactions on
-Evolutionary Computation_ 23.5, pp. 828-841. ISSN: 1089-778X.
-DOI:
+Su, J, D. V. Vargas, and K. Sakurai (2019). "One Pixel Attack for
+Fooling Deep Neural Networks". In: _IEEE Transactions on Evolutionary
+Computation_ 23.5, pp. 828-841. ISSN: 1089-778X. DOI:
 [10.1109/tevc.2019.2890858](https://doi.org/10.1109%2Ftevc.2019.2890858).
 
-Szegedy, C, W. Zaremba, I. Sutskever, et al. (2013).
-"Intriguing properties of neural networks".
+Szegedy, C, W. Zaremba, I. Sutskever, et al. (2013). "Intriguing
+properties of neural networks".
 
-Urbanek, S. (2008). "Visualizing Trees and Forests". In:
-_Handbook of data visualization_. Ed. by A. U. Chun-houh Chen
-Wolfgang Härdle , pp. 243-266. ISBN: 9783540330363.
+Urbanek, S. (2008). "Visualizing Trees and Forests". In: _Handbook of
+data visualization_. Ed. by A. U. Chun-houh Chen Wolfgang Härdle , pp.
+243-266. ISBN: 9783540330363.
 
-Wachter, S, B. Mittelstadt, and C. Russell (2017).
-"Counterfactual Explanations without Opening the Black Box:
-Automated Decisions and the GDPR".
+Wachter, S, B. Mittelstadt, and C. Russell (2017). "Counterfactual
+Explanations without Opening the Black Box: Automated Decisions and the
+GDPR".
 
-Welling, S. H, H. H. F. Refsgaard, P. B. Brockhoff, et al.
-(2016). "Forest Floor Visualizations of Random Forests".
+Welling, S. H, H. H. F. Refsgaard, P. B. Brockhoff, et al. (2016).
+"Forest Floor Visualizations of Random Forests".
 
-Wickham, H, D. Cook, and H. Hofmann (2015). "Visualizing
-statistical models: Removing the blindfold". In: _Statistical
-Analysis and Data Mining: The ASA Data Science Journal_ 8.4,
-pp. 203-225. ISSN: 1932-1872. DOI:
+Wickham, H, D. Cook, and H. Hofmann (2015). "Visualizing statistical
+models: Removing the blindfold". In: _Statistical Analysis and Data
+Mining: The ASA Data Science Journal_ 8.4, pp. 203-225. ISSN:
+1932-1872. DOI:
 [10.1002/sam.11271](https://doi.org/10.1002%2Fsam.11271).
 ]
+
+---
+
+# Appendix
+
+Add application of diagnostics to bullet examples
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

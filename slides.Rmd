@@ -30,6 +30,12 @@ output:
   text-shadow: none;
 }
 
+.inverse-sub {
+  background-color: #707372;
+  border-top: 80px solid #707372;
+  text-shadow: none;
+}
+
 .remark-slide-content > h1 {
   font-family: 'Songti SC';
   font-weight: normal;
@@ -65,8 +71,16 @@ body {
   color: #272822;
   opacity: 1;
 }
+
 .inverse .remark-slide-number {
   font-size: 13pt;
+  font-family: 'Songti SC';
+  color: #FAFAFA;
+  opacity: 1;
+}
+
+.inverse .remark-slide-number {
+  font-size: 11pt;
   font-family: 'Songti SC';
   color: #FAFAFA;
   opacity: 1;
@@ -97,7 +111,7 @@ a, a > code {
 .grey{color: #707372}
 </style>
 
-```{r setup, echo = FALSE, message = FALSE, warning = FALSE}
+```{r echo = FALSE, message = FALSE, warning = FALSE}
 # Packages
 library(cowplot)
 library(dplyr)
@@ -125,23 +139,12 @@ BibOptions(check.entries = FALSE,
            style = "markdown",
            hyperlink = FALSE,
            dashed = FALSE)
-myBib <- ReadBib("references.bib", check = FALSE)
+bib <- ReadBib("references.bib", check = FALSE)
 
 # Plot theme
 gg_procedure <- list(theme_bw(base_family = "Times", base_size = 14),
                      theme(aspect.ratio = 1)) 
 ```
-
-# Questions/Notes
-
-Questions: 
-
-Notes: 
-
-- Remember to send out before prelim
-- 50 minute talk
-
----
 
 # Personal Background
 
@@ -165,7 +168,7 @@ Ph.D. in Statistics (in progress)
 
 **Teaching**
 
-- Teaching assisstant at UW Madison
+- Teaching assistant at UW Madison
 - Lecturer at Lawrence University
 - Lecturer at ISU
 
@@ -216,31 +219,31 @@ class: middle, center, inverse
 - Led to research area of explainable machine learning 
 
   - Goal: provide methods to explain predictions made by black-box models
-  - Method overview papers/books: .medium[`r Citep(myBib, c("gilpin:2018", "guidotti:2018", "ming:2017", "mohseni:2018", "molnar:2019", "samek:2019"))`].
+  - Method overview papers/books: .medium[`r Citep(bib, c("gilpin:2018", "guidotti:2018", "ming:2017", "mohseni:2018", "molnar:2019", "samek:2019"))`].
 
 - European General Data Protection Regulation (GDPR) implemented in 2018 includes a "right to explanation"
 
-  > `r Citet(myBib, "goodman:2016")`: "It is reasonable to suppose that any adequate explanation would, at a minimum, provide an account of how input features relate to predictions, allowing one to answer questions such as: Is the model more or less likely to recommend a loan if the applicant is a minority?"
+  > `r Citet(bib, "goodman:2016")`: "It is reasonable to suppose that any adequate explanation would, at a minimum, provide an account of how input features relate to predictions, allowing one to answer questions such as: Is the model more or less likely to recommend a loan if the applicant is a minority?"
 
 ---
 
 # Explainability versus Interpretability
 
-No accepted definitions for explainability and interpretability .medium[`r Citep(myBib, c("gilpin:2018", "lipton:2016", "molnar:2019", "montavon:2017", "murdoch:2019"))`]  
+No accepted definitions for explainability and interpretability .medium[`r Citep(bib, c("gilpin:2018", "lipton:2016", "molnar:2019", "montavon:2017", "murdoch:2019"))`]  
 
-My definitions .medium[(implicity used by `r Citet(myBib, "rudin:2018")` and `r Citet(myBib, "ribeiro:2016")`)]:
+My definitions .medium[(implicitly used by `r Citet(bib, "rudin:2018")` and `r Citet(bib, "ribeiro:2016")`)]:
 
 .pull-left[
 **Interpretability** is the ability to .blue[directly use model parameters] to understand the .red[mechanism of how the model makes predictions].
 
 - Linear regression model
-$$\hat{y}=\hat{\beta}_0+\hat{\beta}_1x_1+\cdots+\hat{\beta}_px_p $$
+$$\hat{y}=\hat{\beta}_0+\hat{\beta}_1x_1+\cdots+\hat{\beta}_px_p$$
 ]
 
 .pull-right[
 **Explainability** is the ability to .blue[use the model in an indirect manner] to understand the .red[relationships in the data captured by the model].
 
-- LIME: local interpretable model-agnostic explanations `r Citep(myBib, "ribeiro:2016")`
+- LIME: local interpretable model-agnostic explanations `r Citep(bib, "ribeiro:2016")`
 
 ```{r out.width = "65%", fig.align = "center"}
 include_graphics("figures/lime.png")
@@ -253,22 +256,22 @@ include_graphics("figures/lime.png")
 # Model Agnostic Methods
 
 .pull-left[
-**General Model Visualizations**: .blue[Strategies for understanding any model]
+**General Model Visualizations**: .red[Strategies for understanding any model]
 
 .medium[
-- Removing the blindfold .small[`r Citep(myBib, "wickham:2015")`]
+- Removing the blindfold .small[`r Citep(bib, "wickham:2015")`]
 ]
 
-**Global Methods**: .blue[Explaination for model as a whole]
+**Global Methods**: .red[Explanation for model as a whole]
 
 .medium[
-- Partial dependence plots .small[`r Citep(myBib, "friedman:2001")`] and extensions:
-  - Interactive partial dependence plots .small[`r Citep(myBib, "krause:2016")`]
-  - Individual conditional expectation plots .small[`r Citep(myBib, "goldstein:2013")`]
-  - Accumulated local effect plots .small[`r Citep(myBib, "apley:2016")`]
-  - Feature interaction plots .small[`r Citep(myBib, c("friedman:2008", "greenwell:2018", "hooker:2004"))`]
-- Global feature importance plots .small[`r Citep(myBib, c("fisher:2018", "altmann:2010", "casalicchio:2019"))`]
-- Global surrogate models .small[`r Citep(myBib, "molnar:2019")`]
+- Partial dependence plots .small[`r Citep(bib, "friedman:2001")`] and extensions:
+  - Interactive partial dependence plots .small[`r Citep(bib, "krause:2016")`]
+  - Individual conditional expectation plots .small[`r Citep(bib, "goldstein:2013")`]
+  - Accumulated local effect plots .small[`r Citep(bib, "apley:2016")`]
+  - Feature interaction plots .small[`r Citep(bib, c("friedman:2008", "greenwell:2018", "hooker:2004"))`]
+- Global feature importance plots .small[`r Citep(bib, c("fisher:2018", "altmann:2010", "casalicchio:2019"))`]
+- Global surrogate models .small[`r Citep(bib, "molnar:2019")`]
 ]
 
 ]
@@ -288,24 +291,24 @@ include_graphics("./figures/pdp.png")
 # Model Agnostic Methods
 
 .pull-left[
-**Local Methods**: .blue[Explanation for an individual prediction]
+**Local Methods**: .red[Explanation for an individual prediction]
 
 .medium[
-- Individual conditional importance plots .small[`r Citep(myBib, "casalicchio:2019")`]
-- LIME .small[`r Citep(myBib, "ribeiro:2016")`]
-- Anchors (scoped rules) .small[`r Citep(myBib, "ribeiro:2018")`]
-- Shapely values .small[`r Citep(myBib, "štrumbelj:2014")`]
-- SHAP .small[`r Citep(myBib, "lundberg:2017")`]
-- breakDown .small[`r Citep(myBib, "staniak:2018")`]
+- Individual conditional importance plots .small[`r Citep(bib, "casalicchio:2019")`]
+- LIME .small[`r Citep(bib, "ribeiro:2016")`]
+- Anchors (scoped rules) .small[`r Citep(bib, "ribeiro:2018")`]
+- Shapely values .small[`r Citep(bib, "štrumbelj:2014")`]
+- SHAP .small[`r Citep(bib, "lundberg:2017")`]
+- breakDown .small[`r Citep(bib, "staniak:2018")`]
 ]
 
-**Example Based**: .blue[Explanations based on examples from the data]
+**Example Based**: .red[Explanations based on examples from the data]
 
 .medium[
-- Counterfactual examples .small[`r Citep(myBib, c("wachter:2017", "martens:2014", "looveren:2019", "laugel:2017"))`]
-- Adversarial examples .small[`r Citep(myBib, c("szegedy:2013", "goodfellow:2014", "biggio:2018", "su:2019"))`]
-- Prototypes and criticisms .small[`r Citep(myBib, "kim:1016")`]
-- Influential instances .small[`r Citep(myBib, "koh:2017")`]
+- Counterfactual examples .small[`r Citep(bib, c("wachter:2017", "martens:2014", "looveren:2019", "laugel:2017"))`]
+- Adversarial examples .small[`r Citep(bib, c("szegedy:2013", "goodfellow:2014", "biggio:2018", "su:2019"))`]
+- Prototypes and criticisms .small[`r Citep(bib, "kim:1016")`]
+- Influential instances .small[`r Citep(bib, "koh:2017")`]
 ]
 ]
 
@@ -326,22 +329,22 @@ include_graphics("./figures/adversarial.png")
 **Random Forests**
 
 .medium[
-- Random forest impurity based feature importance .small[`r Citep(myBib, "breiman:2001")`]
-- Sectioned scatterplots .small[`r Citep(myBib, "urbanek:2008")`]
-- Trace plots of trees .small[`r Citep(myBib, "urbanek:2008")`]
-- Simplified model .small[`r Citep(myBib, "hara:2016")`]
-- Forest floor visualizations .small[`r Citep(myBib, "welling:2016")`]
-- Interactive visualizations .small[`r Citep(myBib, c("beckett:2018", "dasilva:2017"))`]
+- Random forest impurity based feature importance .small[`r Citep(bib, "breiman:2001")`]
+- Sectioned scatterplots .small[`r Citep(bib, "urbanek:2008")`]
+- Trace plots of trees .small[`r Citep(bib, "urbanek:2008")`]
+- Simplified model .small[`r Citep(bib, "hara:2016")`]
+- Forest floor visualizations .small[`r Citep(bib, "welling:2016")`]
+- Interactive visualizations .small[`r Citep(bib, c("beckett:2018", "dasilva:2017"))`]
 ]
 
 **Neural Networks**
 
 .medium[
-- Extracting tree structures .small[`r Citep(myBib, "craven:1996")`]
-- Saliency maps .small[`r Citep(myBib, "simonyan:2013")`]
-- Feature visualization .small[`r Citep(myBib, "olah:2017")`]
-- Grand tours .small[`r Citep(myBib, "li:2020")`]
-- Flows .small[`r Citep(myBib, "halnaut:2020")`]
+- Extracting tree structures .small[`r Citep(bib, "craven:1996")`]
+- Saliency maps .small[`r Citep(bib, "simonyan:2013")`]
+- Feature visualization .small[`r Citep(bib, "olah:2017")`]
+- Grand tours .small[`r Citep(bib, "li:2020")`]
+- Flows .small[`r Citep(bib, "halnaut:2020")`]
 ]
 ]
 
@@ -362,7 +365,7 @@ include_graphics("./figures/saliency.png")
 .pull-left[
 **General**
 
-.red[Arguement against black box model explanations] `r Citep(myBib, "rudin:2018")`:
+.red[Argument against black box model explanations] `r Citep(bib, "rudin:2018")`:
   - "Explanations must be wrong."
   - Explanations may not:
       - be faithful to the original model
@@ -375,13 +378,13 @@ include_graphics("./figures/saliency.png")
 .pull-right[
 **Method Specific**
 
-.red[Assessment of LIME] `r Citep(myBib, "laugel:2018")`:
+.red[Assessment of LIME] `r Citep(bib, "laugel:2018")`:
   - How to choose a local region?
   
-.red[Assessment of counterfactual examples] `r Citep(myBib, "laugel:2018")`:
+.red[Assessment of counterfactual examples] `r Citep(bib, "laugel:2018")`:
   - Issues with unjustified counterfactual examples
 
-.red[Assessment of saliency maps] `r Citep(myBib, "kindermans:2017")`:
+.red[Assessment of saliency maps] `r Citep(bib, "kindermans:2017")`:
   - Transformation to input data affects saliency map but not model
 ]
 
@@ -394,22 +397,20 @@ include_graphics("./figures/saliency.png")
 - Discuss importance of assessing LIME
 - Suggest the use of visualizations for assessment and provide example visualizations
 
+<br>
+
 **Chapter 2: Visualizations for Explaining Random Forests**
 
 - Use clustering to identify key tree structures within the random forest
 - Improve visualizations for use of trees as global surrogate models
+
+<br>
 
 **Chapter 3: Visualizations for Explaining Neural Networks**
 
 - Project for my internship with Sandia National Labs
 - Application with functional data
 - Visualizations for the explaining and understanding the models
-
-<br>
-
-```{r out.width = "80%", fig.align = "center"}
-include_graphics("./figures/sandia-note.png")
-```
 
 ---
 
@@ -422,8 +423,8 @@ class: middle, center, inverse
 # Motivation
 
 .pull-left[
-`r Citet(myBib, "hare:2016")`:
-- Interested in providing quantitative evidence to determine whether two bullets were fired from the same gun
+`r Citet(bib, "hare:2016")`:
+- Want to provide quantitative evidence for whether two bullets were fired from the same gun
 - Use high definition scans of striations on bullet lands to extract "signatures" 
 - Compute similarity features to compare two signatures
 ]
@@ -444,7 +445,7 @@ include_graphics("figures/signatures.png")
  
 # Motivation
 
-`r Citet(myBib, "hare:2016")` approach: 
+`r Citet(bib, "hare:2016")` approach: 
   - Random forest model
   - 9 signature similarity features
   - Returns a score for the comparison of two lands
@@ -461,11 +462,11 @@ include_graphics("figures/bullet_pcp.png")
 
 **Attempt**: Applied LIME
 
-**Result**: Unreasonable explanations (LIME explanation does not agree with random forest prediction)
+**Result**: Unreasonable explanations (e.g., LIME explanation does not agree with random forest prediction)
 
 **Example**: Known non-match
 
-```{r fig.width = 7, fig.height = 5, out.width = "65%", message = FALSE, fig.align = "center"}
+```{r fig.width = 7, fig.height = 5, out.width = "60%", message = FALSE, fig.align = "center"}
 # Load the hamby data
 bullet_train <- read.csv("../lime/data/hamby173and252_train.csv")
 bullet_test <- read.csv("../lime/data/hamby224_test.csv")
@@ -541,7 +542,7 @@ bullet_explain %>%
 
 # Conceptual Depiction of LIME
 
-.pull-left[LIME `r Citep(myBib, "ribeiro:2016")`:
+.pull-left[LIME `r Citep(bib, "ribeiro:2016")`:
 
 - .tan[**L**ocal]
 - .blue[**I**nterpretable]
@@ -760,6 +761,7 @@ Questions raised:
 - Explainer model a good approximation?
 - Appropriate local region?
 - Relationship linear in the local region?
+- Which tuning parameter settings to use when applying LIME?
 ]
 
 <br>
@@ -835,7 +837,7 @@ ggplot() +
 
 # Visualizations for Model Assessment
 
-Claims made about LIME `r Citet(myBib, "ribeiro:2016")`:
+Claims made about LIME `r Citep(bib, "ribeiro:2016")`:
 
 - .red[**Interpretability**]: Easy to interpret the explainer model to provide meaningful explanations
 
@@ -1002,9 +1004,21 @@ plot_grid(sine_plot_obs, sine_plot_pred,
 
 ---
 
+class: inverse-sub, middle, center
+
+# Set 1 of Visualizations: Diagnostics for Individual Explanations
+
+---
+
 # Diagnostics for Individual Explanations
 
-Overview visualization of the LIME explanation for the prediction of interest from the *lime* R package
+Applied LIME using *lime* R package `r Citep(bib, "pedersen:2020")` 
+
+- To prediction of interest
+- Number of features to return in explanation: 2
+- Default tuning parameters settings
+
+*lime* R package visualization of the explanation:
 
 ```{r}
 # Apply LIME with various tuning parameters to the sine data
@@ -1020,7 +1034,7 @@ sine_poi_lime_default <- sine_lime_default %>%
   mutate(case = c("Prediction of Interest", "Prediction of Interest"))
 ```
 
-```{r fig.width = 6, fig.height = 4, out.width = "80%", fig.align = "center"}
+```{r fig.width = 8, fig.height = 4, out.width = "80%", fig.align = "center"}
 sine_poi_exp <- sine_poi_lime_default %>% plot_features()
 sine_poi_exp
 ```
@@ -1032,16 +1046,15 @@ sine_poi_exp
 .left-desc[
 **Step 1a**: Data Simulation
 
-*lime* R package default procedure:
-
 - Sample 4999 observations uniformly from 4 quantile bins for each feature in the training data 
   
 **Corresponding Diagnostic:**  
 *Training Data Plot*
 
-- Scatterplot of the two features selected by *lime*
-- Points are the training data observations colored by the observed response
-- Grid of lines represents the boundaries of the 4 quantile bins
+- .red[Axes]: two features selected by LIME
+- .red[Points]: training data 
+- .red[Color]: observed response
+- .red[Lines]: 4 quantile bins boundaries
 ]
 
 .right-plot[
@@ -1092,10 +1105,12 @@ ggplot() +
 
 **Corresponding Diagnostic:** *Untransformed Simulated Data Plot*
 
-- Scatterplot of the simulated data features denoted by $x'_1$ and $x'_2$
-- Points are colored by the random forest predictions (for 'blue')
-- Grid of lines represents the boundaries of the 4 quantile bins
-- Prediction of interest location indicated by the diamond
+- .red[Axes]: simulated data features ( $x'_1$ and $x'_2$ )
+- .red[Points]: simulated data
+- .red[Diamond]: prediction of interest
+- .red[Color]: random forest prediction (for 'blue')
+- .red[Lines]: 4 quantile bins boundaries
+
 ]
 
 .right-plot[
@@ -1164,11 +1179,13 @@ ggplot() +
 
 - Convert continuous features to binary variables based on whether the observation falls in the same quantile bin as the prediction of interest or not
 
-**Corresponding Diagnostic:** *Interpretability Transformed Simulated Data Plot*
+**Corresponding Diagnostic:** *Transformed Simulated Data Plot*
 
-- Scatterplot of the simulated data features
-- Rectangular region shades represent the interpretability transformed feature value
-- Prediction of interest location indicated by the diamond
+- .red[Axes]: Simulated data features
+- .red[Points]: simulated data
+- .red[Diamond]: prediction of interest
+- .red[Color]: random forest prediction (for 'blue')
+- .red[Rectangle Shades]: interpretability transformed feature regions
 ]
 
 .right-plot[
@@ -1263,15 +1280,16 @@ ggplot() +
 .left-desc[
 **Step 2a**: Assign Weights
 
-- Assign weights to simulated data based on proximity to the prediction of interest (using the untransformed feature values)
-- *lime* R package uses Gower distance metric `r Citep(myBib, "gower:")` by default
+- Assign weights to simulated data based on proximity to the prediction of interest (using untransformed feature values)
+- Gower distance metric `r Citep(bib, "gower:")`
 
 **Corresponding Diagnostic:**  
 *Proximity Weights Plot*
 
-- Each hexagon contains the average of the weights of the observations located within the hexagon
-- Prediction of interest location indicated by the diamond
-- Solid lines are the interpretability transformation boundaries
+- .red[Axes]: Simulated data features
+- .red[Rectangle Color]: average weight within hexagon region
+- .red[Lines]: interpretability transformation boundaries
+- .red[Diamond]: prediction of interest
 
 ]
 
@@ -1317,15 +1335,16 @@ ggplot() +
 .left-desc[
 **Step 2b**: Feature Selection
 
-- Ridge regression model
-  - response: complex model predictions from the simulated data 
-  - features: interpretability transformed simulated data features
-- *lime* R package uses forward selection by default for less than 6 features specified (user specifies the number of features)
-
+- Ridge regression model fit to simulated data
+  - Response: complex model predictions
+  - Features: interpretability transformed features
+- Forward selection (if less than 6 features specified)
+  
 **Corresponding Diagnostic:**  
 *Feature Selection Comparison Plot*
 
-- Tile plot showing feature selected by various methods in *lime*
+- .red[Axes]: Training data features versus feature selection method
+- .red[Tile Color]: indicates if feature selected
 ]
 
 .right-plot[
@@ -1362,14 +1381,17 @@ sine_poi_lime_default %>%
 .left-desc[
 **Step 2c**: Fit Explainer Model
 
-- Ridge regression model
-  - response: complex model predictions from the simulated data 
-  - features: interpretability transformed simulated data features selected during feature selection
+- Ridge regression model fit to simulated data
+  - Response: complex model predictions
+  - Features: selected interpretability transformed features
 
 **Corresponding Diagnostic:**  
 *Explainer Model Prediction Plot*
 
-- Color of a rectangular region represents the explainer model prediction for the region
+- .red[Axes]: simulated data features
+- .red[Diamond]: prediction of interest 
+- .red[Rectangle]: Interpretability transformed regions
+- .red[Color]: explainer model prediction
 
 ]
 
@@ -1424,7 +1446,7 @@ ggplot() +
 *Explainer Model Residual Plot*
 
 - Residual plot for the explainer model
-- Some jitter has been added to the points in the x-direction
+- Points have been jittered in the x-direction
 ]
 
 .right-plot[
@@ -1455,13 +1477,15 @@ ggplot(sine_poi_perms, aes(x = exppred, y = resid)) +
 .left-desc[
 **Step 3a**: Explainer Model Interpretation
 
-- Interpret the explainer model to explain the complex model prediction
+- Interpret coefficients of explainer model
+- Explains complex model prediction
 
 **Corresponding Diagnostic:** *Explanation Plot*
 
-- Adaptation of the explanation plot from *lime* R package
-- Length of bars represents the magnitude of explainer model coefficients
-- Color of bars represents the value of the explainer model coefficients
+- Adaptation of plot from *lime* R package
+- .red[Axes]: Explainer model (interpretability transformed) feature versus explainer model coefficient
+- .red[Bar Length]: magnitude of explainer model coefficients
+- .red[Bar Color]: value of the explainer model coefficients
 ]
 
 .right-plot[
@@ -1498,13 +1522,15 @@ sine_poi_lime_default %>%
 .left-desc[
 **Step 3b**: Explainer Model Interpretation (continued)
 
-- Interpret the explainer model to explain the complex model prediction
-
 **Corresponding Diagnostic:** *Complex and Explainer Model Comparison Plot*
 
-- Scatter plot of the simulated data
-- Solid lines depict the interpretability transformation boundaries
-- Line color represents whether the corresponding explainer model coefficients supports a random forest prediction of 'blue' (blue) or not (red)
+- .red[Axes]: simulated data features
+- .red[Points]: simulated data 
+- .red[Diamond]: prediction of interest
+- .red[Point Color]: random forest prediction (for 'blue') 
+- .red[Point Size]: proximity weight
+- .red[Lines]: interpretability transformation boundaries
+- .red[Line Color]: explainer coefficient supports a random forest prediction of 'blue' (blue) or not (red)
 ]
 
 .right-plot[
@@ -1775,7 +1801,38 @@ plot_grid(weights_x1x2, weights_x1x3, weights_x2x3, weights_legend,
 
 ---
 
+class: inverse-sub, middle, center
+
+# Set 2 of Visualizations: Diagnostics for Sets of Explanations
+
+---
+
 # Diagnostics for Sets of Explanations
+
+Applied LIME using *lime* R package `r Citep(bib, "pedersen:2020")` 
+
+- All test data observations
+- Number of features to return in explanation: 2
+- Default tuning parameters settings
+
+Plot of all explanations from *lime* R package: 
+
+```{r fig.width = 10, fig.height = 4.5, out.width = "100%", fig.align = "center"}
+plot_explanations(sine_lime_default)
+```
+
+---
+
+# Diagnostics for Sets of Explanations
+
+**Explanation Set Plot**
+
+Provides an overview of groupings of LIME explanations
+
+- Adaptation to the *lime* plot of all explanations
+- .red[Y-axis]: Interpretability transformed features
+- .red[X-axis]: Observation in the data set
+- .red[Tile Color]: Ridge regression coefficient from the corresponding model
 
 ```{r fig.width = 10, fig.height = 4}
 # Determining order for cases based on group explanations
@@ -1827,12 +1884,21 @@ sine_lime_default %>%
   labs(x = "Case",
        y = "Feature",
        fill = "Feature \nWeight",
-       color = "Feature \nWeight")
+       color = "Feature \nWeight", 
+       title = "Explanation Set Plot")
 ```
 
 ---
 
 # Diagnostics for Sets of Explanations
+
+**Aggregated Coefficient Plots**
+
+Provides a summary of explainer model coefficients across the set of explanations within quantile bin regions
+
+- .red[Axes]: Test data features
+- .red[Cells]: Intersections of quantile bins
+- .red[Color]: Average of ridge regression coefficients (or sum of ridge regression coefficients) for observations within a cell
 
 ```{r fig.width = 12, fig.height = 4, warning = FALSE}
 # Compute the coef averages in each bin
@@ -1987,7 +2053,16 @@ plot_grid(plot_x1coefs, plot_x2coefs, plot_x1plusx2coefs, ave_coef_leg,
 
 # Diagnostics for Sets of Explanations
 
-.left-desc[]
+.left-desc[
+**Explainer Prediction Distribution Plot**
+
+Shows the relationship between the explainer model predictions and the quantile bins
+
+- .red[Axes]: Test data features
+- .red[Points]: Test data observations
+- .red[Color]: Explainer model prediction
+- .red[Lines]: Quantile bin boundaries
+]
 
 .right-plot[
 ```{r warning = FALSE}
@@ -2046,7 +2121,7 @@ ggplot() +
   labs(x = TeX("$x_1$"),
        y = TeX("$x_2$"),
        color = "LIME \nExplainer \nModel \nPrediction",
-       title = "Test Data Colored by Explainer Prediction") + 
+       title = "Explainer Prediction Distribution Plot") + 
   gg_procedure
 ```
 ]
@@ -2055,7 +2130,18 @@ ggplot() +
 
 # Diagnostics for Sets of Explanations
 
-.left-desc[]
+.left-desc[
+**Complex and Explainer Model Prediction Comparison Plot**
+
+Shows the relationship between the explainer model and complex model predictions
+
+- .red[Y-Axis]: Explainer model predictions
+- .red[X-Axis]: Complex model predictions
+- .red[Points]: Observations from the test data
+- .red[Color]: Corresponding explainer model $R^2$
+- .red[Dashed Line]: 1-1 line
+- .red.[Solid Line]: Loess smoother fit to the points
+]
 
 .right-plot[
 ```{r message = FALSE}
@@ -2073,7 +2159,7 @@ sine_lime_default %>%
   labs(x = "Random Forest Prediction",
        y = "Explainer Model Prediction",
        color = "Explainer \nModel \nR2",
-       title = "Complex and Explainer Model \nPrediction Comparison") +
+       title = "Complex and Explainer Model Prediction Comparison Plot") +
   scale_color_gradient(low = "grey90", high = "grey40") + 
   gg_procedure
 ```
@@ -2083,7 +2169,18 @@ sine_lime_default %>%
 
 # Diagnostics for Sets of Explanations
 
-.left-desc[]
+.left-desc[
+**Quantile Grid Prediction Comparison Plot**
+
+Shows the relationship between the average explainer model predictions within a quantile bins cell and the complex model predictions
+
+- .red[Axes]: Test data features
+- .red[Points]: Test data observations
+- .red[Point Color]: Explainer model prediction
+- .red[Cells]: Intersections of quantile bins
+- .red[Cell Color]: Average explainer model prediction
+- .red[Black Circles]: Identify observations misclassified by the complex model
+]
 
 .right-plot[
 ```{r warning = FALSE}
@@ -2172,7 +2269,7 @@ ggplot() +
        shape = "",
        fill = "Average \nExplainer \nModel \nProbability \nfor 'blue'",
        color = "Random \nForest \nProbability \nfor 'blue'",
-       title = "Quantile Grid Comparison of LIME Explainer \nModel Predictions to Random Forest \nPredictions") +
+       title = "Quantile Grid Prediction Comparison Plot") +
   guides(shape = guide_legend(order = 1),
          fill = guide_legend(order = 2, reverse = T),
          color = guide_legend(order = 3, reverse = T)) + 
@@ -2182,9 +2279,43 @@ ggplot() +
 
 ---
 
+class: inverse-sub, middle, center
+
+# Set 3 of Visualizations: Diagnostics for Comparisons of Tuning Parameters
+
+---
+
 # .medium[Diagnostics for Comparisons of Tuning Parameters]
 
-.left-desc[]
+Applied LIME using *lime* R package `r Citep(bib, "pedersen:2020")`
+- All test data observations  
+- Number of features to return in explanation: 2
+- Multiple applications of LIME for each observation
+  - 2 to 6 quantile bins
+  - Kernel density simulation
+
+Plot of all explanations from *lime* R package: 
+
+```{r fig.width = 16, fig.height = 6, out.width = "100%", fig.align = "center"}
+plot_explanations(sine_lime_explain$explain)
+```
+
+---
+
+# .medium[Diagnostics for Comparisons of Tuning Parameters]
+
+.left-desc[
+**Feature Heatmap Plot**
+
+Provides an overview of the features selected by LIME across observations and tuning parameters
+
+- .red[Y-Axis]: Test data observation
+- .red[X-Axis]: Data simulation method
+- .red[Y-Facet]: LIME feature order selection (first, second, etc.)
+- .red[X-Facet]: Density based or bin based simulation method
+- .red[Color]: Feature selected
+
+]
 
 .right-plot[
 ```{r message = FALSE}
@@ -2195,7 +2326,8 @@ feature_heatmap(sine_lime_explain$explain,
   theme(legend.position = "bottom",
         axis.text.y = element_blank(),
         axis.ticks.y = element_blank()) +
-  labs(y = "Case")
+  labs(y = "Case", 
+       title = "Feature Heatmap Plot")
 ```
 ]
 
@@ -2203,20 +2335,51 @@ feature_heatmap(sine_lime_explain$explain,
 
 # .medium[Diagnostics for Comparisons of Tuning Parameters]
 
-.left-desc[]
+## Metrics for the Assessment of LIME
+
+Define the following:
+
+**Average Fidelity** `r Citep(bib, "ribeiro:2016")`: 
+
+**Average $R^2$**:
+
+**MSEE (Mean Squared Explanation Error)**:
+
+---
+
+# .medium[Diagnostics for Comparisons of Tuning Parameters]
+
+.left-desc[
+**Assessment Metric Plot**
+
+Visualization of assessment metrics for comparing tuning parameter performance
+
+- .red[Y-Axis]: Metric value
+- .red[X-Axis]: Data simulation method
+- .red[Y-Facet]: Metric type
+- .red[X-Facet]: Density based or bin based simulation method
+- .red[Point]: Represents application of LIME to a set of observations
+- .red[Color]: Rank of the application based on metric value (within a metric)
+
+]
 
 .right-plot[
 ```{r message = FALSE}
 # Create the metric plot
 metric_plot(sine_lime_explain$explain) +
   theme_bw(base_family = "Times", base_size = 14) +
-  scale_color_gradient(low = "grey10", high = "grey90")
+  scale_color_gradient(low = "grey10", high = "grey90") + 
+  labs(title = "Assessment Metric Plot")
 ```
 ]
 
 ---
 
 # R package: limeaid
+
+---
+
+# Application of Visual Diagnostics to Bullet Random Forest
 
 ---
 
@@ -2228,7 +2391,7 @@ class: middle, center, inverse
 
 # Motivation
 
-- Since LIME did not provide reasonable explanations for the bullet matching random forest from the study by `r Citep(myBib, "hare:2016")`, it is still of interest to visualize the random forest to gain insight into the predictions. 
+- Since LIME did not provide reasonable explanations for the bullet matching random forest from the study by `r Citep(bib, "hare:2016")`, it is still of interest to visualize the random forest to gain insight into the predictions. 
 
 - It is particularly of interest to provide explanations for incorrect predictions.
 
@@ -2254,8 +2417,12 @@ class: middle, center, inverse
 
 # Application from Sandia National Labs
 
-```{r out.width = "100%", fig.align = "center"}
+```{r out.width = "90%", fig.align = "center"}
 include_graphics("./figures/fun-data.png")
+```
+
+```{r out.width = "80%", fig.align = "center"}
+include_graphics("./figures/sandia-note.png")
 ```
 
 ---
@@ -2322,7 +2489,7 @@ Applications/extensions of other methods
   - Permutation feature importance, saliency maps, and partial dependence plots
 
 Visualizations of the paths of an observation through the network
-  - Example: flow `r Citep(myBib, "halnaut:2020")`
+  - Example: flow `r Citep(bib, "halnaut:2020")`
 
 ```{r out.width = "65%", fig.align = "center"}
 include_graphics("figures/flow.png")
@@ -2373,7 +2540,12 @@ How to divide up the material from chapter 1 for publication? Current ideas:
 
 .medium[
 ```{r results = 'asis'}
-PrintBibliography(myBib)
+PrintBibliography(bib)
 ```
 ]
 
+---
+
+# Appendix
+
+Add application of diagnostics to bullet examples
