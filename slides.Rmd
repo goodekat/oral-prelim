@@ -1076,7 +1076,8 @@ sine_lime_default_bin_cuts <- sine_lime_default %>%
 ggplot() +
   geom_point(data = sine_data_train,
              mapping = aes(x = x1, y = x2, color = y),
-             alpha = 0.8) +
+             alpha = 0.8, 
+             size = 2) +
   geom_vline(xintercept = sine_lime_default_bin_cuts$x1) +
   geom_hline(yintercept = sine_lime_default_bin_cuts$x2) +
   scale_color_manual(values = c(sinecolor_blue, sinecolor_red)) +
@@ -1105,7 +1106,8 @@ ggplot() +
 
 **Corresponding Diagnostic:** *Untransformed Simulated Data Plot*
 
-- .red[Axes]: simulated data features ( $x'_1$ and $x'_2$ )
+- .red[Axes]: simulated data features
+  - denoted as $x'_1$ and $x'_2$ )
 - .red[Points]: simulated data
 - .red[Diamond]: prediction of interest
 - .red[Color]: random forest prediction (for 'blue')
@@ -1140,7 +1142,7 @@ ggplot() +
                            color = rfpred),
              alpha = 0.8,
              shape = 21,
-             size = 0.75) +
+             size = 2) +
   geom_vline(xintercept = sine_lime_default_bin_cuts$x1) +
   geom_hline(yintercept = sine_lime_default_bin_cuts$x2) +
   geom_point(data = sine_poi %>% mutate(shape = "Prediction \nof Interest"),
@@ -1238,7 +1240,7 @@ ggplot() +
                            y = x2,
                            color = rfpred),
              alpha = 0.5,
-             shape = 20) +
+             size = 2) +
   geom_rect(data = sine_exp_rect,
             mapping = aes(xmin = x1,
                           xmax = x2,
@@ -1544,7 +1546,7 @@ ggplot() +
                            size = weights),
              alpha = 0.8,
              shape = 20) +
-  scale_size(range = c(0.1, 3)) +
+  scale_size(range = c(0.1, 5)) +
   geom_rect(data = sine_poi_bounds %>% filter(feature == "x1"),
             mapping = aes(xmin = lower,
                           xmax = upper,
@@ -1564,7 +1566,7 @@ ggplot() +
   geom_point(data = sine_poi %>%
                mutate(shape = "Prediction \nof Interest"),
              mapping = aes(x = x1, y = x2, shape = shape, fill = rfprob_blue),
-             size = 7,
+             size = 5,
              alpha = 0.8) +
   scale_shape_manual(values = 23) +
   scale_fill_gradient2(low = sinecolor_red,
@@ -1616,7 +1618,7 @@ bins_sim_x1x2 <- ggplot() +
                            fill = rfprob_blue,
                            shape = shape),
              color = "black",
-             size = 5,
+             size = 7,
              alpha = 0.8) +
   scale_fill_gradient2(low = sinecolor_red,
                         mid = '#f7f7f7',
@@ -1653,7 +1655,7 @@ bins_sim_x1x3 <- ggplot() +
                            fill = rfprob_blue,
                            shape = shape),
              color = "black",
-             size = 5,
+             size = 7,
              alpha = 0.8) +
   scale_fill_gradient2(low = sinecolor_red,
                         mid = '#f7f7f7',
@@ -1690,7 +1692,7 @@ bins_sim_x2x3 <- ggplot() +
                            fill = rfprob_blue,
                            shape = shape),
              color = "black",
-             size = 5,
+             size = 7,
              alpha = 0.8) +
   scale_fill_gradient2(low = sinecolor_red,
                         mid = '#f7f7f7',
@@ -1731,7 +1733,7 @@ weights_x1x2 <- ggplot() +
                mutate(shape = "Prediction \nof Interest"),
              mapping = aes(x = x1, y = x2, shape = shape),
              fill = sinecolor_blue,
-             size = 5,
+             size = 7,
              alpha = 0.8) +
   scale_fill_gradient(low = "grey90", high = "grey10") +
   scale_shape_manual(values = 23) +
@@ -1755,7 +1757,7 @@ weights_x1x3 <- ggplot() +
                mutate(shape = "Prediction \nof Interest"),
              mapping = aes(x = x1, y = x3, shape = shape),
              fill = sinecolor_blue,
-             size = 5,
+             size = 7,
              alpha = 0.8) +
   scale_fill_gradient(low = "grey90", high = "grey10") +
   scale_shape_manual(values = 23) +
@@ -1779,7 +1781,7 @@ weights_x2x3 <- ggplot() +
                mutate(shape = "Prediction \nof Interest"),
              mapping = aes(x = x2, y = x3, shape = shape),
              fill = sinecolor_blue,
-             size = 5,
+             size = 7,
              alpha = 0.8) +
   scale_fill_gradient(low = "grey90", high = "grey10") +
   scale_shape_manual(values = 23) +
@@ -1892,7 +1894,7 @@ sine_lime_default %>%
 
 # Diagnostics for Sets of Explanations
 
-**Aggregated Coefficient Plots**
+**Average Coefficient Plots**
 
 Provides a summary of explainer model coefficients across the set of explanations within quantile bin regions
 
@@ -1991,7 +1993,7 @@ plot_x1coefs <- ggplot() +
        y = TeX("$x_2$"),
        fill = TeX('Ave $\\hat{\\beta}_1$'),
        color = "RF Prob",
-       title = TeX("Average $\\hat{\\beta}_1$ by Quantile Bins")) +
+       title = TeX("Average of $x_1$ Coefficients")) +
   theme(legend.position = "none")
 
 # Plot the x2 averaged coefficients
@@ -2014,7 +2016,7 @@ plot_x2coefs <- ggplot() +
        y = TeX("$x_2$"),
        fill = TeX('Ave $\\hat{\\beta}_2$'),
        color = "RF Prob",
-       title = TeX("Average $\\hat{\\beta}_2$ by Quantile Bins")) +
+       title = TeX("Average of $x_2$ Coefficients")) +
   theme(legend.position = "none")
 
 # Plot the x1 + x2 averaged coefficients
@@ -2037,7 +2039,7 @@ plot_x1plusx2coefs <- ggplot() +
        y = TeX("$x_2$"),
        fill = "Coefficient \nAverage",
        color = "RF Prob",
-       title = TeX("Average $\\hat{\\beta}_1+\\hat{\\beta}_2$ by Quantile Bins"))
+       title = TeX("Average of $x_1$ plus $x_2$ Coefficients"))
 
 # Get legend and remove legend from addedplot
 ave_coef_leg <- get_legend(plot_x1plusx2coefs)
@@ -2109,7 +2111,7 @@ ggplot() +
              mapping = aes(x = x1,
                            y = x2,
                            color = model_prediction),
-             alpha = 0.8) +
+             size = 3) +
   scale_color_gradient2(low = sinecolor_red,
                         mid = '#f7f7f7',
                         high = sinecolor_blue,
@@ -2131,7 +2133,7 @@ ggplot() +
 # Diagnostics for Sets of Explanations
 
 .left-desc[
-**Complex and Explainer Model Prediction Comparison Plot**
+**Prediction Comparison Plot**
 
 Shows the relationship between the explainer model and complex model predictions
 
@@ -2153,14 +2155,14 @@ sine_lime_default %>%
                                  "Quantile Bins" = "quantile_bins",
                                  "Kernel Density" = "kernel_density")) %>%
   ggplot(aes(x = label_prob, y = model_prediction, color = model_r2)) +
-  geom_point() +
+  geom_point(size = 2) +
   geom_smooth(se = FALSE, method = "loess", color = "black") +
   geom_abline(intercept = 0, slope = 1, linetype = "dashed") +
   labs(x = "Random Forest Prediction",
        y = "Explainer Model Prediction",
        color = "Explainer \nModel \nR2",
-       title = "Complex and Explainer Model Prediction Comparison Plot") +
-  scale_color_gradient(low = "grey90", high = "grey40") + 
+       title = "Prediction Comparison Plot") +
+  scale_color_gradient(low = "grey75", high = "grey10") + 
   gg_procedure
 ```
 ]
@@ -2170,7 +2172,7 @@ sine_lime_default %>%
 # Diagnostics for Sets of Explanations
 
 .left-desc[
-**Quantile Grid Prediction Comparison Plot**
+**Overlaid Prediction Comparison Plot**
 
 Shows the relationship between the average explainer model predictions within a quantile bins cell and the complex model predictions
 
@@ -2269,7 +2271,7 @@ ggplot() +
        shape = "",
        fill = "Average \nExplainer \nModel \nProbability \nfor 'blue'",
        color = "Random \nForest \nProbability \nfor 'blue'",
-       title = "Quantile Grid Prediction Comparison Plot") +
+       title = "Overlaid Prediction Comparison Plot") +
   guides(shape = guide_legend(order = 1),
          fill = guide_legend(order = 2, reverse = T),
          color = guide_legend(order = 3, reverse = T)) + 
@@ -2367,8 +2369,9 @@ Visualization of assessment metrics for comparing tuning parameter performance
 ```{r message = FALSE}
 # Create the metric plot
 metric_plot(sine_lime_explain$explain) +
-  theme_bw(base_family = "Times", base_size = 14) +
-  scale_color_gradient(low = "grey10", high = "grey90") + 
+  geom_point(size = 3) +
+  theme_bw(base_family = "Times", base_size = 16) +
+  scale_color_gradient(low = "grey10", high = "grey75") + 
   labs(title = "Assessment Metric Plot")
 ```
 ]
@@ -2495,12 +2498,31 @@ Visualizations of the paths of an observation through the network
 include_graphics("figures/flow.png")
 ```
 
-
 ---
 
 class: middle, center, inverse
 
 # Timeline for Completion
+
+---
+
+# Timeline for Completion 
+
+**Summer 2020**
+
+- Chapter 1: Finish writing (possibly submit paper)
+- Chapter 3: Work on content (Sandia internship)
+
+**Fall 2020**
+
+- Chapter 1: Submit paper (if not already done)
+- Chapter 2: Work on content
+- Chapter 3: Write up work
+
+**Spring 2021**
+
+- Chapter 2: Write up work
+- Defend
 
 ---
 
@@ -2512,7 +2534,9 @@ class: middle, center, inverse
 
 # Publication of Chapter 1
 
-How to divide up the material from chapter 1 for publication? Current ideas:
+How to divide up the material from chapter 1 for publication?  
+
+Current ideas:
 
 .pull-left[
 **Paper 1: Survey paper on LIME**
