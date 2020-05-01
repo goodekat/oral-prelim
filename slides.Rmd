@@ -1,5 +1,5 @@
 ---
-title: "**Studies on Visualization Methods for Explainable Machine Learning** <br> Statistics PhD Oral Prelim"
+title: "**Visualization Methods for Explainable Machine Learning** <br> Statistics PhD Oral Prelim"
 author: "Katherine Goode"
 institute: "Iowa State University"
 date: "May 6, 2020"
@@ -72,6 +72,11 @@ body {
   opacity: 1;
 }
 
+a, a > code {
+  color: #000000; /*default: rgb(249, 38, 114); || sets color of links */
+  text-decoration: none; /* turns off background coloring of links */
+}
+
 .left-desc {
   width: 40%;
   height: 92%;
@@ -86,7 +91,10 @@ body {
 .tiny{font-size: 30%}
 .small{font-size: 50%}
 .medium{font-size: 75%}
-
+.red{color: #9A3324}
+.blue{color: #006BA6}
+.tan{color: #9B945F}
+.grey{color: #707372}
 </style>
 
 ```{r setup, echo = FALSE, message = FALSE, warning = FALSE}
@@ -128,17 +136,6 @@ gg_procedure <- list(theme_bw(base_family = "Times", base_size = 14),
 
 Questions: 
 
-- How much text is appropriate on a slide during an oral prelim?
-- Complete sentences or not for the oral prelim?
-- Are the references formatted okay?
-- How much time should I spend discussing previous explainable machine learning methods/how many should I mention?
-- Title?
-- Should I say I'm focusing on "explainable machine learning" or "visualization techniques for explainable machine learning"
-
-Ideas:
-
-- Could turn explainable machine learning methods into a visualization or table to make it more digestible
-
 Notes: 
 
 - Remember to send out before prelim
@@ -166,20 +163,21 @@ Ph.D. in Statistics (in progress)
 
 .pull-right[
 
-**Assistantships/Internship**
+**Teaching**
 
-- Lecturer for STAT 101 
-  - Spring 2016
-- AES Statistical Consultant 
-  - Summer 2016 - current
-- NREM Research Assistant 
-  - Summer 2019
+- Teaching assisstant at UW Madison
+- Lecturer at Lawrence University
+- Lecturer at ISU
+
+**Consulting**
+
+- AES Statistical Consultant
+- NREM Research Assistant
   
 **Internship**
 
-Sandia National Labs
-  - Statistical Sciences Research and Development Intern
-  - December 2019 - current
+- Sandia National Labs: Statistical Sciences Research and Development Intern
+  
 ]
 
 ---
@@ -211,36 +209,40 @@ class: middle, center, inverse
 
 # Explainable Machine Learning
 
-- Many machine learning models are considered "black-boxes", because it is not possible to directly interpret them. 
+- Machine learning models:
+  - Good in prediction problems
+  - Many considered "black-boxes" since too complex to directly interpret
 
-- An area of research in explainable machine learning has developed as a result .medium[`r Citep(myBib, c("gilpin:2018", "guidotti:2018", "ming:2017", "mohseni:2018", "molnar:2019", "samek:2019"))`].
+- Led to research area of explainable machine learning 
 
-- The goal with explainable machine learning is to provide methods to explain predictions made by black-box models.
+  - Goal: provide methods to explain predictions made by black-box models
+  - Method overview papers/books: .medium[`r Citep(myBib, c("gilpin:2018", "guidotti:2018", "ming:2017", "mohseni:2018", "molnar:2019", "samek:2019"))`].
 
-- The European General Data Protection Regulation (GDPR) implemented in 2018 includes a "right to explanation", which is pertinent to the way in which machine learning models are used in Europe `r Citep(myBib, "goodman:2016")`.
+- European General Data Protection Regulation (GDPR) implemented in 2018 includes a "right to explanation"
 
-  - `r Citet(myBib, "goodman:2016")` point out, "It is reasonable to suppose that any adequate explanation would, at a minimum, provide an account of how input features relate to predictions, allowing one to answer questions such as: Is the model more or less likely to recommend a loan if the applicant is a minority?"
+  > `r Citet(myBib, "goodman:2016")`: "It is reasonable to suppose that any adequate explanation would, at a minimum, provide an account of how input features relate to predictions, allowing one to answer questions such as: Is the model more or less likely to recommend a loan if the applicant is a minority?"
 
 ---
 
 # Explainability versus Interpretability
 
-There are no accepted definitions for *explainability* and *interpretability* in the literature .small[`r Citep(myBib, c("gilpin:2018", "lipton:2016", "molnar:2019", "montavon:2017", "murdoch:2019", "rudin:2018"))`]. I will use the following definitions.
+No accepted definitions for explainability and interpretability .medium[`r Citep(myBib, c("gilpin:2018", "lipton:2016", "molnar:2019", "montavon:2017", "murdoch:2019"))`]  
+
+My definitions .medium[(implicity used by `r Citet(myBib, "rudin:2018")` and `r Citet(myBib, "ribeiro:2016")`)]:
 
 .pull-left[
-**Interpretability** is the ability to directly use the parameters of a model to understand the mechanism of how the model makes predictions.
+**Interpretability** is the ability to .blue[directly use model parameters] to understand the .red[mechanism of how the model makes predictions].
 
-- A linear model coefficient indicates the amount the response variable changes based on a change in the predictor variable when all other predictor variables are held constant.
-  
+- Linear regression model
 $$\hat{y}=\hat{\beta}_0+\hat{\beta}_1x_1+\cdots+\hat{\beta}_px_p $$
 ]
 
 .pull-right[
-**Explainability** is the ability to use the model in an indirect manner to understand the relationships in the data captured by the model.
+**Explainability** is the ability to .blue[use the model in an indirect manner] to understand the .red[relationships in the data captured by the model].
 
-- LIME uses a surrogate model to understand the relationship between the complex model predictions and predictor variables in a local region `r Citep(myBib, "ribeiro:2016")`.
+- LIME: local interpretable model-agnostic explanations `r Citep(myBib, "ribeiro:2016")`
 
-```{r out.width = "50%", fig.align = "center"}
+```{r out.width = "65%", fig.align = "center"}
 include_graphics("figures/lime.png")
 ```
 
@@ -251,51 +253,71 @@ include_graphics("figures/lime.png")
 # Model Agnostic Methods
 
 .pull-left[
-**General Model Visualizations**
+**General Model Visualizations**: .blue[Strategies for understanding any model]
 
 .medium[
-- Removing the blindfold .medium[`r Citep(myBib, "wickham:2015")`]
-  - Plot the model in dataspace
-  - Plot members of a model collection
-  - Explore the fitting process
+- Removing the blindfold .small[`r Citep(myBib, "wickham:2015")`]
 ]
 
-**Global Methods**
+**Global Methods**: .blue[Explaination for model as a whole]
 
 .medium[
-- Partial dependence plots .medium[`r Citep(myBib, "friedman:2001")`] and extensions:
-  - Interactive partial dependence plots .medium[`r Citep(myBib, "krause:2016")`]
-  - Individual conditional expectation plots .medium[`r Citep(myBib, "goldstein:2013")`]
-  - Accumulated local effect plots .medium[`r Citep(myBib, "apley:2016")`]
-  - Feature interaction plots .medium[`r Citep(myBib, c("friedman:2008", "greenwell:2018", "hooker:2004"))`]
-- Parallel coordinate plots .medium[`r Citep(myBib, "jiang:2019")`]
-- Global feature importance plots .medium[`r Citep(myBib, c("fisher:2018", "altmann:2010", "casalicchio:2019"))`]
-- Global surrogate models .medium[`r Citep(myBib, "molnar:2019")`]
+- Partial dependence plots .small[`r Citep(myBib, "friedman:2001")`] and extensions:
+  - Interactive partial dependence plots .small[`r Citep(myBib, "krause:2016")`]
+  - Individual conditional expectation plots .small[`r Citep(myBib, "goldstein:2013")`]
+  - Accumulated local effect plots .small[`r Citep(myBib, "apley:2016")`]
+  - Feature interaction plots .small[`r Citep(myBib, c("friedman:2008", "greenwell:2018", "hooker:2004"))`]
+- Global feature importance plots .small[`r Citep(myBib, c("fisher:2018", "altmann:2010", "casalicchio:2019"))`]
+- Global surrogate models .small[`r Citep(myBib, "molnar:2019")`]
+]
+
+]
+
+.pull-right[
+```{r out.width = "100%", fig.align = "center", fig.cap = "Model in data-space from Wickham, Cook, and Hofmann (2015)."}
+include_graphics("./figures/mds.png")
+```
+
+```{r out.width = "75%", fig.align = "center", fig.cap = "Partial dependence plot from Molnar (2019)."}
+include_graphics("./figures/pdp.png")
+```
+]
+
+---
+
+# Model Agnostic Methods
+
+.pull-left[
+**Local Methods**: .blue[Explanation for an individual prediction]
+
+.medium[
+- Individual conditional importance plots .small[`r Citep(myBib, "casalicchio:2019")`]
+- LIME .small[`r Citep(myBib, "ribeiro:2016")`]
+- Anchors (scoped rules) .small[`r Citep(myBib, "ribeiro:2018")`]
+- Shapely values .small[`r Citep(myBib, "štrumbelj:2014")`]
+- SHAP .small[`r Citep(myBib, "lundberg:2017")`]
+- breakDown .small[`r Citep(myBib, "staniak:2018")`]
+]
+
+**Example Based**: .blue[Explanations based on examples from the data]
+
+.medium[
+- Counterfactual examples .small[`r Citep(myBib, c("wachter:2017", "martens:2014", "looveren:2019", "laugel:2017"))`]
+- Adversarial examples .small[`r Citep(myBib, c("szegedy:2013", "goodfellow:2014", "biggio:2018", "su:2019"))`]
+- Prototypes and criticisms .small[`r Citep(myBib, "kim:1016")`]
+- Influential instances .small[`r Citep(myBib, "koh:2017")`]
 ]
 ]
 
 .pull-right[
-**Local Methods**
+```{r out.width = "75%", fig.align = "center", fig.cap = "Bar chart of shapley values from Molnar (2019)."}
+include_graphics("./figures/shapley.png")
+```
 
-.medium[
-- Individual conditional importance plots .medium[`r Citep(myBib, "casalicchio:2019")`]
-- LIME .medium[`r Citep(myBib, "ribeiro:2016")`]
-- Anchors (scoped rules) .medium[`r Citep(myBib, "ribeiro:2018")`]
-- Shapely values .medium[`r Citep(myBib, "štrumbelj:2014")`]
-- SHAP .medium[`r Citep(myBib, "lundberg:2017")`]
-- breakDown .medium[`r Citep(myBib, "staniak:2018")`]
+```{r out.width = "65%", fig.align = "center", fig.cap = "Adversarial example where one pixel change affects prediction from Su (2019)."}
+include_graphics("./figures/adversarial.png")
+```
 ]
-
-**Example Based Explanations**
-
-.medium[
-- Counterfactual examples .medium[`r Citep(myBib, c("wachter:2017", "martens:2014", "looveren:2019", "laugel:2017"))`]
-- Adversarial examples .medium[`r Citep(myBib, c("szegedy:2013", "goodfellow:2014", "biggio:2018"))`]
-- Prototypes and criticisms .medium[`r Citep(myBib, "kim:2016")`]
-- Influential instances .medium[`r Citep(myBib, "koh:2017")`]
-]
-]
-
 ---
 
 # Model Specific Methods
@@ -304,71 +326,90 @@ include_graphics("figures/lime.png")
 **Random Forests**
 
 .medium[
-- Random forest impurity based feature importance .medium[`r Citep(myBib, "breiman:2001")`]
-- Sectioned scatterplots .medium[`r Citep(myBib, "urbanek:2008")`]
-- Trace plots of trees .medium[`r Citep(myBib, "urbanek:2008")`]
-- Simplified model .medium[`r Citep(myBib, "hara:2016")`]
-- Forest floor visualizations .medium[`r Citep(myBib, "welling:2016")`]
-- Interactive visualizations .medium[`r Citep(myBib, c("beckett:2018", "dasilva:2017"))`]
+- Random forest impurity based feature importance .small[`r Citep(myBib, "breiman:2001")`]
+- Sectioned scatterplots .small[`r Citep(myBib, "urbanek:2008")`]
+- Trace plots of trees .small[`r Citep(myBib, "urbanek:2008")`]
+- Simplified model .small[`r Citep(myBib, "hara:2016")`]
+- Forest floor visualizations .small[`r Citep(myBib, "welling:2016")`]
+- Interactive visualizations .small[`r Citep(myBib, c("beckett:2018", "dasilva:2017"))`]
 ]
 
 **Neural Networks**
 
 .medium[
-- Extracting tree structures .medium[`r Citep(myBib, "craven:1996")`]
-- Saliency maps .medium[`r Citep(myBib, "simonyan:2013")`]
-- Feature visualization .medium[`r Citep(myBib, "olah:2017")`]
-- Grand tours .medium[`r Citep(myBib, "li:2020")`]
-- Flows .medium[`r Citep(myBib, "halnaut:2020")`]
+- Extracting tree structures .small[`r Citep(myBib, "craven:1996")`]
+- Saliency maps .small[`r Citep(myBib, "simonyan:2013")`]
+- Feature visualization .small[`r Citep(myBib, "olah:2017")`]
+- Grand tours .small[`r Citep(myBib, "li:2020")`]
+- Flows .small[`r Citep(myBib, "halnaut:2020")`]
 ]
 ]
 
 .pull-right[
 ```{r out.width = "60%", fig.align = "center", fig.cap = "Sectioned scatterplot from Urbanek (2008)."}
-knitr::include_graphics("./figures/rf-splits.png")
+include_graphics("./figures/rf-splits.png")
 ```
 
 ```{r out.width = "60%", fig.align = "center", fig.cap = "Saliency maps from Simonyan, Vedaldi, and Zisserman (2013)."}
-knitr::include_graphics("./figures/saliency.png")
+include_graphics("./figures/saliency.png")
 ```
 ]
 
 ---
 
-# .medium[Assessment of Explainable Machine Learning Methods]
+# .medium[Assessments of Explainable Machine Learning]
 
-**General Assessment**
+.pull-left[
+**General**
 
-- `r Citet(myBib, "rudin:2018")` argues against the use of black-box models to make high stakes decisions since all "explanations must be wrong". `r Citet(myBib, "rudin:2018")` also makes the following claims:
+.red[Arguement against black box model explanations] `r Citep(myBib, "rudin:2018")`:
+  - "Explanations must be wrong."
+  - Explanations may not:
+      - be faithful to the original model
+      - make sense
+      - be detailed enough to understand the "black-box" model
+  - Debunks accuracy and interpretability trade-off myth
+  - Use interpretable models for high-stakes decisions
+]
 
-  - The trade-off between accuracy and interpretability is a myth
-  - Interpretable models can have just as good accuracy as "black-box" models
-  - Explanations may not be faithful to the original model, make sense, or be detailed enough to understand the "black-box" model
+.pull-right[
+**Method Specific**
 
-**Method Specific Assessments**
+.red[Assessment of LIME] `r Citep(myBib, "laugel:2018")`:
+  - How to choose a local region?
+  
+.red[Assessment of counterfactual examples] `r Citep(myBib, "laugel:2018")`:
+  - Issues with unjustified counterfactual examples
 
-- `r Citet(myBib, "laugel:2018")` consider how to appropriately choose a local region for the local surrogate model with the method of LIME.
-- `r Citet(myBib, "laugel:2018")` consider issues with unjustified counterfactual examples.
-- `r Citet(myBib, "kindermans:2017")` show how saliency maps can change when a transformation is applied to the input data that has no effect on the model.
+.red[Assessment of saliency maps] `r Citep(myBib, "kindermans:2017")`:
+  - Transformation to input data affects saliency map but not model
+]
 
 ---
 
 # Overview of Dissertation Chapters
 
-**Chapter 1**
+**Chapter 1: Visual Diagnostics for LIME**
 
-- Focus on the model-agnostic explainer model method of LIME
-- Discuss the importance of assessing LIME explanations
-- Suggest the use of visualizations for the assessment of LIME and provide many example visualizations
+- Discuss importance of assessing LIME
+- Suggest the use of visualizations for assessment and provide example visualizations
 
-**Chapter 2**
+**Chapter 2: Visualizations for Explaining Random Forests**
 
-- Visualizations for the explainability of random forest models
 - Use clustering to identify key tree structures within the random forest
+- Improve visualizations for use of trees as global surrogate models
 
-**Chapter 3**
+**Chapter 3: Visualizations for Explaining Neural Networks**
 
-- Visualizations for the explainability of neural networks with functional data
+- Project for my internship with Sandia National Labs
+- Application with functional data
+- Visualizations for the explaining and understanding the models
+
+<br>
+
+```{r out.width = "80%", fig.align = "center"}
+include_graphics("./figures/sandia-note.png")
+```
 
 ---
 
@@ -403,25 +444,28 @@ include_graphics("figures/signatures.png")
  
 # Motivation
 
-`r Citet(myBib, "hare:2016")` fit a random forest model with nine signature similarity features.
+`r Citet(myBib, "hare:2016")` approach: 
+  - Random forest model
+  - 9 signature similarity features
+  - Returns a score for the comparison of two lands
 
-```{r out.width = "85%", fig.align = "center"}
+```{r out.width = "100%", fig.align = "center"}
 include_graphics("figures/bullet_pcp.png")
-```
-
-```{r}
-rtrees_conf = bulletxtrctr::rtrees$confusion
-colnames(rtrees_conf) = c("FALSE", "TRUE", "Classification Error")
-kableExtra::kable(rtrees_conf)
 ```
 
 ---
 
 # Motivation
 
-We were interested in providing an explanation for specific signatures comparisons, so we tried applying LIME. However, we found unreasonable results, which led to an assessment of LIME.
+**Our Original Goal**: Provide explanations for specific signatures comparisons
 
-```{r fig.width = 7, fig.height = 5, out.width = "85%", message = FALSE, fig.align = "center"}
+**Attempt**: Applied LIME
+
+**Result**: Unreasonable explanations (LIME explanation does not agree with random forest prediction)
+
+**Example**: Known non-match
+
+```{r fig.width = 7, fig.height = 5, out.width = "65%", message = FALSE, fig.align = "center"}
 # Load the hamby data
 bullet_train <- read.csv("../lime/data/hamby173and252_train.csv")
 bullet_test <- read.csv("../lime/data/hamby224_test.csv")
@@ -497,14 +541,21 @@ bullet_explain %>%
 
 # Conceptual Depiction of LIME
 
-LIME was introduced by `r Citet(myBib, "ribeiro:2016")`.
+.pull-left[LIME `r Citep(myBib, "ribeiro:2016")`:
 
-- **L**ocal
-- **I**nterpretable
-- **M**odel-agnostic
-- **E**xplanation
+- .tan[**L**ocal]
+- .blue[**I**nterpretable]
+- .grey[**M**odel-agnostic]
+- .red[**E**xplanation]
+]
 
-**Concept**: Explain the prediction made by a complex model for *one prediction of interest* using an interpretable model focused on a local region near the prediction of interest
+.pull-right[
+**Concept**: For *one prediction of interest*
+- .tan[Focus on a neighborhood around the prediction of interest]
+- .blue[Use an inherently interpretable model]
+- .grey[Understand the complex model] 
+- .red[Capture the relationship between the complex model predictions and predictor variables]
+]
 
 ```{r}
 # Simulate example data
@@ -695,11 +746,21 @@ ggplot() +
 
 # Importance of Assessing LIME
 
-LIME adds an additional layer of complexity by using a model that also needs to be assessed, which raises various questions:
+.pull-left[
 
-- Does the explainer model approximate the complex model well in a local region around the prediction of interest?
-- How to determine an appropriate local region?
-- Is the relationship linear in the specified local region?
+Additional layer of complexity:
+  - Start with a complex model
+  - LIME uses another model
+  - End with two models to assess
+]
+
+.pull-right[
+Questions raised:
+
+- Explainer model a good approximation?
+- Appropriate local region?
+- Relationship linear in the local region?
+]
 
 <br>
 
@@ -774,21 +835,23 @@ ggplot() +
 
 # Visualizations for Model Assessment
 
-`r Citet(myBib, "ribeiro:2016")` make the following set of claims regarding the performance of LIME:
+Claims made about LIME `r Citet(myBib, "ribeiro:2016")`:
 
-- *Interpretability*: Easy to interpret the explainer model to provide meaningful explanations
+- .red[**Interpretability**]: Easy to interpret the explainer model to provide meaningful explanations
 
-- *Faithfulness*: Explainer model sufficiently captures the relationship between the complex model predictions and the features in the local region around a prediction of interest
+- .red[**Faithfulness**]: Explainer model sufficiently captures the relationship between the complex model predictions and the features in the local region around a prediction of interest
 
-- *Linearity*: Using a ridge regression as the explainer model assumes a linear relationship between complex model predictions and the features
+- .red[**Linearity**]: Using a ridge regression as the explainer model assumes a linear relationship between complex model predictions and the features
 
-- *Localness*: Explanations are local in regards to a prediction of interest
+- .red[**Localness**]: Explanations are local in regards to a prediction of interest
 
-We suggest the use of visualizations to assess the claims made by LIME, which we have organized into three categories:
+<br>
 
-- *Diagnostics for individual explanations*
-- *Diagnostics for sets of explanations*
-- *Diagnostics for comparisons of tuning parameters*
+We suggest visual diagnostics to assess these claims:
+
+- .blue[**Diagnostics for individual explanations**]
+- .blue[**Diagnostics for sets of explanations**]
+- .blue[**Diagnostics for comparisons of tuning parameters**]
 
 ---
 
@@ -853,8 +916,8 @@ $x_3\sim \mbox{N}(0,1)$
 ]
 
 .pull-right[
-$$y=\begin{cases}  blue & \mbox{ if } x'_2 > \sin\left(x'_1\right) \\
-  red & \mbox{ if } x'_2 \le \sin\left(x'_1\right) \ . %\nolabel
+$$y=\begin{cases} \mbox{blue} & \mbox{ if } x'_2 > \sin\left(x'_1\right) \\
+  \mbox{red} & \mbox{ if } x'_2 \le \sin\left(x'_1\right) \ . %\nolabel
   \end{cases}$$
 where  
 $x'_1=x_1\cos(\theta)-x_2\sin(\theta)$   
@@ -2153,6 +2216,10 @@ metric_plot(sine_lime_explain$explain) +
 
 ---
 
+# R package: limeaid
+
+---
+
 class: middle, center, inverse
 
 # Chapter 2: Explaining Random Forests using Clustering of Trees
@@ -2181,45 +2248,84 @@ class: middle, center, inverse
 
 class: middle, center, inverse
 
-# Chapter 3: Extensions of Neural Network Explanation Tools to Tabular Data Applications
+# Chapter 3: Extensions of Neural Network Explanation Tools to Functional Data
 
 ---
 
-# Motivation
+# Application from Sandia National Labs
 
-- The majority of research associated with explainable machine learning for neural networks is focused on image data.
-
-- We are working with a Bayesian neural network applied to functional data. It is of interest to use visualizations to provide explanations for the predictions made by the model.
-
-.center[*Include figure of functional data here*]
+```{r out.width = "100%", fig.align = "center"}
+include_graphics("./figures/fun-data.png")
+```
 
 ---
 
-# Current Approaches
+# Current Approach: Feature Visualization
 
-**Feature Visualization**
+.pull-left[
+
+**Concept**
+
+- Focus on a "location" in the neural network
+- Determine example observation that maximize the activation function 
+
+**Process**
+
+1. Fit a model
+2. Fix estimated parameter values
+3. Determine values that maximized activation function at desired "location"
+
+```{r out.width = "25%", fig.align = "center"}
+include_graphics("./figures/nn.png")
+```
+
+.tiny[Image source: https://en.wikipedia.org/wiki/Artificial_neural_network]
+]
+
+.pull-right[
+**Example**
+
+- Response: $y\in\{0,1\}$
+- Features: $$PC = (PC_1, PC_2, PC_3, PC_4, PC_5)$$
+- Model: 1 hidden layer, 5 neurons
+- Neuron $i$ coefficients $(i=1,...,5)$: $$\left(\beta_{0,i}, \beta_{1,i}, \beta_{2,i}, \beta_{3,i}, \beta_{4,i}, \beta_{5,i}\right)$$
+- Activation Function: logistic $$\sigma(v)=\frac{1}{1+e^{-v}}$$
+- Feature visualization optimization:
+
+$$\arg\underset{PC}{\max} \ \sigma\left(\hat{\beta}_{0,i} + \hat{\beta}_{1,i}PC_1 +\cdots+\hat{\beta}_{5,i}PC_5\right)$$
+]
 
 ---
 
-# Current Approaches 
+# Feature Visualization
 
-**Permutation Feature Importance**
+```{r out.width = "100%", fig.align = "center"}
+include_graphics("./figures/fv-1hl.png")
+```
 
 ---
 
-# Ideas for Future Work
+# Feature Visualization
+
+```{r out.width = "100%", fig.align = "center"}
+include_graphics("./figures/fv-3hl.png")
+```
+
+---
+
+# Ideas for Future Work  
 
 Feature visualization adjustments
   - Visualize the functional principal components
   
-Develop extensions of other explainable neural network methods that have been developed for image data
-  - Saliency maps and partial dependence plots
+Applications/extensions of other methods
+  - Permutation feature importance, saliency maps, and partial dependence plots
 
 Visualizations of the paths of an observation through the network
-  - Application/extension of flow such as the figure below from `r Citep(myBib, "halnaut:2020")`
+  - Example: flow `r Citep(myBib, "halnaut:2020")`
 
-```{r out.width = "50%", fig.align = "center"}
-knitr::include_graphics("figures/flow.png")
+```{r out.width = "65%", fig.align = "center"}
+include_graphics("figures/flow.png")
 ```
 
 
