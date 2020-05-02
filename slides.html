@@ -43,6 +43,9 @@ class: center, middle, inverse, title-slide
   border-top: 80px solid #707372;
   text-shadow: none;
 }
+.inverse-sub h1, .inverse-sub h2, .inverse-sub h3 {
+  color: #f3f3f3;
+}
 
 .remark-slide-content &gt; h1 {
   font-family: 'Songti SC';
@@ -87,8 +90,8 @@ body {
   opacity: 1;
 }
 
-.inverse .remark-slide-number {
-  font-size: 11pt;
+.inverse-sub .remark-slide-number {
+  font-size: 13pt;
   font-family: 'Songti SC';
   color: #FAFAFA;
   opacity: 1;
@@ -396,7 +399,9 @@ Silva, Cook, and Lee, 2017)]
 
 class: middle, center, inverse
 
-# Chapter 1: Visual Diagnostics of a Model Explainer -- Tools for the Assessment of LIME Explanations
+# Chapter 1
+
+## .center[Visual Diagnostics of a Model Explainer -- Tools for the Assessment of LIME Explanations]
 
 ---
 
@@ -493,7 +498,7 @@ Questions raised:
 
 # Visualizations for Model Assessment
 
-Claims made about LIME (Ribeiro, Singh, and Guestrin, 2016):
+Claims about LIME (Ribeiro, Singh, and Guestrin, 2016):
 
 - .red[**Interpretability**]: Easy to interpret the explainer model to provide meaningful explanations
 
@@ -510,6 +515,8 @@ We suggest visual diagnostics to assess these claims:
 - .blue[**Diagnostics for individual explanations**]
 - .blue[**Diagnostics for sets of explanations**]
 - .blue[**Diagnostics for comparisons of tuning parameters**]
+
+**Note**: We focus on binary response variable and continuous predictor variables
 
 ---
 
@@ -543,7 +550,8 @@ where
 
 class: inverse-sub, middle, center
 
-# Set 1 of Visualizations: Diagnostics for Individual Explanations
+# Set 1 of Visualizations
+## .center[Diagnostics for Individual Explanations]
 
 ---
 
@@ -777,7 +785,9 @@ Applied LIME using *lime* R package (Pedersen and Benesty, 2020)
 
 class: inverse-sub, middle, center
 
-# Set 2 of Visualizations: Diagnostics for Sets of Explanations
+# Set 2 of Visualizations
+
+## .center[Diagnostics for Sets of Explanations]
 
 ---
 
@@ -881,13 +891,56 @@ Shows the relationship between the average explainer model predictions within a 
 
 .right-plot[
 ![](slides_files/figure-html/unnamed-chunk-37-1.png)&lt;!-- --&gt;
+
 ]
 
 ---
 
 class: inverse-sub, middle, center
 
-# Set 3 of Visualizations: Diagnostics for Comparisons of Tuning Parameters
+# Set 3 of Visualizations
+
+## .center[Diagnostics for Comparisons of Tuning Parameters]
+
+---
+
+# .medium[Diagnostics for Comparisons of Tuning Parameters]
+
+.pull-left[
+**Tuning Parameters**
+  
+Definition:
+
+- LIME application method options
+
+Examples:
+
+  - simulation method
+  
+  - number of observations to simulate
+  
+  - distance metric
+  
+  - feature selection method
+  
+  - number of features to return
+]
+
+.pull-right[
+**Questions Raised**
+
+- How to select tuning parameters?
+
+- How to assess tuning parameters?
+
+&lt;br&gt;
+
+**Assessment of Tuning Parameters**
+
+- Check if explanations depend on tuning parameters
+
+- Compute metrics to compare performance
+]
 
 ---
 
@@ -929,15 +982,75 @@ Provides an overview of the features selected by LIME across observations and tu
 
 # .medium[Diagnostics for Comparisons of Tuning Parameters]
 
-## Metrics for the Assessment of LIME
+### Notation for Assessment Metrics
 
-Define the following:
+.pull-left[
+.red[**Data and Complex Model**]
 
-**Average Fidelity** (Ribeiro, Singh, and Guestrin, 2016): 
+For a set of `\(E\)` explanations
 
-**Average `\(R^2\)`**:
+- `\(\textbf{X}\)` = matrix of observed data to be explained with `\(K\)` features and `\(E\)` observations
+- `\(x_e\)` = observed feature vector for observation `\(e\)`
+- `\(f\)` = complex model
+- `\(f(x_e)\)` = complex model prediction for observation `\(e\)`
+]
 
-**MSEE (Mean Squared Explanation Error)**:
+.pull-right[
+.red[**Simulated and Transformed Data**]
+
+For `\(x_e\)` and set of tuning parameters `\(t\)`
+
+- `\(\textbf{X}_{e,t}'\)` = LIME simulated dataset with `\(K\)` features and `\(S\)` observations
+- `\(x'_{e,t,s}\)` = feature vector for simulated data observation `\(s\)`
+- `\(\textbf{Z}'_{e,t}\)` = matrix of interpretability transformed simulated data with `\(K\)` features and `\(S\)` observations
+- `\(z'_{e,t,s}\)` = interpretability transfomed feature vector
+- `\(z_{e,t}\)` = interpretability transformed `\(x_e\)`
+]
+
+---
+
+# .medium[Diagnostics for Comparisons of Tuning Parameters]
+
+### Notation for Assessment Metrics
+
+.pull-left[
+.red[**Weights and Explainer Model**]
+
+For `\(x_e\)` and set of tuning parameters `\(t\)`
+
+- `\(\pi_t\)` = proximity distance metric
+- `\(\pi_t\left(x_e, x'_{e,t,s}\right)\)` = weight assigned to `\(x'_{e,t,s}\)` which are the proximity between `\(x_e\)` and `\(x'_{e,t,s}\)`
+- `\(g_{e,t}\)` = explainer model
+- `\(g_{e,t}(z'_{e,s,t})\)` = explainer model prediction for interpretability transformed simulated data observation `\(s\)`
+
+]
+
+.pull-right[
+
+.red[**Summary of Indices**]
+
+- `\(e\)` = explanation `\((e=1,...,E)\)`
+- `\(t\)` = set of tuning parameters `\((t=1,...,T)\)`
+- `\(s\)` = simulated observation `\((s=1,...,S)\)`
+]
+
+---
+
+# .medium[Diagnostics for Comparisons of Tuning Parameters]
+
+### Metrics for the Assessment of LIME
+
+.red[**Average R Squared**]: Average of explainer model `\(R^2\)` values over a set of explanations with the same tuning parameters to assess the linearity claim where `\(R_{e,t}^2\)` is the `\(R^2\)` for `\(g_{e,t}\)`
+`$$R^2_{\mbox{ave}} = \sum_{e=1}^E R_{e,t}^2$$`
+
+.red[**Average Fidelity**]: Average of fidelity metric introduced in Ribeiro, Singh, and Guestrin (2016) over a set of explanations with the same tuning parameters to assess the explainer model approximation to the complex model
+
+`$$\mathcal{L}_{\mbox{ave}} \ = \ \sum_{e=1}^E\mathcal{L}(f, \ g_{e,t}, \ \pi_{t}) \ =  \ \sum_{e=1}^E\sum_{s=1}^{S}\pi_{t}\left(x_e, x'_{e,t,s}\right)\left(f(x_e)-g_{e,t}\left(z_{e,t,s}'\right)\right)^2$$`
+
+
+.red[**Mean Squared Explanation Error (MSEE)**]: Comparable to an MSE for comparing complex model predictions to explainer model predictions for each explanation
+
+`$$MSEE=\frac{1}{E}\sum_{e=1}^E\left(f\left(x_e\right)-g_{e,t}\left(z_{e,t}\right)\right)^2$$`
 
 ---
 
@@ -963,43 +1076,94 @@ Visualization of assessment metrics for comparing tuning parameter performance
 
 ---
 
+class: inverse-sub, middle, center
+
+# Implementation and Application 
+
+---
+
 # R package: limeaid
 
+.left-desc[
+Our R package for visual LIME diagnostics: 
+
+- Available on GitHub 
+  - github.com/goodekat/limeaid
+- Functionality:
+  - Applying LIME with multiple tuning parameters
+  - Computing assessment metrics
+  - Plots:
+      - Complex and explainer model comparison plot
+      - Feature Heatmap Plot
+      - Assessment Metric Plot
+      
+&lt;img src="figures/limeaid.png" width="33%" style="display: block; margin: auto auto auto 0;" /&gt;
+]
+
+.right-plot[
+
+```r
+feature_heatmap(
+  explanations = sine_lime_explain$explain,
+  order_method = "PCA"
+  )
+```
+
+![](slides_files/figure-html/unnamed-chunk-42-1.png)&lt;!-- --&gt;
+
+]
+
 ---
 
-# Application of Visual Diagnostics to Bullet Random Forest
+# .medium[Application of Visual Diagnostics to Bullet Random Forest]
+
+Feature heatmap of LIME explanation from Hare, Hofmann, and Carriquiry (2016) bullet comparison forest model 
+
+![](slides_files/figure-html/unnamed-chunk-43-1.png)&lt;!-- --&gt;
 
 ---
 
 class: middle, center, inverse
 
-# Chapter 2: Explaining Random Forests using Clustering of Trees
+# Chapter 2
+
+## .center[Explaining Random Forests using Clustering of Trees]
 
 ---
 
-# Motivation
+# Current Plan
 
-- Since LIME did not provide reasonable explanations for the bullet matching random forest from the study by (Hare, Hofmann, and Carriquiry, 2016), it is still of interest to visualize the random forest to gain insight into the predictions. 
+.left-desc[
+**Motivation**
 
-- It is particularly of interest to provide explanations for incorrect predictions.
+- Still interested in gaining insights for the random forest from (Hare, Hofmann, and Carriquiry, 2016)
+- Focus on visualizations of the random forest trees
 
----
+**Ideas**
 
-# Current Ideas
+- Tree as a global explainer model
+  - Plot global explainer on top of Urbanek (2008)'s trace plot
+  
+- Clustering to identify key trees in random forest
+  - Use distance metric to compare trees
+]
 
-**Classification Tree as a Global Explainer Model**
+.right-plot[
+&lt;img src="figures/global-tree.png" width="50%" style="display: block; margin: auto;" /&gt;
 
----
-
-# Current Ideas
-
-**Clustering to Identify Key Tree Paths in the Random Forest**
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="figures/rf-trace.png" alt="Trace plot from Urbanek (2008)." width="65%" /&gt;
+&lt;p class="caption"&gt;Trace plot from Urbanek (2008).&lt;/p&gt;
+&lt;/div&gt;
+]
 
 ---
 
 class: middle, center, inverse
 
-# Chapter 3: Extensions of Neural Network Explanation Tools to Functional Data
+# Chapter 3 
+
+## .center[Extensions of Neural Network Explanation Tools to Functional Data]
 
 ---
 
@@ -1011,37 +1175,36 @@ class: middle, center, inverse
 
 ---
 
-# Current Approach: Feature Visualization
+# Current Approach
+
+### Feature Visualization
 
 .pull-left[
 
 **Concept**
 
 - Focus on a "location" in the neural network
-- Determine example observation that maximize the activation function 
+- Determine features that maximize the activation function 
+- Identify example observation that triggers a part of the network
 
 **Process**
 
 1. Fit a model
 2. Fix estimated parameter values
 3. Determine values that maximized activation function at desired "location"
-
-&lt;img src="./figures/nn.png" width="25%" style="display: block; margin: auto;" /&gt;
-
-.tiny[Image source: https://en.wikipedia.org/wiki/Artificial_neural_network]
 ]
 
 .pull-right[
-**Example**
 
-- Response: `\(y\in\{0,1\}\)`
-- Features: `$$PC = (PC_1, PC_2, PC_3, PC_4, PC_5)$$`
-- Model: 1 hidden layer, 5 neurons
-- Neuron `\(i\)` coefficients `\((i=1,...,5)\)`: `$$\left(\beta_{0,i}, \beta_{1,i}, \beta_{2,i}, \beta_{3,i}, \beta_{4,i}, \beta_{5,i}\right)$$`
-- Activation Function: logistic `$$\sigma(v)=\frac{1}{1+e^{-v}}$$`
-- Feature visualization optimization:
+&lt;br&gt;
 
-`$$\arg\underset{PC}{\max} \ \sigma\left(\hat{\beta}_{0,i} + \hat{\beta}_{1,i}PC_1 +\cdots+\hat{\beta}_{5,i}PC_5\right)$$`
+&lt;img src="./figures/nn.png" width="70%" style="display: block; margin: auto;" /&gt;
+
+&lt;br&gt;
+&lt;br&gt;
+
+.center[.small[Image source: https://en.wikipedia.org/wiki/Artificial_neural_network]]
+
 ]
 
 ---
@@ -1069,13 +1232,13 @@ Applications/extensions of other methods
 Visualizations of the paths of an observation through the network
   - Example: flow (Halnaut, Giot, Bourqui, et al., 2020)
 
-&lt;img src="figures/flow.png" width="65%" style="display: block; margin: auto;" /&gt;
+&lt;img src="figures/flow.png" width="60%" style="display: block; margin: auto;" /&gt;
 
 ---
 
 class: middle, center, inverse
 
-# Timeline for Completion
+# Timeline and Discussion Points
 
 ---
 
@@ -1084,24 +1247,21 @@ class: middle, center, inverse
 **Summer 2020**
 
 - Chapter 1: Finish writing (possibly submit paper)
-- Chapter 3: Work on content (Sandia internship)
+- Chapter 2: Start on content (if time)
+- .blue[Chapter 3: Work on content (Sandia internship)]
 
 **Fall 2020**
 
 - Chapter 1: Submit paper (if not already done)
-- Chapter 2: Work on content
-- Chapter 3: Write up work
+- .blue[Chapter 2: Work on content]
+- .blue[Chapter 3: Write up work]
 
 **Spring 2021**
 
-- Chapter 2: Write up work
-- Defend
-
----
-
-class: middle, center, inverse
-
-# Discussion Points
+- Chapter 1: Review process (if applicable)
+- .blue[Chapter 2: Write up work]
+- Chapter 3: Submit paper (if ready)
+- .blue[Defend dissertation]
 
 ---
 
@@ -1131,11 +1291,15 @@ Current ideas:
 
 ---
 
+class: inverse, center, middle
+
 # References
 
-**Need to format this eventually using `start` and `end` options**
+---
 
-.medium[
+# References
+
+.small[
 Altmann, A, L. Toloşi, O. Sander, et al. (2010). "Permutation
 importance: a corrected feature importance measure". In:
 _Bioinformatics_ 26.10, pp. 1340-1347. ISSN: 1367-4803. DOI:
@@ -1218,7 +1382,13 @@ Kindermans, P, S. Hooker, J. Adebayo, et al. (2017). "The
 
 Koh, P. W. and P. Liang (2017). "Understanding Black-box Predictions
 via Influence Functions". In: _arXiv_.
+]
 
+---
+
+# References
+
+.small[
 Krause, J, A. Perer, and K. Ng (2016). "Interacting with Predictions:
 Visual Inspection of Black-box Machine Learning Models" , pp.
 5686-5697. DOI:
@@ -1303,7 +1473,13 @@ Su, J, D. V. Vargas, and K. Sakurai (2019). "One Pixel Attack for
 Fooling Deep Neural Networks". In: _IEEE Transactions on Evolutionary
 Computation_ 23.5, pp. 828-841. ISSN: 1089-778X. DOI:
 [10.1109/tevc.2019.2890858](https://doi.org/10.1109%2Ftevc.2019.2890858).
+]
 
+---
+
+# References
+
+.small[
 Szegedy, C, W. Zaremba, I. Sutskever, et al. (2013). "Intriguing
 properties of neural networks".
 
@@ -1327,9 +1503,72 @@ Mining: The ASA Data Science Journal_ 8.4, pp. 203-225. ISSN:
 
 ---
 
+class: inverse, center, middle
+
 # Appendix
 
-Add application of diagnostics to bullet examples
+---
+
+# .medium[Additional Bullet Application Plots]
+
+Distribution of the response variable for the random forest features
+
+![](slides_files/figure-html/unnamed-chunk-55-1.png)&lt;!-- --&gt;
+
+---
+
+# .medium[Additional Bullet Application Plots]
+
+Bivariate visualizations of the random forest training data
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-56-1.png" width="65%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# .medium[Additional Bullet Application Plots]
+
+Random forest variable importance plot
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-57-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# .medium[Additional Bullet Application Plots]
+
+Assessment metric plot
+
+![](slides_files/figure-html/unnamed-chunk-58-1.png)&lt;!-- --&gt;
+
+---
+
+# .medium[Additional Bullet Application Plots]
+
+Plots of LIME explanations for one case in the test data that is a known non-match
+
+
+
+![](slides_files/figure-html/unnamed-chunk-60-1.png)&lt;!-- --&gt;
+
+---
+
+# .medium[Additional Bullet Application Plots]
+
+Plots of LIME explanations for one case in the test data that is a known match
+
+![](slides_files/figure-html/unnamed-chunk-61-1.png)&lt;!-- --&gt;
+
+---
+
+# .medium[Feature Visualization Example Optimization Example]
+
+- Response: `\(y\in\{0,1\}\)`
+- Features: `$$PC = (PC_1, PC_2, PC_3, PC_4, PC_5)$$`
+- Model: 1 hidden layer, 5 neurons
+- Neuron `\(i\)` coefficients `\((i=1,...,5)\)`: `$$\left(\beta_{0,i}, \beta_{1,i}, \beta_{2,i}, \beta_{3,i}, \beta_{4,i}, \beta_{5,i}\right)$$`
+- Activation Function: logistic `$$\sigma(v)=\frac{1}{1+e^{-v}}$$`
+- Feature visualization optimization:
+
+`$$\arg\underset{PC}{\max} \ \sigma\left(\hat{\beta}_{0,i} + \hat{\beta}_{1,i}PC_1 +\cdots+\hat{\beta}_{5,i}PC_5\right)$$`
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

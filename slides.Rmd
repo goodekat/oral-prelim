@@ -35,6 +35,9 @@ output:
   border-top: 80px solid #707372;
   text-shadow: none;
 }
+.inverse-sub h1, .inverse-sub h2, .inverse-sub h3 {
+  color: #f3f3f3;
+}
 
 .remark-slide-content > h1 {
   font-family: 'Songti SC';
@@ -79,8 +82,8 @@ body {
   opacity: 1;
 }
 
-.inverse .remark-slide-number {
-  font-size: 11pt;
+.inverse-sub .remark-slide-number {
+  font-size: 13pt;
   font-family: 'Songti SC';
   color: #FAFAFA;
   opacity: 1;
@@ -116,6 +119,7 @@ a, a > code {
 library(cowplot)
 library(dplyr)
 library(forcats)
+library(ggforce)
 library(ggplot2)
 library(glmnet)
 library(gower)
@@ -416,7 +420,9 @@ include_graphics("./figures/saliency.png")
 
 class: middle, center, inverse
 
-# Chapter 1: Visual Diagnostics of a Model Explainer -- Tools for the Assessment of LIME Explanations
+# Chapter 1
+
+## .center[Visual Diagnostics of a Model Explainer -- Tools for the Assessment of LIME Explanations]
 
 ---
 
@@ -473,6 +479,22 @@ bullet_test <- read.csv("../lime/data/hamby224_test.csv")
 
 # Extract the features and order them based on feature importance
 bullet_features <- rownames(bulletxtrctr::rtrees$importance)
+bullet_features_ordered <-
+  data.frame(feature = rownames(bulletxtrctr::rtrees$importance),
+             MeanDecreaseGini = bulletxtrctr::rtrees$importance) %>%
+  arrange(desc(MeanDecreaseGini)) %>%
+  mutate(feature = fct_recode(feature,
+                              "CCF" = "ccf",
+                              "CMS" = "cms",
+                              "Matches" = "matches",
+                              "Mismatches" = "mismatches",
+                              "Non-CMS" = "non_cms",
+                              "Rough Correlation" = "rough_cor",
+                              "Distance Std Dev" = "sd_D",
+                              "Distance" = "D",
+                              "Sum Peaks" = "sum_peaks"))
+bullet_features_ordered <- bullet_features_ordered %>%
+  mutate(feature = factor(feature, levels = bullet_features_ordered$feature))
 
 # Load the files
 bullet_explain_noperms <- readRDS("../lime/data/hamby_explain.rds")
@@ -837,7 +859,7 @@ ggplot() +
 
 # Visualizations for Model Assessment
 
-Claims made about LIME `r Citep(bib, "ribeiro:2016")`:
+Claims about LIME `r Citep(bib, "ribeiro:2016")`:
 
 - .red[**Interpretability**]: Easy to interpret the explainer model to provide meaningful explanations
 
@@ -854,6 +876,8 @@ We suggest visual diagnostics to assess these claims:
 - .blue[**Diagnostics for individual explanations**]
 - .blue[**Diagnostics for sets of explanations**]
 - .blue[**Diagnostics for comparisons of tuning parameters**]
+
+**Note**: We focus on binary response variable and continuous predictor variables
 
 ---
 
@@ -1006,7 +1030,8 @@ plot_grid(sine_plot_obs, sine_plot_pred,
 
 class: inverse-sub, middle, center
 
-# Set 1 of Visualizations: Diagnostics for Individual Explanations
+# Set 1 of Visualizations
+## .center[Diagnostics for Individual Explanations]
 
 ---
 
@@ -1805,7 +1830,9 @@ plot_grid(weights_x1x2, weights_x1x3, weights_x2x3, weights_legend,
 
 class: inverse-sub, middle, center
 
-# Set 2 of Visualizations: Diagnostics for Sets of Explanations
+# Set 2 of Visualizations
+
+## .center[Diagnostics for Sets of Explanations]
 
 ---
 
@@ -2186,7 +2213,7 @@ Shows the relationship between the average explainer model predictions within a 
 
 .right-plot[
 ```{r warning = FALSE}
-# Compute the average explainer model predictions per bin
+# Compute the average explainer model predictions per bin 
 bin_mean_exp_pred <- sine_lime_default %>%
   select(case, model_prediction) %>%
   group_by(case) %>%
@@ -2235,22 +2262,15 @@ ggplot() +
                select(case, feature, feature_value,
                       label_prob, model_prediction) %>%
                spread(feature, feature_value),
-             mapping =  aes(x = x1, y = x2, color = label_prob)) +
-  geom_point(data = sine_lime_default %>%
-               select(case, feature, feature_value,
-                      label_prob, model_prediction) %>%
-               spread(feature, feature_value) %>%
-               mutate(rf1 = ifelse(label_prob > 0.5, TRUE, FALSE),
-                      lime1 = ifelse(model_prediction > 0.5,
-                                     TRUE, FALSE)) %>%
-               mutate(diff = rf1 - lime1) %>%
-               select(case, x1, x2, diff) %>%
-               filter(diff != 0) %>%
-               mutate(shape = "Random Forest \nMisclassified \nPredictions"),
-             mapping =  aes(x = x1, y = x2, color = label_prob,
-                            shape = shape),
-             alpha = 1,
-             size = 3,
+             mapping =  aes(x = x1, y = x2, color = label_prob),
+             size = 3) +
+  geom_point(data = sine_data_test %>% 
+               filter(y != rfpred) %>%
+               mutate(shape = "shape"),
+             mapping = 
+               aes(x = x1, y = x2, 
+                   shape = "Random Forest \nMisclassified \nPredictions"),
+             size = 4,
              color = "black") +
   scale_color_gradient2(low = "firebrick",
                         mid = '#f7f7f7',
@@ -2277,13 +2297,56 @@ ggplot() +
          color = guide_legend(order = 3, reverse = T)) + 
   gg_procedure
 ```
+
 ]
 
 ---
 
 class: inverse-sub, middle, center
 
-# Set 3 of Visualizations: Diagnostics for Comparisons of Tuning Parameters
+# Set 3 of Visualizations
+
+## .center[Diagnostics for Comparisons of Tuning Parameters]
+
+---
+
+# .medium[Diagnostics for Comparisons of Tuning Parameters]
+
+.pull-left[
+**Tuning Parameters**
+  
+Definition:
+
+- LIME application method options
+
+Examples:
+
+  - simulation method
+  
+  - number of observations to simulate
+  
+  - distance metric
+  
+  - feature selection method
+  
+  - number of features to return
+]
+
+.pull-right[
+**Questions Raised**
+
+- How to select tuning parameters?
+
+- How to assess tuning parameters?
+
+<br>
+
+**Assessment of Tuning Parameters**
+
+- Check if explanations depend on tuning parameters
+
+- Compute metrics to compare performance
+]
 
 ---
 
@@ -2323,7 +2386,7 @@ Provides an overview of the features selected by LIME across observations and tu
 ```{r message = FALSE}
 feature_heatmap(sine_lime_explain$explain,
                 order_method = "PCA") +
-  scale_fill_gretchenalbrecht(palette = "last_rays", discrete = TRUE) +
+  #scale_fill_gretchenalbrecht(palette = "last_rays", discrete = TRUE) +
   theme_bw(base_family = "Times", base_size = 14) +
   theme(legend.position = "bottom",
         axis.text.y = element_blank(),
@@ -2337,15 +2400,75 @@ feature_heatmap(sine_lime_explain$explain,
 
 # .medium[Diagnostics for Comparisons of Tuning Parameters]
 
-## Metrics for the Assessment of LIME
+### Notation for Assessment Metrics
 
-Define the following:
+.pull-left[
+.red[**Data and Complex Model**]
 
-**Average Fidelity** `r Citep(bib, "ribeiro:2016")`: 
+For a set of $E$ explanations
 
-**Average $R^2$**:
+- $\textbf{X}$ = matrix of observed data to be explained with $K$ features and $E$ observations
+- $x_e$ = observed feature vector for observation $e$
+- $f$ = complex model
+- $f(x_e)$ = complex model prediction for observation $e$
+]
 
-**MSEE (Mean Squared Explanation Error)**:
+.pull-right[
+.red[**Simulated and Transformed Data**]
+
+For $x_e$ and set of tuning parameters $t$
+
+- $\textbf{X}_{e,t}'$ = LIME simulated dataset with $K$ features and $S$ observations
+- $x'_{e,t,s}$ = feature vector for simulated data observation $s$
+- $\textbf{Z}'_{e,t}$ = matrix of interpretability transformed simulated data with $K$ features and $S$ observations
+- $z'_{e,t,s}$ = interpretability transfomed feature vector
+- $z_{e,t}$ = interpretability transformed $x_e$
+]
+
+---
+
+# .medium[Diagnostics for Comparisons of Tuning Parameters]
+
+### Notation for Assessment Metrics
+
+.pull-left[
+.red[**Weights and Explainer Model**]
+
+For $x_e$ and set of tuning parameters $t$
+
+- $\pi_t$ = proximity distance metric
+- $\pi_t\left(x_e, x'_{e,t,s}\right)$ = weight assigned to $x'_{e,t,s}$ which are the proximity between $x_e$ and $x'_{e,t,s}$
+- $g_{e,t}$ = explainer model
+- $g_{e,t}(z'_{e,s,t})$ = explainer model prediction for interpretability transformed simulated data observation $s$
+
+]
+
+.pull-right[
+
+.red[**Summary of Indices**]
+
+- $e$ = explanation $(e=1,...,E)$
+- $t$ = set of tuning parameters $(t=1,...,T)$
+- $s$ = simulated observation $(s=1,...,S)$
+]
+
+---
+
+# .medium[Diagnostics for Comparisons of Tuning Parameters]
+
+### Metrics for the Assessment of LIME
+
+.red[**Average R Squared**]: Average of explainer model $R^2$ values over a set of explanations with the same tuning parameters to assess the linearity claim where $R_{e,t}^2$ is the $R^2$ for $g_{e,t}$
+$$R^2_{\mbox{ave}} = \sum_{e=1}^E R_{e,t}^2$$
+
+.red[**Average Fidelity**]: Average of fidelity metric introduced in `r Citet(bib, "ribeiro:2016")` over a set of explanations with the same tuning parameters to assess the explainer model approximation to the complex model
+
+$$\mathcal{L}_{\mbox{ave}} \ = \ \sum_{e=1}^E\mathcal{L}(f, \ g_{e,t}, \ \pi_{t}) \ =  \ \sum_{e=1}^E\sum_{s=1}^{S}\pi_{t}\left(x_e, x'_{e,t,s}\right)\left(f(x_e)-g_{e,t}\left(z_{e,t,s}'\right)\right)^2$$
+
+
+.red[**Mean Squared Explanation Error (MSEE)**]: Comparable to an MSE for comparing complex model predictions to explainer model predictions for each explanation
+
+$$MSEE=\frac{1}{E}\sum_{e=1}^E\left(f\left(x_e\right)-g_{e,t}\left(z_{e,t}\right)\right)^2$$
 
 ---
 
@@ -2378,43 +2501,160 @@ metric_plot(sine_lime_explain$explain) +
 
 ---
 
+class: inverse-sub, middle, center
+
+# Implementation and Application 
+
+---
+
 # R package: limeaid
 
+.left-desc[
+Our R package for visual LIME diagnostics: 
+
+- Available on GitHub 
+  - github.com/goodekat/limeaid
+- Functionality:
+  - Applying LIME with multiple tuning parameters
+  - Computing assessment metrics
+  - Plots:
+      - Complex and explainer model comparison plot
+      - Feature Heatmap Plot
+      - Assessment Metric Plot
+      
+```{r out.width = "33%", fig.align = "left"}
+include_graphics("figures/limeaid.png")
+```
+]
+
+.right-plot[
+```{r echo = TRUE, fig.height = 5, fig.width = 6}
+feature_heatmap(
+  explanations = sine_lime_explain$explain,
+  order_method = "PCA"
+  )
+```
+
+]
+
 ---
 
-# Application of Visual Diagnostics to Bullet Random Forest
+# .medium[Application of Visual Diagnostics to Bullet Random Forest]
+
+Feature heatmap of LIME explanation from `r Citet(bib, "hare:2016")` bullet comparison forest model 
+
+```{r message = FALSE, fig.width = 16, fig.height = 9}
+# Load the files
+bullet_explain_noperms <- readRDS("../lime/data/hamby_explain.rds")
+
+# Specify two cases of interest
+bullet_poi_match <- unique(bullet_explain_noperms$case)[c(325)]
+bullet_poi_nonmatch <- unique(bullet_explain_noperms$case)[c(20)]
+
+# Apply LIME to two cases with the permutations returned
+bullet_lime_explain_perms <- apply_lime(
+  train = bullet_train %>% select(all_of(bullet_features)),
+  test = bullet_test %>%
+    filter(case %in% bullet_poi_match) %>%
+    bind_rows(bullet_test %>%
+    filter(case %in% bullet_poi_nonmatch)) %>%
+    select(all_of(bullet_features)),
+  model = bulletxtrctr::rtrees,
+  label = as.character(TRUE),
+  n_features = 3,
+  sim_method = c('quantile_bins', 'equal_bins', 'kernel_density', 'normal_approx'),
+  nbins = 3,
+  feature_select = "auto",
+  dist_fun = "gower",
+  kernel_width = NULL,
+  gower_pow = 0.5,
+  return_perms = TRUE,
+  all_fs = FALSE,
+  seed = 20190914)
+
+# Separate the lime and explain parts of the results
+bullet_lime_perms <- bullet_lime_explain_perms$lime
+bullet_explain_perms <- bullet_lime_explain_perms$explain %>%
+  mutate(case = ifelse(case == 1,
+                       bullet_poi_match,
+                       bullet_poi_nonmatch))
+
+# Determine the implementation and case number of the poi
+# in the no_perms data
+poi_cases_no_perms <- bullet_explain_noperms %>%
+  filter(case %in% c(bullet_poi_match, bullet_poi_nonmatch),
+         nbins %in% c(3, NA),
+         gower_pow == 0.5) %>%
+  select(case, implementation) %>%
+  unique()
+
+# Join the no perms data (with poi removed) with the
+# perms data (perms removed)
+bullet_explain <- bullet_explain_noperms %>%
+  anti_join(poi_cases_no_perms,
+            by = c("implementation", "case")) %>%
+  bind_rows(bullet_explain_perms %>%
+              select(-perms_raw, -perms_numerified,
+                     -perms_pred_simple, -perms_pred_complex,
+                     -weights))
+
+# Create a feature heatmap
+feature_heatmap(bullet_explain %>%
+                  mutate(label = as.factor(label)),
+                facet_var = na.omit(bullet_test$samesource),
+                order_method = "PCA") +
+  scale_fill_gretchenalbrecht(palette = "last_rays",
+                              discrete = TRUE) +
+  theme_bw(base_family = "Times", base_size = 10) +
+  theme(axis.text.y = element_blank(),
+        axis.ticks.y = element_blank()) +
+  labs(y = "Case")
+```
 
 ---
 
 class: middle, center, inverse
 
-# Chapter 2: Explaining Random Forests using Clustering of Trees
+# Chapter 2
+
+## .center[Explaining Random Forests using Clustering of Trees]
 
 ---
 
-# Motivation
+# Current Plan
 
-- Since LIME did not provide reasonable explanations for the bullet matching random forest from the study by `r Citep(bib, "hare:2016")`, it is still of interest to visualize the random forest to gain insight into the predictions. 
+.left-desc[
+**Motivation**
 
-- It is particularly of interest to provide explanations for incorrect predictions.
+- Still interested in gaining insights for the random forest from `r Citep(bib, "hare:2016")`
+- Focus on visualizations of the random forest trees
 
----
+**Ideas**
 
-# Current Ideas
+- Tree as a global explainer model
+  - Plot global explainer on top of `r Citet(bib, "urbanek:2008")`'s trace plot
+  
+- Clustering to identify key trees in random forest
+  - Use distance metric to compare trees
+]
 
-**Classification Tree as a Global Explainer Model**
+.right-plot[
+```{r out.width = "50%", fig.align = "center"}
+include_graphics("figures/global-tree.png")
+```
 
----
-
-# Current Ideas
-
-**Clustering to Identify Key Tree Paths in the Random Forest**
+```{r out.width = "65%", fig.align = "center", fig.cap = "Trace plot from Urbanek (2008)."}
+include_graphics("figures/rf-trace.png")
+```
+]
 
 ---
 
 class: middle, center, inverse
 
-# Chapter 3: Extensions of Neural Network Explanation Tools to Functional Data
+# Chapter 3 
+
+## .center[Extensions of Neural Network Explanation Tools to Functional Data]
 
 ---
 
@@ -2430,39 +2670,38 @@ include_graphics("./figures/sandia-note.png")
 
 ---
 
-# Current Approach: Feature Visualization
+# Current Approach
+
+### Feature Visualization
 
 .pull-left[
 
 **Concept**
 
 - Focus on a "location" in the neural network
-- Determine example observation that maximize the activation function 
+- Determine features that maximize the activation function 
+- Identify example observation that triggers a part of the network
 
 **Process**
 
 1. Fit a model
 2. Fix estimated parameter values
 3. Determine values that maximized activation function at desired "location"
-
-```{r out.width = "25%", fig.align = "center"}
-include_graphics("./figures/nn.png")
-```
-
-.tiny[Image source: https://en.wikipedia.org/wiki/Artificial_neural_network]
 ]
 
 .pull-right[
-**Example**
 
-- Response: $y\in\{0,1\}$
-- Features: $$PC = (PC_1, PC_2, PC_3, PC_4, PC_5)$$
-- Model: 1 hidden layer, 5 neurons
-- Neuron $i$ coefficients $(i=1,...,5)$: $$\left(\beta_{0,i}, \beta_{1,i}, \beta_{2,i}, \beta_{3,i}, \beta_{4,i}, \beta_{5,i}\right)$$
-- Activation Function: logistic $$\sigma(v)=\frac{1}{1+e^{-v}}$$
-- Feature visualization optimization:
+<br>
 
-$$\arg\underset{PC}{\max} \ \sigma\left(\hat{\beta}_{0,i} + \hat{\beta}_{1,i}PC_1 +\cdots+\hat{\beta}_{5,i}PC_5\right)$$
+```{r out.width = "70%", fig.align = "center"}
+include_graphics("./figures/nn.png")
+```
+
+<br>
+<br>
+
+.center[.small[Image source: https://en.wikipedia.org/wiki/Artificial_neural_network]]
+
 ]
 
 ---
@@ -2494,7 +2733,7 @@ Applications/extensions of other methods
 Visualizations of the paths of an observation through the network
   - Example: flow `r Citep(bib, "halnaut:2020")`
 
-```{r out.width = "65%", fig.align = "center"}
+```{r out.width = "60%", fig.align = "center"}
 include_graphics("figures/flow.png")
 ```
 
@@ -2502,7 +2741,7 @@ include_graphics("figures/flow.png")
 
 class: middle, center, inverse
 
-# Timeline for Completion
+# Timeline and Discussion Points
 
 ---
 
@@ -2511,24 +2750,21 @@ class: middle, center, inverse
 **Summer 2020**
 
 - Chapter 1: Finish writing (possibly submit paper)
-- Chapter 3: Work on content (Sandia internship)
+- Chapter 2: Start on content (if time)
+- .blue[Chapter 3: Work on content (Sandia internship)]
 
 **Fall 2020**
 
 - Chapter 1: Submit paper (if not already done)
-- Chapter 2: Work on content
-- Chapter 3: Write up work
+- .blue[Chapter 2: Work on content]
+- .blue[Chapter 3: Write up work]
 
 **Spring 2021**
 
-- Chapter 2: Write up work
-- Defend
-
----
-
-class: middle, center, inverse
-
-# Discussion Points
+- Chapter 1: Review process (if applicable)
+- .blue[Chapter 2: Write up work]
+- Chapter 3: Submit paper (if ready)
+- .blue[Defend dissertation]
 
 ---
 
@@ -2558,18 +2794,290 @@ Current ideas:
 
 ---
 
+class: inverse, center, middle
+
 # References
 
-**Need to format this eventually using `start` and `end` options**
+---
 
-.medium[
+# References
+
+.small[
 ```{r results = 'asis'}
-PrintBibliography(bib)
+PrintBibliography(bib, start = 1, end = 22)
 ```
 ]
 
 ---
 
+# References
+
+.small[
+```{r results = 'asis'}
+PrintBibliography(bib, start = 23, end = 44)
+```
+]
+
+---
+
+# References
+
+.small[
+```{r results = 'asis'}
+PrintBibliography(bib, start = 45)
+```
+]
+
+---
+
+class: inverse, center, middle
+
 # Appendix
 
-Add application of diagnostics to bullet examples
+---
+
+# .medium[Additional Bullet Application Plots]
+
+Distribution of the response variable for the random forest features
+
+```{r warning = FALSE, fig.height = 5, fig.width = 7}
+bullet_train %>%
+  select(all_of(bullet_features), samesource) %>%
+  pivot_longer(names_to = "feature",
+               values_to = "value",
+               all_of(bullet_features)) %>%
+  select(feature, value, samesource) %>%
+  mutate(feature = fct_recode(feature,
+                              "CCF" = "ccf",
+                              "CMS" = "cms",
+                              "Matches" = "matches",
+                              "Mismatches" = "mismatches",
+                              "Non-CMS" = "non_cms",
+                              "Rough Correlation" = "rough_cor",
+                              "Distance" = "D",
+                              "Distance Std Dev" = "sd_D",
+                              "Sum Peaks" = "sum_peaks")) %>%
+  ggplot(aes(x = value, fill = samesource, color = samesource)) +
+  geom_histogram(position = "fill", bins = 30) +
+  facet_wrap( ~ feature, scales = "free", strip.position = "bottom") +
+  labs(x = "",
+       y = "Proportion",
+       fill = "Same Source?",
+       color = "Same Source?",
+       title = "Hamby Bullet Training Data") +
+  theme_bw(base_family = "Times", base_size = 10) +
+  theme(legend.position = "bottom",
+        strip.placement = "outside",
+        strip.background = element_rect(color = "white",
+                                        fill = "white")) +
+  scale_color_manual(values = c("grey50", "darkorange")) +
+  scale_fill_manual(values = c("grey50", "darkorange"))
+```
+
+---
+
+# .medium[Additional Bullet Application Plots]
+
+Bivariate visualizations of the random forest training data
+
+```{r fig.height = 8, fig.width = 8, out.width = "65%", fig.align = "center"}
+ggplot(data = bullet_train %>%
+         mutate(samesource = as.numeric(samesource)) %>%
+         rename("CCF" = "ccf", "CMS" = "cms", "Matches" = "matches",
+           "Mismatches" = "mismatches", "Non-CMS" = "non_cms",
+           "Rough Correlation" = "rough_cor", "Distance Std Dev" = "sd_D",
+           "Distance" = "D", "Sum Peaks" = "sum_peaks")) +
+  stat_summary_2d(mapping = aes(x = .panel_x,
+                                y = .panel_y,
+                                z = samesource),
+                  bins = 50,
+                  fun = mean) +
+  geom_autohistogram() +
+  facet_matrix(vars(bullet_features_ordered$feature),
+               layer.diag = 2,
+               switch = "both") +
+  scale_fill_gradient2(low = "grey50",
+                       high = "darkorange",
+                       midpoint = 0.5) +
+  theme_bw(base_family = "Times", base_size = 10) +
+  theme(strip.placement = "outside",
+        strip.background = element_rect(color = "white",
+                                        fill = "white"),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        legend.position = "bottom") +
+  labs(fill = "Proportion of Same Source Observations")
+```
+
+---
+
+# .medium[Additional Bullet Application Plots]
+
+Random forest variable importance plot
+
+```{r fig.height = 3, fig.width = 5, out.width = "80%", fig.align = "center"}
+ggplot(bullet_features_ordered %>%
+         mutate(feature = factor(feature, levels = rev(levels(feature)))),
+       aes(x = MeanDecreaseGini, y = feature)) +
+  geom_col() +
+  labs(y = "Feature",
+       x = "Variable Importance") +
+  theme_bw(base_size = 10, base_family = "Times")
+```
+
+---
+
+# .medium[Additional Bullet Application Plots]
+
+Assessment metric plot
+
+```{r message = FALSE, fig.width = 10, fig.height = 6}
+# Create a metric comparison plot
+metric_plot(bullet_explain %>% mutate(label = as.factor(label))) +
+  theme_bw(base_family = "Times") +
+  scale_color_gradient(low = "grey10", high = "grey90") +
+  labs(color = "Rank \n(within \na metric)")
+```
+
+---
+
+# .medium[Additional Bullet Application Plots]
+
+Plots of LIME explanations for one case in the test data that is a known non-match
+
+```{r message = FALSE}
+bullet_explain_perms <- bullet_explain_perms %>%
+  mutate(case = ifelse(case == bullet_poi_nonmatch,
+                       paste(case, "(non-match)"),
+                       paste(case, "(match)")))
+
+eoi1_3qb <- eoi_plot(bullet_explain_perms[1:3,], alpha = 0.9, weights = FALSE) +
+  scale_color_gradient2(low = "grey50",
+                        high = "darkorange",
+                        midpoint = 0.5,
+                        limits = c(0, 1)) +
+  scale_fill_gradient2(low = "grey50",
+                        high = "darkorange",
+                        midpoint = 0.5,
+                        limits = c(0, 1)) +
+  theme_bw(base_family = "Times", base_size = 8) +
+  theme(strip.placement = "outside",
+        strip.background = element_rect(color = "white",
+                                        fill = "white"))
+
+eoi2_3qb <- eoi_plot(bullet_explain_perms[4:6,], alpha = 0.9, weights = FALSE) +
+  scale_color_gradient2(low = "grey50",
+                        high = "darkorange",
+                        midpoint = 0.5,
+                        limits = c(0, 1)) +
+  scale_fill_gradient2(low = "grey50",
+                        high = "darkorange",
+                        midpoint = 0.5,
+                        limits = c(0, 1)) +
+  theme_bw(base_family = "Times", base_size = 8) +
+  theme(strip.placement = "outside",
+        strip.background = element_rect(color = "white",
+                                        fill = "white"))
+
+eoi1_3eb <- eoi_plot(bullet_explain_perms[7:9,], alpha = 0.9, weights = FALSE) +
+  scale_color_gradient2(low = "grey50",
+                        high = "darkorange",
+                        midpoint = 0.5,
+                        limits = c(0, 1)) +
+  scale_fill_gradient2(low = "grey50",
+                        high = "darkorange",
+                        midpoint = 0.5,
+                        limits = c(0, 1)) +
+  theme_bw(base_family = "Times", base_size = 8) +
+  theme(strip.placement = "outside",
+        strip.background = element_rect(color = "white",
+                                        fill = "white"))
+
+eoi2_3eb <- eoi_plot(bullet_explain_perms[10:12,], alpha = 0.9, weights = FALSE) +
+  scale_color_gradient2(low = "grey50",
+                        high = "darkorange",
+                        midpoint = 0.5,
+                        limits = c(0, 1)) +
+  scale_fill_gradient2(low = "grey50",
+                        high = "darkorange",
+                        midpoint = 0.5,
+                        limits = c(0, 1)) +
+  theme_bw(base_family = "Times", base_size = 8) +
+  theme(strip.placement = "outside",
+        strip.background = element_rect(color = "white",
+                                        fill = "white"))
+
+eoi1_kd <- eoi_plot(bullet_explain_perms[13:15,], alpha = 0.9, weights = FALSE) +
+  scale_color_gradient2(low = "grey50",
+                        high = "darkorange",
+                        midpoint = 0.5,
+                        limits = c(0, 1)) +
+  scale_fill_gradient2(low = "grey50",
+                        high = "darkorange",
+                        midpoint = 0.5,
+                        limits = c(0, 1)) +
+  theme_bw(base_family = "Times", base_size = 8) +
+  theme(strip.placement = "outside",
+        strip.background = element_rect(color = "white",
+                                        fill = "white"))
+
+eoi2_kd <- eoi_plot(bullet_explain_perms[16:18,], alpha = 0.9, weights = FALSE) +
+  scale_color_gradient2(low = "grey45",
+                        high = "darkorange",
+                        midpoint = 0.5,
+                        limits = c(0, 1)) +
+  scale_fill_gradient2(low = "grey45",
+                        high = "darkorange",
+                        midpoint = 0.5,
+                        limits = c(0, 1)) +
+  theme_bw(base_family = "Times", base_size = 8) +
+  theme(strip.placement = "outside",
+        strip.background = element_rect(color = "white",
+                                        fill = "white"))
+
+pf1_3qb <- plot_features(bullet_explain_perms[1:3,]) +
+  scale_fill_manual(values = c("darkorange", "grey50"))
+pf2_3qb <- plot_features(bullet_explain_perms[4:6,]) +
+  scale_fill_manual(values = c("darkorange", "grey50"))
+pf1_3eb <- plot_features(bullet_explain_perms[7:9,]) +
+  scale_fill_manual(values = c("darkorange", "grey50"))
+pf2_3eb <- plot_features(bullet_explain_perms[10:12,]) +
+  scale_fill_manual(values = c("darkorange", "grey50"))
+pf1_kd <- plot_features(bullet_explain_perms[13:15,]) +
+  scale_fill_manual(values = c("darkorange", "grey50"))
+pf2_kd <- plot_features(bullet_explain_perms[16:18,]) +
+  scale_fill_manual(values = c("darkorange", "grey50"))
+```
+
+```{r fig.width = 12, fig.height = 6}
+plot_grid(pf2_3qb, pf2_3eb, pf2_kd,
+          eoi2_3qb, eoi2_3eb, eoi2_kd,
+          nrow = 2,
+          rel_heights = c(0.45, 0.55))
+```
+
+---
+
+# .medium[Additional Bullet Application Plots]
+
+Plots of LIME explanations for one case in the test data that is a known match
+
+```{r fig.width = 12, fig.height = 6}
+plot_grid(pf1_3qb, pf1_3eb, pf1_kd,
+          eoi1_3qb, eoi1_3eb, eoi1_kd,
+          nrow = 2,
+          rel_heights = c(0.45, 0.55))
+```
+
+---
+
+# .medium[Feature Visualization Example Optimization Example]
+
+- Response: $y\in\{0,1\}$
+- Features: $$PC = (PC_1, PC_2, PC_3, PC_4, PC_5)$$
+- Model: 1 hidden layer, 5 neurons
+- Neuron $i$ coefficients $(i=1,...,5)$: $$\left(\beta_{0,i}, \beta_{1,i}, \beta_{2,i}, \beta_{3,i}, \beta_{4,i}, \beta_{5,i}\right)$$
+- Activation Function: logistic $$\sigma(v)=\frac{1}{1+e^{-v}}$$
+- Feature visualization optimization:
+
+$$\arg\underset{PC}{\max} \ \sigma\left(\hat{\beta}_{0,i} + \hat{\beta}_{1,i}PC_1 +\cdots+\hat{\beta}_{5,i}PC_5\right)$$
