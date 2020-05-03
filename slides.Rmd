@@ -166,6 +166,7 @@ M.S. in Statistics
 Ph.D. in Statistics (in progress)
   - Iowa State University
   - Started in January 2016
+  - Passed written prelim in 2017
 ]
 
 .pull-right[
@@ -200,11 +201,9 @@ Ph.D. in Statistics (in progress)
   - Explaining Random Forests using Clustering of Trees
 
 4. Ideas for Chapter 3
-  - Extensions of Neural Network Explanation Tools to Tabular Data Applications
+  - Extensions of Neural Network Explanation Tools to Functional Data
 
-5. Timeline for Completion
-
-6. Discussion Points
+5. Timeline and Discussion Points
 
 ---
 
@@ -216,13 +215,13 @@ class: middle, center, inverse
 
 # Explainable Machine Learning
 
-- Machine learning models:
+- **Machine learning models**
   - Good in prediction problems
   - Many considered "black-boxes" since too complex to directly interpret
 
-- Led to research area of explainable machine learning 
+- Led to **explainable machine learning** research
 
-  - Goal: provide methods to explain predictions made by black-box models
+  - **Goal**: explain predictions made by black-box models
   - Method overview papers/books: .medium[`r Citep(bib, c("gilpin:2018", "guidotti:2018", "ming:2017", "mohseni:2018", "molnar:2019", "samek:2019"))`].
 
 - European General Data Protection Regulation (GDPR) implemented in 2018 includes a "right to explanation"
@@ -233,9 +232,10 @@ class: middle, center, inverse
 
 # Explainability versus Interpretability
 
-No accepted definitions for explainability and interpretability .medium[`r Citep(bib, c("gilpin:2018", "lipton:2016", "molnar:2019", "montavon:2017", "murdoch:2019"))`]  
+No accepted definitions for explainability and interpretability 
+  - .medium[`r Citet(bib, c("gilpin:2018", "lipton:2016", "molnar:2019", "montavon:2017", "murdoch:2019"))`]  
 
-My definitions .medium[(implicitly used by `r Citet(bib, "rudin:2018")` and `r Citet(bib, "ribeiro:2016")`)]:
+My definitions (implicitly used by `r Citet(bib, "rudin:2018")` and `r Citet(bib, "ribeiro:2016")`):
 
 .pull-left[
 **Interpretability** is the ability to .blue[directly use model parameters] to understand the .red[mechanism of how the model makes predictions].
@@ -249,7 +249,7 @@ $$\hat{y}=\hat{\beta}_0+\hat{\beta}_1x_1+\cdots+\hat{\beta}_px_p$$
 
 - LIME: local interpretable model-agnostic explanations `r Citep(bib, "ribeiro:2016")`
 
-```{r out.width = "65%", fig.align = "center"}
+```{r out.width = "50%", fig.align = "center"}
 include_graphics("figures/lime.png")
 ```
 
@@ -554,8 +554,8 @@ bullet_explain %>%
   filter(sim_method == "quantile_bins",
          gower_pow == 1,
          case == bullet_poi_nonmatch,
-         nbins == 4) %>%
-  mutate(case = "20, 4 quantile bins (default method)") %>%
+         nbins == 3) %>%
+  mutate(case = "20, 3 quantile bins)") %>%
   plot_features() +
   scale_fill_manual(values = c("darkorange", "grey50"))
 ```
@@ -2421,7 +2421,7 @@ For $x_e$ and set of tuning parameters $t$
 - $\textbf{X}_{e,t}'$ = LIME simulated dataset with $K$ features and $S$ observations
 - $x'_{e,t,s}$ = feature vector for simulated data observation $s$
 - $\textbf{Z}'_{e,t}$ = matrix of interpretability transformed simulated data with $K$ features and $S$ observations
-- $z'_{e,t,s}$ = interpretability transfomed feature vector
+- $z'_{e,t,s}$ = interpretability transformed feature vector
 - $z_{e,t}$ = interpretability transformed $x_e$
 ]
 
@@ -2533,6 +2533,64 @@ feature_heatmap(
   explanations = sine_lime_explain$explain,
   order_method = "PCA"
   )
+```
+
+]
+
+---
+
+# .medium[Application of Visual Diagnostics to Bullet Random Forest]
+
+Bullet random forest prediction example from motivation with the complex and explainer model comparison plot
+
+.pull-left[
+```{r message = FALSE}
+bullet_explain %>%
+  filter(sim_method == "quantile_bins",
+         gower_pow == 1,
+         case == bullet_poi_nonmatch,
+         nbins == 3) %>%
+  mutate(case = "20, 3 quantile bins (default method)") %>%
+  plot_features() +
+  scale_fill_manual(values = c("darkorange", "grey50"))
+```
+]
+
+.pull-right[
+```{r message = FALSE}
+# Apply LIME to two cases with the permutations returned
+perms_eoi <- apply_lime(
+  train = bullet_train %>% select(all_of(bullet_features)),
+  test = bullet_test %>%
+    filter(case %in% bullet_poi_nonmatch) %>%
+    select(all_of(bullet_features)),
+  model = bulletxtrctr::rtrees,
+  label = as.character(TRUE),
+  n_features = 3,
+  sim_method = c('quantile_bins'),
+  nbins = 3,
+  feature_select = "auto",
+  dist_fun = "gower",
+  kernel_width = NULL,
+  gower_pow = 1,
+  return_perms = TRUE,
+  all_fs = FALSE,
+  seed = 20190914)
+
+eoi_plot(perms_eoi$explain, 
+         alpha = 0.9, weights = FALSE) +
+  scale_color_gradient2(low = "grey50",
+                        high = "darkorange",
+                        midpoint = 0.5,
+                        limits = c(0, 1)) +
+  scale_fill_gradient2(low = "grey50",
+                        high = "darkorange",
+                        midpoint = 0.5,
+                        limits = c(0, 1)) +
+  theme_bw(base_family = "Times", base_size = 8) +
+  theme(strip.placement = "outside",
+        strip.background = element_rect(color = "white",
+                                        fill = "white"))
 ```
 
 ]

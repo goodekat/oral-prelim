@@ -140,6 +140,7 @@ M.S. in Statistics
 Ph.D. in Statistics (in progress)
   - Iowa State University
   - Started in January 2016
+  - Passed written prelim in 2017
 ]
 
 .pull-right[
@@ -174,11 +175,9 @@ Ph.D. in Statistics (in progress)
   - Explaining Random Forests using Clustering of Trees
 
 4. Ideas for Chapter 3
-  - Extensions of Neural Network Explanation Tools to Tabular Data Applications
+  - Extensions of Neural Network Explanation Tools to Functional Data
 
-5. Timeline for Completion
-
-6. Discussion Points
+5. Timeline and Discussion Points
 
 ---
 
@@ -190,13 +189,13 @@ class: middle, center, inverse
 
 # Explainable Machine Learning
 
-- Machine learning models:
+- **Machine learning models**
   - Good in prediction problems
   - Many considered "black-boxes" since too complex to directly interpret
 
-- Led to research area of explainable machine learning 
+- Led to **explainable machine learning** research
 
-  - Goal: provide methods to explain predictions made by black-box models
+  - **Goal**: explain predictions made by black-box models
   - Method overview papers/books: .medium[(Gilpin, Bau, Yuan, Bajwa, Specter, and Kagal, 2018; Guidotti, Monreale, Ruggieri, Turini, Pedreschi, and Giannotti, 2018; Ming, 2017; Mohseni, Zarei, and Ragan, 2018; Molnar, 2019)].
 
 - European General Data Protection Regulation (GDPR) implemented in 2018 includes a "right to explanation"
@@ -207,9 +206,10 @@ class: middle, center, inverse
 
 # Explainability versus Interpretability
 
-No accepted definitions for explainability and interpretability .medium[(Gilpin, Bau, Yuan, et al., 2018; Lipton, 2016; Molnar, 2019; Montavon, Samek, and Müller, 2017; Murdoch, Singh, Kumbier, Abbasi-Asl, and Yu, 2019)]  
+No accepted definitions for explainability and interpretability 
+  - .medium[Gilpin, Bau, Yuan, et al. (2018); Lipton (2016); Molnar (2019); Montavon, Samek, and Müller (2017); Murdoch, Singh, Kumbier, Abbasi-Asl, and Yu (2019)]  
 
-My definitions .medium[(implicitly used by Rudin (2018) and Ribeiro, Singh, and Guestrin (2016))]:
+My definitions (implicitly used by Rudin (2018) and Ribeiro, Singh, and Guestrin (2016)):
 
 .pull-left[
 **Interpretability** is the ability to .blue[directly use model parameters] to understand the .red[mechanism of how the model makes predictions].
@@ -223,7 +223,7 @@ My definitions .medium[(implicitly used by Rudin (2018) and Ribeiro, Singh, and 
 
 - LIME: local interpretable model-agnostic explanations (Ribeiro, Singh, and Guestrin, 2016)
 
-&lt;img src="figures/lime.png" width="65%" style="display: block; margin: auto;" /&gt;
+&lt;img src="figures/lime.png" width="50%" style="display: block; margin: auto;" /&gt;
 
 ]
 
@@ -1003,7 +1003,7 @@ For `\(x_e\)` and set of tuning parameters `\(t\)`
 - `\(\textbf{X}_{e,t}'\)` = LIME simulated dataset with `\(K\)` features and `\(S\)` observations
 - `\(x'_{e,t,s}\)` = feature vector for simulated data observation `\(s\)`
 - `\(\textbf{Z}'_{e,t}\)` = matrix of interpretability transformed simulated data with `\(K\)` features and `\(S\)` observations
-- `\(z'_{e,t,s}\)` = interpretability transfomed feature vector
+- `\(z'_{e,t,s}\)` = interpretability transformed feature vector
 - `\(z_{e,t}\)` = interpretability transformed `\(x_e\)`
 ]
 
@@ -1117,9 +1117,24 @@ feature_heatmap(
 
 # .medium[Application of Visual Diagnostics to Bullet Random Forest]
 
+Bullet random forest prediction example from motivation with the complex and explainer model comparison plot
+
+.pull-left[
+![](slides_files/figure-html/unnamed-chunk-43-1.png)&lt;!-- --&gt;
+]
+
+.pull-right[
+![](slides_files/figure-html/unnamed-chunk-44-1.png)&lt;!-- --&gt;
+
+]
+
+---
+
+# .medium[Application of Visual Diagnostics to Bullet Random Forest]
+
 Feature heatmap of LIME explanation from Hare, Hofmann, and Carriquiry (2016) bullet comparison forest model 
 
-![](slides_files/figure-html/unnamed-chunk-43-1.png)&lt;!-- --&gt;
+![](slides_files/figure-html/unnamed-chunk-45-1.png)&lt;!-- --&gt;
 
 ---
 
@@ -1513,7 +1528,7 @@ class: inverse, center, middle
 
 Distribution of the response variable for the random forest features
 
-![](slides_files/figure-html/unnamed-chunk-55-1.png)&lt;!-- --&gt;
+![](slides_files/figure-html/unnamed-chunk-57-1.png)&lt;!-- --&gt;
 
 ---
 
@@ -1521,7 +1536,7 @@ Distribution of the response variable for the random forest features
 
 Bivariate visualizations of the random forest training data
 
-&lt;img src="slides_files/figure-html/unnamed-chunk-56-1.png" width="65%" style="display: block; margin: auto;" /&gt;
+&lt;img src="slides_files/figure-html/unnamed-chunk-58-1.png" width="65%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -1529,7 +1544,7 @@ Bivariate visualizations of the random forest training data
 
 Random forest variable importance plot
 
-&lt;img src="slides_files/figure-html/unnamed-chunk-57-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+&lt;img src="slides_files/figure-html/unnamed-chunk-59-1.png" width="80%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -1537,7 +1552,7 @@ Random forest variable importance plot
 
 Assessment metric plot
 
-![](slides_files/figure-html/unnamed-chunk-58-1.png)&lt;!-- --&gt;
+![](slides_files/figure-html/unnamed-chunk-60-1.png)&lt;!-- --&gt;
 
 ---
 
@@ -1547,7 +1562,7 @@ Plots of LIME explanations for one case in the test data that is a known non-mat
 
 
 
-![](slides_files/figure-html/unnamed-chunk-60-1.png)&lt;!-- --&gt;
+![](slides_files/figure-html/unnamed-chunk-62-1.png)&lt;!-- --&gt;
 
 ---
 
@@ -1555,7 +1570,7 @@ Plots of LIME explanations for one case in the test data that is a known non-mat
 
 Plots of LIME explanations for one case in the test data that is a known match
 
-![](slides_files/figure-html/unnamed-chunk-61-1.png)&lt;!-- --&gt;
+![](slides_files/figure-html/unnamed-chunk-63-1.png)&lt;!-- --&gt;
 
 ---
 
