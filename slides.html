@@ -120,6 +120,8 @@ a, a &gt; code {
 .blue{color: #006BA6}
 .tan{color: #9B945F}
 .grey{color: #707372}
+.orange{color: #FAAA72}
+.darkgrey{color: }
 &lt;/style&gt;
 
 
@@ -140,7 +142,6 @@ M.S. in Statistics
 Ph.D. in Statistics (in progress)
   - Iowa State University
   - Started in January 2016
-  - Passed written prelim in 2017
 ]
 
 .pull-right[
@@ -174,7 +175,7 @@ Ph.D. in Statistics (in progress)
 3. Plan for Chapter 2
   - Explaining Random Forests using Clustering of Trees
 
-4. Ideas for Chapter 3
+4. Plan for Chapter 3
   - Extensions of Neural Network Explanation Tools to Functional Data
 
 5. Timeline and Discussion Points
@@ -193,14 +194,16 @@ class: middle, center, inverse
   - Good in prediction problems
   - Many considered "black-boxes" since too complex to directly interpret
 
-- Led to **explainable machine learning** research
+- **Explainable machine learning**
 
-  - **Goal**: explain predictions made by black-box models
-  - Method overview papers/books: .medium[(Gilpin, Bau, Yuan, Bajwa, Specter, and Kagal, 2018; Guidotti, Monreale, Ruggieri, Turini, Pedreschi, and Giannotti, 2018; Ming, 2017; Mohseni, Zarei, and Ragan, 2018; Molnar, 2019)].
+  - .red[**Goal**]: Explain predictions made by black-box models
+  - .red[**Overview papers/books**]: .medium[Gilpin, Bau, Yuan, Bajwa, Specter, and Kagal (2018); Guidotti, Monreale, Ruggieri, Turini, Pedreschi, and Giannotti (2018); Ming (2017); Mohseni, Zarei, and Ragan (2018); Molnar (2019)]
 
-- European General Data Protection Regulation (GDPR) implemented in 2018 includes a "right to explanation"
-
-  &gt; Goodman and Flaxman (2016): "It is reasonable to suppose that any adequate explanation would, at a minimum, provide an account of how input features relate to predictions, allowing one to answer questions such as: Is the model more or less likely to recommend a loan if the applicant is a minority?"
+- **European General Data Protection Regulation** (GDPR) 
+  - Implemented in 2018 includes a "right to explanation"
+  - Goodman and Flaxman (2016): 
+  
+    &gt; "It is reasonable to suppose that any adequate explanation would, at a minimum, provide an account of how input features relate to predictions, allowing one to answer questions such as: Is the model more or less likely to recommend a loan if the applicant is a minority?"
 
 ---
 
@@ -349,13 +352,14 @@ Silva, Cook, and Lee, 2017)]
 **General**
 
 .red[Argument against black box model explanations] (Rudin, 2018):
+  - Title: ".blue[Stop explaining black box machine learning models for high stakes decisions and use interpretable models instead]"
   - "Explanations must be wrong."
   - Explanations may not:
       - be faithful to the original model
-      - make sense
       - be detailed enough to understand the "black-box" model
-  - Debunks accuracy and interpretability trade-off myth
+      - make sense
   - Use interpretable models for high-stakes decisions
+  - Debunks accuracy and interpretability trade-off myth
 ]
 
 .pull-right[
@@ -451,15 +455,15 @@ Hare, Hofmann, and Carriquiry (2016) approach:
 
 .pull-left[LIME (Ribeiro, Singh, and Guestrin, 2016):
 
-- .tan[**L**ocal]
+- .orange[**L**ocal]
 - .blue[**I**nterpretable]
 - .grey[**M**odel-agnostic]
-- .red[**E**xplanation]
+- .red[**E**xplanations]
 ]
 
 .pull-right[
 **Concept**: For *one prediction of interest*
-- .tan[Focus on a neighborhood around the prediction of interest]
+- .orange[Focus on a neighborhood around the prediction of interest]
 - .blue[Use an inherently interpretable model]
 - .grey[Understand the complex model] 
 - .red[Capture the relationship between the complex model predictions and predictor variables]
@@ -500,13 +504,13 @@ Questions raised:
 
 Claims about LIME (Ribeiro, Singh, and Guestrin, 2016):
 
-- .red[**Interpretability**]: Easy to interpret the explainer model to provide meaningful explanations
+- .red[**Interpretability**]: Easy to interpret the explainer model
 
-- .red[**Faithfulness**]: Explainer model sufficiently captures the relationship between the complex model predictions and the features in the local region around a prediction of interest
+- .red[**Faithfulness**]: Explainer model captures relationship between complex model predictions and features (in local region)
 
-- .red[**Linearity**]: Using a ridge regression as the explainer model assumes a linear relationship between complex model predictions and the features
+- .red[**Linearity**]: Ridge regression assumes linear relationship between complex model predictions and features
 
-- .red[**Localness**]: Explanations are local in regards to a prediction of interest
+- .red[**Localness**]: Explanations are local in regards to prediction of interest
 
 &lt;br&gt;
 
@@ -670,6 +674,7 @@ Applied LIME using *lime* R package (Pedersen and Benesty, 2020)
 - Ridge regression model fit to simulated data
   - Response: complex model predictions
   - Features: interpretability transformed features
+  - Weights: proximity weights
 - Forward selection (if less than 6 features specified)
   
 **Corresponding Diagnostic:**  
@@ -693,6 +698,7 @@ Applied LIME using *lime* R package (Pedersen and Benesty, 2020)
 - Ridge regression model fit to simulated data
   - Response: complex model predictions
   - Features: selected interpretability transformed features
+  - Weights: proximity weights
 
 **Corresponding Diagnostic:**  
 *Explainer Model Prediction Plot*
@@ -773,16 +779,6 @@ Applied LIME using *lime* R package (Pedersen and Benesty, 2020)
 
 ---
 
-# Diagnostics for Individual Explanations
-
-**Extensions to Higher Dimensions**
-
-![](slides_files/figure-html/unnamed-chunk-30-1.png)&lt;!-- --&gt;
-
-![](slides_files/figure-html/unnamed-chunk-31-1.png)&lt;!-- --&gt;
-
----
-
 class: inverse-sub, middle, center
 
 # Set 2 of Visualizations
@@ -801,7 +797,7 @@ Applied LIME using *lime* R package (Pedersen and Benesty, 2020)
 
 Plot of all explanations from *lime* R package: 
 
-&lt;img src="slides_files/figure-html/unnamed-chunk-32-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+&lt;img src="slides_files/figure-html/unnamed-chunk-30-1.png" width="100%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -816,7 +812,7 @@ Provides an overview of groupings of LIME explanations
 - .red[X-axis]: Observation in the data set
 - .red[Tile Color]: Ridge regression coefficient from the corresponding model
 
-![](slides_files/figure-html/unnamed-chunk-33-1.png)&lt;!-- --&gt;
+![](slides_files/figure-html/unnamed-chunk-31-1.png)&lt;!-- --&gt;
 
 ---
 
@@ -830,7 +826,7 @@ Provides a summary of explainer model coefficients across the set of explanation
 - .red[Cells]: Intersections of quantile bins
 - .red[Color]: Average of ridge regression coefficients (or sum of ridge regression coefficients) for observations within a cell
 
-![](slides_files/figure-html/unnamed-chunk-34-1.png)&lt;!-- --&gt;
+![](slides_files/figure-html/unnamed-chunk-32-1.png)&lt;!-- --&gt;
 
 ---
 
@@ -848,7 +844,7 @@ Shows the relationship between the explainer model predictions and the quantile 
 ]
 
 .right-plot[
-![](slides_files/figure-html/unnamed-chunk-35-1.png)&lt;!-- --&gt;
+![](slides_files/figure-html/unnamed-chunk-33-1.png)&lt;!-- --&gt;
 ]
 
 ---
@@ -865,11 +861,11 @@ Shows the relationship between the explainer model and complex model predictions
 - .red[Points]: Observations from the test data
 - .red[Color]: Corresponding explainer model `\(R^2\)`
 - .red[Dashed Line]: 1-1 line
-- .red.[Solid Line]: Loess smoother fit to the points
+- .red[Solid Line]: Loess smoother fit to the points
 ]
 
 .right-plot[
-![](slides_files/figure-html/unnamed-chunk-36-1.png)&lt;!-- --&gt;
+![](slides_files/figure-html/unnamed-chunk-34-1.png)&lt;!-- --&gt;
 ]
 
 ---
@@ -890,7 +886,7 @@ Shows the relationship between the average explainer model predictions within a 
 ]
 
 .right-plot[
-![](slides_files/figure-html/unnamed-chunk-37-1.png)&lt;!-- --&gt;
+![](slides_files/figure-html/unnamed-chunk-35-1.png)&lt;!-- --&gt;
 
 ]
 
@@ -906,46 +902,6 @@ class: inverse-sub, middle, center
 
 # .medium[Diagnostics for Comparisons of Tuning Parameters]
 
-.pull-left[
-**Tuning Parameters**
-  
-Definition:
-
-- LIME application method options
-
-Examples:
-
-  - simulation method
-  
-  - number of observations to simulate
-  
-  - distance metric
-  
-  - feature selection method
-  
-  - number of features to return
-]
-
-.pull-right[
-**Questions Raised**
-
-- How to select tuning parameters?
-
-- How to assess tuning parameters?
-
-&lt;br&gt;
-
-**Assessment of Tuning Parameters**
-
-- Check if explanations depend on tuning parameters
-
-- Compute metrics to compare performance
-]
-
----
-
-# .medium[Diagnostics for Comparisons of Tuning Parameters]
-
 Applied LIME using *lime* R package (Pedersen and Benesty, 2020)
 - All test data observations  
 - Number of features to return in explanation: 2
@@ -955,7 +911,7 @@ Applied LIME using *lime* R package (Pedersen and Benesty, 2020)
 
 Plot of all explanations from *lime* R package: 
 
-&lt;img src="slides_files/figure-html/unnamed-chunk-38-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+&lt;img src="slides_files/figure-html/unnamed-chunk-36-1.png" width="100%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -975,7 +931,7 @@ Provides an overview of the features selected by LIME across observations and tu
 ]
 
 .right-plot[
-![](slides_files/figure-html/unnamed-chunk-39-1.png)&lt;!-- --&gt;
+![](slides_files/figure-html/unnamed-chunk-37-1.png)&lt;!-- --&gt;
 ]
 
 ---
@@ -1041,11 +997,11 @@ For `\(x_e\)` and set of tuning parameters `\(t\)`
 ### Metrics for the Assessment of LIME
 
 .red[**Average R Squared**]: Average of explainer model `\(R^2\)` values over a set of explanations with the same tuning parameters to assess the linearity claim where `\(R_{e,t}^2\)` is the `\(R^2\)` for `\(g_{e,t}\)`
-`$$R^2_{\mbox{ave}} = \sum_{e=1}^E R_{e,t}^2$$`
+`$$R^2_{\mbox{ave}} = \frac{1}{E}\sum_{e=1}^E R_{e,t}^2$$`
 
 .red[**Average Fidelity**]: Average of fidelity metric introduced in Ribeiro, Singh, and Guestrin (2016) over a set of explanations with the same tuning parameters to assess the explainer model approximation to the complex model
 
-`$$\mathcal{L}_{\mbox{ave}} \ = \ \sum_{e=1}^E\mathcal{L}(f, \ g_{e,t}, \ \pi_{t}) \ =  \ \sum_{e=1}^E\sum_{s=1}^{S}\pi_{t}\left(x_e, x'_{e,t,s}\right)\left(f(x_e)-g_{e,t}\left(z_{e,t,s}'\right)\right)^2$$`
+`$$\mathcal{L}_{\mbox{ave}} \ = \ \frac{1}{E}\sum_{e=1}^E\mathcal{L}(f, \ g_{e,t}, \ \pi_{t}) \ =  \ \frac{1}{E}\sum_{e=1}^E\sum_{s=1}^{S}\pi_{t}\left(x_e, x'_{e,t,s}\right)\left(f(x_e)-g_{e,t}\left(z_{e,t,s}'\right)\right)^2$$`
 
 
 .red[**Mean Squared Explanation Error (MSEE)**]: Comparable to an MSE for comparing complex model predictions to explainer model predictions for each explanation
@@ -1071,7 +1027,7 @@ Visualization of assessment metrics for comparing tuning parameter performance
 ]
 
 .right-plot[
-![](slides_files/figure-html/unnamed-chunk-40-1.png)&lt;!-- --&gt;
+![](slides_files/figure-html/unnamed-chunk-38-1.png)&lt;!-- --&gt;
 ]
 
 ---
@@ -1109,7 +1065,7 @@ feature_heatmap(
   )
 ```
 
-![](slides_files/figure-html/unnamed-chunk-42-1.png)&lt;!-- --&gt;
+![](slides_files/figure-html/unnamed-chunk-40-1.png)&lt;!-- --&gt;
 
 ]
 
@@ -1120,11 +1076,11 @@ feature_heatmap(
 Bullet random forest prediction example from motivation with the complex and explainer model comparison plot
 
 .pull-left[
-![](slides_files/figure-html/unnamed-chunk-43-1.png)&lt;!-- --&gt;
+![](slides_files/figure-html/unnamed-chunk-41-1.png)&lt;!-- --&gt;
 ]
 
 .pull-right[
-![](slides_files/figure-html/unnamed-chunk-44-1.png)&lt;!-- --&gt;
+![](slides_files/figure-html/unnamed-chunk-42-1.png)&lt;!-- --&gt;
 
 ]
 
@@ -1134,7 +1090,7 @@ Bullet random forest prediction example from motivation with the complex and exp
 
 Feature heatmap of LIME explanation from Hare, Hofmann, and Carriquiry (2016) bullet comparison forest model 
 
-![](slides_files/figure-html/unnamed-chunk-45-1.png)&lt;!-- --&gt;
+![](slides_files/figure-html/unnamed-chunk-43-1.png)&lt;!-- --&gt;
 
 ---
 
@@ -1300,8 +1256,8 @@ Current ideas:
 **Paper 2: Diagnostic plots for LIME**
 
 - Motivate assessment of LIME using the bullet matching data (example of high stakes decision using machine learning)
-- Demonstrate issues found with LIME explanations using diagnostic plots
-- LIME should not be trusted to explain machine learning models when making high stakes decisions 
+- Present diagnostic plots
+- Demonstrate issues found with LIME explanations
 ]
 
 ---
@@ -1521,6 +1477,16 @@ Mining: The ASA Data Science Journal_ 8.4, pp. 203-225. ISSN:
 class: inverse, center, middle
 
 # Appendix
+
+---
+
+# .medium[Extensions to Diagnostics for Individual Explanations]
+
+Visualizations with more features
+
+![](slides_files/figure-html/unnamed-chunk-55-1.png)&lt;!-- --&gt;
+
+![](slides_files/figure-html/unnamed-chunk-56-1.png)&lt;!-- --&gt;
 
 ---
 
