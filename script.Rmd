@@ -11,32 +11,26 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Slide 1: Opening Statement
 
-- First, thank you for being on my committee and being here this morning. 
-- Also, before I start going through the slides, I want to say that you are welcome to stop me at any point to ask questions. I do not mind beign interrupted if you have a qustion that would be helpful to discuss while it is fresh in your mind. I'll also stop at the end of some sections to ask if there are questions.
-- Is there anything else before I get started?
+- Thank for being on committee and here
+- Welcome to ask questions at any time
+- I'm going to get started unless there is anything else
 
 # Slide 2: Personal Background
 
-- Some of you I have worked with a lot and know me well, but I am just getting to know other of you. I want to give a brief overview of my background before getting into my research.
-- For my education, I attened Lawrence University in Wisconsin for my undergraduate degree in mathematics. I then went to UW Madison to get my master's degree in statistics. Then I started my PhD in statistics here in Janauary of 2016, and I passed my written prelim in summer 2017. 
-- In terms of assisstantships, I worked as a TA for various introductory stats classes for both undergrads and graduate students when I was at Madison. I took a semseter off after graduating with my master's degree to teach an introductory statistics course at Lawrence University. I was a lecturer for STAT 101 for my first semster at ISU. After that, I transitioned to being one of the statistical consultants with the AES consulting group with Dr. Dixon. I also worked as an RA for a summer consulting project for a professor in NREM. Last December, I started as an intern with Sandia National Labs, which is why Danny has now become part of my committee. He is overseeing the project that I am working on, which will become a part of my dissertation in some form or other. 
+- Brief overview of background 
+- Go through education
+- Go through assisstantships
 
 # Slide 3: Overview of Talk
 
-- Here is the plan for my talk today. 
-- I'll provide some background on the area of explainable machine learning and motivate the work that I am doing for my research. 
-- Then the majority of the talk will focus on the work that I have done for my first chapter, which is on visual diagnostics for assessing the explanaiable machine learning method of LIME. I will tell you more about LIME (in case you are not familiar with it) when we get to that part of the talk.
-- Then I will go through the plans for my second chapter, which will be related to visualization methods for exlaining random forests, and my third chapter, which is the project with Sandia related to explaining neural networks with functional data
-- Finally, I'll walk you through the plan for completing my work, and Heike and I wanted to have a discussion relating to the publication of my first chapter. Right now, we feel like we have a lot of good content, but there is too much for one paper. We are trying to decide how to divide up or reduce the material. This is something to keep in mind as I walk you through the work for my first chapter. 
+- Go over plan
+- Bring up discussion topic of publication of my first chapter
 
 # Slide 5: Explainable Machine Learning
 
-- All of my dissertation chapters are focused on visualziations for explainable machine learning in one way or another
-- I want to provide some background on the research area of explainable machine learning to help motivate why the research I am working on is meaningful
-- First off, machine learning models - most people agree that they are very effective in prediction problems but issues come up when trying to explain these models since many are too complex to interpre
-- This led to the research area of explainable machine learning where the goal is to provide explanations for predictions made by black-box models. There has been a lot of work in this area, and I have listed some of the papers and books that provide overviews of this research area
-- One of the really big motivators for developing explainable machine learning methods is the European General Data Protection Regulation implemented in 2018 - among many regulations relating to data, this includes a "right to explanation". The wording in the document is a bit vague, but Goodman and Flaxman have a nice quote addressing this: *read quote*
-- As they say, this regulation requires some sort of explanation for prediction models that affect individuals that fall under this regulation
+- All chapters focused on visualziations for explainable machine learning
+- Provide some background
+- Read the quote and explain its importance
 
 # Slide 6: Explainability versus Interpretability
 
