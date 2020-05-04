@@ -136,7 +136,7 @@ library(RefManageR)
 library(tidyr)
 
 # R markdown options
-opts_chunk$set(echo = FALSE, dpi = 200, cache = FALSE)
+opts_chunk$set(echo = FALSE, dpi = 150, cache = FALSE)
 
 # Biboptions
 BibOptions(check.entries = FALSE,
