@@ -252,7 +252,7 @@ class: middle, center, inverse
 
 No accepted definitions for explainability and interpretability `r Citep(bib, c("gilpin:2018", "lipton:2016", "molnar:2019", "montavon:2017", "murdoch:2019"))`
 
-### My definitions
+**My definitions**:
   - In regards to a model
   - Implicitly used by `r Citet(bib, "rudin:2018")` and `r Citet(bib, "ribeiro:2016")`
   
@@ -522,38 +522,51 @@ bullet_features_ordered <- bullet_features_ordered %>%
   mutate(feature = factor(feature, levels = bullet_features_ordered$feature))
 ```
 
-```{r fig.width = 9, fig.height = 3.35}
-#set.seed(20200505)
-bullet_train %>%
-  select(all_of(bullet_features), samesource, rfscore) %>%
-  #slice(sample(1:83028, 1000, replace = FALSE)) %>%
-  mutate(samesource = fct_recode(factor(samesource),
-                                  "Match = TRUE" = "TRUE",
-                                  "Match = FALSE" = "FALSE")) %>%
-    rename("CCF" = "ccf", "CMS" = "cms", "Matches" = "matches",
-           "Mismatches" = "mismatches", "Non-CMS" = "non_cms",
-           "Rough Correlation" = "rough_cor", "Distance Std Dev" = "sd_D",
-           "Distance" = "D", "Sum Peaks" = "sum_peaks") %>%
-    na.omit() %>%
-    ggplot(aes(color = rfscore)) +
-    geom_pcp(aes(vars = vars(bullet_features_ordered$feature)),
-             alpha = 0.2) +
-    facet_grid(. ~ samesource) +
-    scale_color_gradient2(low = "grey50",
-                          high = "darkorange",
-                          midpoint = 0.5) +
-    theme_bw(base_family = "Times", base_size = 10) +
-    theme(axis.text.x = element_text(angle = 45, hjust = 1),
-          strip.placement = "outside",
-          strip.background = element_rect(color = "white",
-                                          fill = "white")) +
-    labs(x = "Features Ordered by Random Forest Variable Importance \n(highest to lowest from left to right)",
-         y = "Standardized Feature Values",
-         color = "Random \nForest \nProbability \nof a Match")
-```
+```{r out.width = "100%"}
+# Create (or load) the parallel coordinate plot
+if (file.exists("figures/bullet_pcp.png")) {
 
-```{r out.width = "100%", fig.align = "center"}
-#include_graphics("figures/bullet_pcp.png")
+  # Load and print the plot
+  knitr::include_graphics("figures/bullet_pcp.png")
+
+} else {
+
+  # Create the plot
+  #set.seed(20200505)
+  bullet_pcp <- bullet_train %>%
+    select(all_of(bullet_features), samesource, rfscore) %>%
+    #slice(sample(1:83028, 1000, replace = FALSE)) %>%
+    mutate(samesource = fct_recode(factor(samesource),
+                                    "Match = TRUE" = "TRUE",
+                                    "Match = FALSE" = "FALSE")) %>%
+      rename("CCF" = "ccf", "CMS" = "cms", "Matches" = "matches",
+             "Mismatches" = "mismatches", "Non-CMS" = "non_cms",
+             "Rough Correlation" = "rough_cor", "Distance Std Dev" = "sd_D",
+             "Distance" = "D", "Sum Peaks" = "sum_peaks") %>%
+      na.omit() %>%
+      ggplot(aes(color = rfscore)) +
+      geom_pcp(aes(vars = vars(bullet_features_ordered$feature)),
+               alpha = 0.2) +
+      facet_grid(. ~ samesource) +
+      scale_color_gradient2(low = "grey50",
+                            high = "darkorange",
+                            midpoint = 0.5) +
+      theme_bw(base_family = "Times", base_size = 10) +
+      theme(axis.text.x = element_text(angle = 45, hjust = 1),
+            strip.placement = "outside",
+            strip.background = element_rect(color = "white",
+                                            fill = "white")) +
+      labs(x = "Features Ordered by Random Forest Variable Importance \n(highest to lowest from left to right)",
+           y = "Standardized Feature Values",
+           color = "Random \nForest \nProbability \nof a Match")
+
+  # Save the plot
+  ggplot2::ggsave(plot = bullet_pcp,
+                  filename = "figures/bullet_pcp.png",
+                  width = 9.25,
+                  height = 3.5,
+                  units = "in")
+}
 ```
 
 ---
@@ -648,9 +661,10 @@ bullet_explain %>%
 .pull-right[
 **Concept**: For *one prediction of interest*
 - .orange[Focus on a neighborhood around the prediction of interest]
-- .blue[Use an inherently interpretable model]
+- .blue[Use inherently interpretable model] 
+    - "Explainer model"
 - .grey[Understand the complex model] 
-- .red[Capture the relationship between the complex model predictions and predictor variables]
+- .red[Capture relationship between complex model predictions and predictor variables]
 ]
 
 ```{r}
@@ -1005,9 +1019,9 @@ sine_poi <- sine_data_test %>% filter(y != rfpred, x1 > 0, x1 < 5, x2 > 5)
 ```
 
 .pull-left[
-Training data: 500 observations  
-Testing data: 100 observations  
-Black-box model: random forest
+.red[Training data]: 500 observations  
+.red[Testing data]: 100 observations  
+.red[Black-box model]: random forest
   
 $x_1\sim Unif($ `r min`, `r max` $)$  
 $x_2\sim Unif($ `r min`, `r max` $)$  
@@ -1015,12 +1029,12 @@ $x_3\sim \mbox{N}(0,1)$
 ]
 
 .pull-right[
-$$y=\begin{cases} \mbox{blue} & \mbox{ if } x'_2 > \sin\left(x'_1\right) \\
-  \mbox{red} & \mbox{ if } x'_2 \le \sin\left(x'_1\right) \ . %\nolabel
+$$y=\begin{cases} \mbox{blue} & \mbox{ if } x^*_2 > \sin\left(x^*_1\right) \\
+  \mbox{red} & \mbox{ if } x^*_2 \le \sin\left(x^*_1\right) \ . %\nolabel
   \end{cases}$$
 where  
-$x'_1=x_1\cos(\theta)-x_2\sin(\theta)$   
-$x'_2=x_1\sin(\theta)+x_2\cos(\theta)$   
+$x^*_1=x_1\cos(\theta)-x_2\sin(\theta)$   
+$x^*_2=x_1\sin(\theta)+x_2\cos(\theta)$   
 $\theta=-0.9$
 ]
 
@@ -1110,13 +1124,19 @@ class: inverse-sub, middle, center
 
 # Diagnostics for Individual Explanations
 
-Applied LIME using *lime* R package `r Citep(bib, "pedersen:2020")` 
+**LIME Application**
 
-- To prediction of interest
-- Number of features to return in explanation: 2
-- Default tuning parameters settings
+.pull-left[
+- .red[Explanation Set]: Prediction of interest
+- .red[Implementation]: *lime* R package `r Citep(bib, "pedersen:2020")`
+- .red[Number Explanation Features]: 2
+- .red[Tuning Parameters]: Default
+]
 
-*lime* R package visualization of the explanation:
+.pull-right[
+- .red[Complex Model]: Random forest
+- .red[Explainer Model]: Ridge regression
+]
 
 ```{r}
 # Apply LIME with various tuning parameters to the sine data
@@ -1144,7 +1164,8 @@ sine_poi_exp
 .left-desc[
 **Step 1a**: Data Simulation
 
-- Sample 4999 observations uniformly from 4 quantile bins for each feature in the training data
+- .red[Sample Size]: 4999 observations 
+- .red[Sample Method]: Uniformly from 4 quantile bins for each training data feature
 
 **Corresponding Diagnostic:**  
 *Training Data Plot*
@@ -1200,7 +1221,8 @@ ggplot() +
 .left-desc[
 **Step 1b**: Complex Model Predictions
   
-- Apply complex model to simulated data to obtain predictions
+- .red[Model]: Complex model 
+- .red[Data]: Simulated data
 
 **Corresponding Diagnostic:** *Untransformed Simulated Data Plot*
 
@@ -1277,8 +1299,11 @@ ggplot() +
 .left-desc[
 **Step 1c**: Interpretability Transformation
 
-- Convert continuous features to binary variables based on whether the observation falls in the same quantile bin as the prediction of interest or not
-
+- .red[Data]: Simulated data features
+- .red[Transformation]: Indicator function
+  - 1 = observation falls in same quantile bin as prediction of interest
+  - 0 = o.w.
+  
 **Corresponding Diagnostic:** *Transformed Simulated Data Plot*
 
 - .red[Axes]: Simulated data features
@@ -1380,8 +1405,8 @@ ggplot() +
 .left-desc[
 **Step 2a**: Assign Weights
 
-- Assign weights to simulated data based on proximity to the prediction of interest (using untransformed feature values)
-- Gower distance metric `r Citep(bib, "gower:")`
+- .red[Method]: Proximity of untransformed observation to prediction of interest
+- .red[Distance Metric]: Gower `r Citep(bib, "gower:")`
 
 **Corresponding Diagnostic:**  
 *Proximity Weights Plot*
@@ -1435,10 +1460,10 @@ ggplot() +
 .left-desc[
 **Step 2b**: Feature Selection
 
-- Ridge regression model fit to simulated data
-  - Response: complex model predictions
-  - Features: interpretability transformed features
-  - Weights: proximity weights
+- .red[Model]: Ridge regression
+  - .red[Response]: complex model predictions
+  - .red[Features]: interpretability transformed features
+  - .red[Weights]: proximity weights
 - Forward selection (if less than 6 features specified)
   
 **Corresponding Diagnostic:**  
@@ -1482,10 +1507,10 @@ sine_poi_lime_default %>%
 .left-desc[
 **Step 2c**: Fit Explainer Model
 
-- Ridge regression model fit to simulated data
-  - Response: complex model predictions
-  - Features: selected interpretability transformed features
-  - Weights: proximity weights
+- .red[Model]: Ridge regression
+  - .red[Response]: complex model predictions
+  - .red[Features]: selected interpretability transformed features
+  - .red[Weights]: proximity weights
 
 **Corresponding Diagnostic:**  
 *Explainer Model Prediction Plot*
@@ -1531,7 +1556,7 @@ ggplot() +
   labs(x = TeX("x_1"),
        y = TeX("x_2"),
        fill = "Explainer \nModel \nPrediction \nfor 'blue'",
-       title = "Visualization of the Default LIME Explainer Predictions",
+       title = "Explainer Model Prediction Plot",
        shape = "") + 
   gg_procedure
 ```
@@ -1579,15 +1604,15 @@ ggplot(sine_poi_perms, aes(x = exppred, y = resid)) +
 .left-desc[
 **Step 3a**: Explainer Model Interpretation
 
-- Interpret coefficients of explainer model
-- Explains complex model prediction
+- .red[Focus]: Model coefficients
+- .red[Interpretation]: Indicates support for/against classification
 
 **Corresponding Diagnostic:** *Explanation Plot*
 
 - Adaptation of plot from *lime* R package
 - .red[Axes]: Explainer model (interpretability transformed) feature versus explainer model coefficient
-- .red[Bar Length]: magnitude of explainer model coefficients
-- .red[Bar Color]: value of the explainer model coefficients
+- .red[Bar Length]: Magnitude of explainer model coefficients
+- .red[Bar Color]: Value of the explainer model coefficients
 ]
 
 .right-plot[
@@ -1704,15 +1729,21 @@ class: inverse-sub, middle, center
 
 # Diagnostics for Sets of Explanations
 
-Applied LIME using *lime* R package `r Citep(bib, "pedersen:2020")` 
+**LIME Application**
 
-- All test data observations
-- Number of features to return in explanation: 2
-- Default tuning parameters settings
+.pull-left[
+- .red[Explanation Set]: All test data observations
+- .red[Implementation]: *lime* R package `r Citep(bib, "pedersen:2020")`
+- .red[Number Explanation Features]: 2
+- .red[Tuning Parameters]: Default
+]
 
-Plot of all explanations from *lime* R package: 
+.pull-right[
+- .red[Complex Model]: Random forest
+- .red[Explainer Model]: Ridge regression
+]
 
-```{r fig.width = 10, fig.height = 4.5, out.width = "100%", fig.align = "center"}
+```{r fig.width = 10, fig.height = 4, out.width = "100%", fig.align = "center"}
 plot_explanations(sine_lime_default)
 ```
 
@@ -2178,16 +2209,24 @@ class: inverse-sub, middle, center
 
 # .medium[Diagnostics for Comparisons of Tuning Parameters]
 
-Applied LIME using *lime* R package `r Citep(bib, "pedersen:2020")`
-- All test data observations  
-- Number of features to return in explanation: 2
-- Multiple applications of LIME for each observation
-  - 2 to 6 quantile bins
+**LIME Application**
+
+.pull-left[
+- .red[Explanation Set]: All test data observations
+- .red[Implementation]: *lime* R package `r Citep(bib, "pedersen:2020")`
+- .red[Number Explanation Features]: 2
+- .red[Tuning Parameters]:
+  - 2 to 6 quantile bins 
   - Kernel density simulation
+]
 
-Plot of all explanations from *lime* R package: 
+.pull-right[
+- .red[Complex Model]: Random forest
+- .red[Explainer Model]: Ridge regression
+]
 
-```{r fig.width = 16, fig.height = 6, out.width = "100%", fig.align = "center"}
+
+```{r fig.width = 16, fig.height = 5.5, out.width = "100%", fig.align = "center"}
 plot_explanations(sine_lime_explain$explain)
 ```
 
@@ -2226,7 +2265,7 @@ feature_heatmap(sine_lime_explain$explain,
 
 # .medium[Diagnostics for Comparisons of Tuning Parameters]
 
-### Notation for Assessment Metrics
+**Notation for Assessment Metrics**
 
 .pull-left[
 .red[**Data and Complex Model**]
@@ -2255,7 +2294,7 @@ For $x_e$ and set of tuning parameters $t$
 
 # .medium[Diagnostics for Comparisons of Tuning Parameters]
 
-### Notation for Assessment Metrics
+**Notation for Assessment Metrics**
 
 .pull-left[
 .red[**Weights and Explainer Model**]
@@ -2283,7 +2322,7 @@ For $x_e$ and set of tuning parameters $t$
 
 # .medium[Diagnostics for Comparisons of Tuning Parameters]
 
-### Metrics for the Assessment of LIME
+**Assessment Metrics**
 
 Over set of explanations; same set of tuning parameters:
 
@@ -2725,6 +2764,14 @@ PrintBibliography(bib, start = 45)
 class: inverse, center, middle
 
 # Appendix
+
+---
+
+# .medium[Training and Testing Data for Bullet Random Forest]
+
+```{r out.width = "100%", fig.align = "center"}
+include_graphics("figures/bullet_pcp.png")
+```
 
 ---
 

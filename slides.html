@@ -225,7 +225,7 @@ class: middle, center, inverse
 
 No accepted definitions for explainability and interpretability [1; 7; 5; 8; 9]
 
-### My definitions
+**My definitions**:
   - In regards to a model
   - Implicitly used by Rudin [10] and Ribeiro, Singh, and Guestrin [11]
   
@@ -470,9 +470,7 @@ Hare, Hofmann, and Carriquiry [48] approach:
 
 
 
-![](slides_files/figure-html/unnamed-chunk-12-1.png)&lt;!-- --&gt;
-
-
+&lt;img src="figures/bullet_pcp.png" width="100%" /&gt;
 
 ---
 
@@ -486,7 +484,7 @@ Hare, Hofmann, and Carriquiry [48] approach:
 
 **Example**: Known non-match
 
-&lt;img src="slides_files/figure-html/unnamed-chunk-14-1.png" width="60%" style="display: block; margin: auto;" /&gt;
+&lt;img src="slides_files/figure-html/unnamed-chunk-13-1.png" width="60%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -503,14 +501,15 @@ Hare, Hofmann, and Carriquiry [48] approach:
 .pull-right[
 **Concept**: For *one prediction of interest*
 - .orange[Focus on a neighborhood around the prediction of interest]
-- .blue[Use an inherently interpretable model]
+- .blue[Use inherently interpretable model] 
+    - "Explainer model"
 - .grey[Understand the complex model] 
-- .red[Capture the relationship between the complex model predictions and predictor variables]
+- .red[Capture relationship between complex model predictions and predictor variables]
 ]
 
 
 
-![](slides_files/figure-html/unnamed-chunk-16-1.png)&lt;!-- --&gt;
+![](slides_files/figure-html/unnamed-chunk-15-1.png)&lt;!-- --&gt;
 
 ---
 
@@ -535,7 +534,7 @@ Questions raised:
 
 &lt;br&gt;
 
-![](slides_files/figure-html/unnamed-chunk-17-1.png)&lt;!-- --&gt;
+![](slides_files/figure-html/unnamed-chunk-16-1.png)&lt;!-- --&gt;
 
 ---
 
@@ -568,9 +567,9 @@ We suggest visual diagnostics to assess these claims:
 
 
 .pull-left[
-Training data: 500 observations  
-Testing data: 100 observations  
-Black-box model: random forest
+.red[Training data]: 500 observations  
+.red[Testing data]: 100 observations  
+.red[Black-box model]: random forest
   
 `\(x_1\sim Unif(\)` -10, 10 `\()\)`  
 `\(x_2\sim Unif(\)` -10, 10 `\()\)`  
@@ -578,16 +577,16 @@ Black-box model: random forest
 ]
 
 .pull-right[
-`$$y=\begin{cases} \mbox{blue} &amp; \mbox{ if } x'_2 &gt; \sin\left(x'_1\right) \\
-  \mbox{red} &amp; \mbox{ if } x'_2 \le \sin\left(x'_1\right) \ . %\nolabel
+`$$y=\begin{cases} \mbox{blue} &amp; \mbox{ if } x^*_2 &gt; \sin\left(x^*_1\right) \\
+  \mbox{red} &amp; \mbox{ if } x^*_2 \le \sin\left(x^*_1\right) \ . %\nolabel
   \end{cases}$$`
 where  
-`\(x'_1=x_1\cos(\theta)-x_2\sin(\theta)\)`   
-`\(x'_2=x_1\sin(\theta)+x_2\cos(\theta)\)`   
+`\(x^*_1=x_1\cos(\theta)-x_2\sin(\theta)\)`   
+`\(x^*_2=x_1\sin(\theta)+x_2\cos(\theta)\)`   
 `\(\theta=-0.9\)`
 ]
 
-![](slides_files/figure-html/unnamed-chunk-19-1.png)&lt;!-- --&gt;
+![](slides_files/figure-html/unnamed-chunk-18-1.png)&lt;!-- --&gt;
 
 ---
 
@@ -600,17 +599,23 @@ class: inverse-sub, middle, center
 
 # Diagnostics for Individual Explanations
 
-Applied LIME using *lime* R package [49] 
+**LIME Application**
 
-- To prediction of interest
-- Number of features to return in explanation: 2
-- Default tuning parameters settings
+.pull-left[
+- .red[Explanation Set]: Prediction of interest
+- .red[Implementation]: *lime* R package [49]
+- .red[Number Explanation Features]: 2
+- .red[Tuning Parameters]: Default
+]
 
-*lime* R package visualization of the explanation:
+.pull-right[
+- .red[Complex Model]: Random forest
+- .red[Explainer Model]: Ridge regression
+]
 
 
 
-&lt;img src="slides_files/figure-html/unnamed-chunk-21-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+&lt;img src="slides_files/figure-html/unnamed-chunk-20-1.png" width="80%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -619,7 +624,8 @@ Applied LIME using *lime* R package [49]
 .left-desc[
 **Step 1a**: Data Simulation
 
-- Sample 4999 observations uniformly from 4 quantile bins for each feature in the training data
+- .red[Sample Size]: 4999 observations 
+- .red[Sample Method]: Uniformly from 4 quantile bins for each training data feature
 
 **Corresponding Diagnostic:**  
 *Training Data Plot*
@@ -631,7 +637,7 @@ Applied LIME using *lime* R package [49]
 ]
 
 .right-plot[
-![](slides_files/figure-html/unnamed-chunk-22-1.png)&lt;!-- --&gt;
+![](slides_files/figure-html/unnamed-chunk-21-1.png)&lt;!-- --&gt;
 ]
 
 ---
@@ -641,7 +647,8 @@ Applied LIME using *lime* R package [49]
 .left-desc[
 **Step 1b**: Complex Model Predictions
   
-- Apply complex model to simulated data to obtain predictions
+- .red[Model]: Complex model 
+- .red[Data]: Simulated data
 
 **Corresponding Diagnostic:** *Untransformed Simulated Data Plot*
 
@@ -655,7 +662,7 @@ Applied LIME using *lime* R package [49]
 ]
 
 .right-plot[
-![](slides_files/figure-html/unnamed-chunk-23-1.png)&lt;!-- --&gt;
+![](slides_files/figure-html/unnamed-chunk-22-1.png)&lt;!-- --&gt;
 ]
 ---
 
@@ -664,8 +671,11 @@ Applied LIME using *lime* R package [49]
 .left-desc[
 **Step 1c**: Interpretability Transformation
 
-- Convert continuous features to binary variables based on whether the observation falls in the same quantile bin as the prediction of interest or not
-
+- .red[Data]: Simulated data features
+- .red[Transformation]: Indicator function
+  - 1 = observation falls in same quantile bin as prediction of interest
+  - 0 = o.w.
+  
 **Corresponding Diagnostic:** *Transformed Simulated Data Plot*
 
 - .red[Axes]: Simulated data features
@@ -678,7 +688,7 @@ Applied LIME using *lime* R package [49]
 .right-plot[
 
 
-![](slides_files/figure-html/unnamed-chunk-25-1.png)&lt;!-- --&gt;
+![](slides_files/figure-html/unnamed-chunk-24-1.png)&lt;!-- --&gt;
 ]
 ---
 
@@ -687,8 +697,8 @@ Applied LIME using *lime* R package [49]
 .left-desc[
 **Step 2a**: Assign Weights
 
-- Assign weights to simulated data based on proximity to the prediction of interest (using untransformed feature values)
-- Gower distance metric 
+- .red[Method]: Proximity of untransformed observation to prediction of interest
+- .red[Distance Metric]: Gower 
 
 **Corresponding Diagnostic:**  
 *Proximity Weights Plot*
@@ -701,7 +711,7 @@ Applied LIME using *lime* R package [49]
 ]
 
 .right-plot[
-![](slides_files/figure-html/unnamed-chunk-26-1.png)&lt;!-- --&gt;
+![](slides_files/figure-html/unnamed-chunk-25-1.png)&lt;!-- --&gt;
 ]
 ---
 
@@ -710,10 +720,10 @@ Applied LIME using *lime* R package [49]
 .left-desc[
 **Step 2b**: Feature Selection
 
-- Ridge regression model fit to simulated data
-  - Response: complex model predictions
-  - Features: interpretability transformed features
-  - Weights: proximity weights
+- .red[Model]: Ridge regression
+  - .red[Response]: complex model predictions
+  - .red[Features]: interpretability transformed features
+  - .red[Weights]: proximity weights
 - Forward selection (if less than 6 features specified)
   
 **Corresponding Diagnostic:**  
@@ -724,7 +734,7 @@ Applied LIME using *lime* R package [49]
 ]
 
 .right-plot[
-![](slides_files/figure-html/unnamed-chunk-27-1.png)&lt;!-- --&gt;
+![](slides_files/figure-html/unnamed-chunk-26-1.png)&lt;!-- --&gt;
 ]
 
 ---
@@ -734,10 +744,10 @@ Applied LIME using *lime* R package [49]
 .left-desc[
 **Step 2c**: Fit Explainer Model
 
-- Ridge regression model fit to simulated data
-  - Response: complex model predictions
-  - Features: selected interpretability transformed features
-  - Weights: proximity weights
+- .red[Model]: Ridge regression
+  - .red[Response]: complex model predictions
+  - .red[Features]: selected interpretability transformed features
+  - .red[Weights]: proximity weights
 
 **Corresponding Diagnostic:**  
 *Explainer Model Prediction Plot*
@@ -750,7 +760,7 @@ Applied LIME using *lime* R package [49]
 ]
 
 .right-plot[
-![](slides_files/figure-html/unnamed-chunk-28-1.png)&lt;!-- --&gt;
+![](slides_files/figure-html/unnamed-chunk-27-1.png)&lt;!-- --&gt;
 ]
 
 ---
@@ -768,7 +778,7 @@ Applied LIME using *lime* R package [49]
 ]
 
 .right-plot[
-![](slides_files/figure-html/unnamed-chunk-29-1.png)&lt;!-- --&gt;
+![](slides_files/figure-html/unnamed-chunk-28-1.png)&lt;!-- --&gt;
 ]
 
 ---
@@ -778,19 +788,19 @@ Applied LIME using *lime* R package [49]
 .left-desc[
 **Step 3a**: Explainer Model Interpretation
 
-- Interpret coefficients of explainer model
-- Explains complex model prediction
+- .red[Focus]: Model coefficients
+- .red[Interpretation]: Indicates support for/against classification
 
 **Corresponding Diagnostic:** *Explanation Plot*
 
 - Adaptation of plot from *lime* R package
 - .red[Axes]: Explainer model (interpretability transformed) feature versus explainer model coefficient
-- .red[Bar Length]: magnitude of explainer model coefficients
-- .red[Bar Color]: value of the explainer model coefficients
+- .red[Bar Length]: Magnitude of explainer model coefficients
+- .red[Bar Color]: Value of the explainer model coefficients
 ]
 
 .right-plot[
-![](slides_files/figure-html/unnamed-chunk-30-1.png)&lt;!-- --&gt;
+![](slides_files/figure-html/unnamed-chunk-29-1.png)&lt;!-- --&gt;
 ]
 
 ---
@@ -813,7 +823,7 @@ Applied LIME using *lime* R package [49]
 ]
 
 .right-plot[
-![](slides_files/figure-html/unnamed-chunk-31-1.png)&lt;!-- --&gt;
+![](slides_files/figure-html/unnamed-chunk-30-1.png)&lt;!-- --&gt;
 ]
 
 ---
@@ -828,15 +838,21 @@ class: inverse-sub, middle, center
 
 # Diagnostics for Sets of Explanations
 
-Applied LIME using *lime* R package [49] 
+**LIME Application**
 
-- All test data observations
-- Number of features to return in explanation: 2
-- Default tuning parameters settings
+.pull-left[
+- .red[Explanation Set]: All test data observations
+- .red[Implementation]: *lime* R package [49]
+- .red[Number Explanation Features]: 2
+- .red[Tuning Parameters]: Default
+]
 
-Plot of all explanations from *lime* R package: 
+.pull-right[
+- .red[Complex Model]: Random forest
+- .red[Explainer Model]: Ridge regression
+]
 
-&lt;img src="slides_files/figure-html/unnamed-chunk-32-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+&lt;img src="slides_files/figure-html/unnamed-chunk-31-1.png" width="100%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -851,7 +867,7 @@ Provides an overview of groupings of LIME explanations
 - .red[X-axis]: Observation in the data set
 - .red[Tile Color]: Ridge regression coefficient from the corresponding model
 
-![](slides_files/figure-html/unnamed-chunk-33-1.png)&lt;!-- --&gt;
+![](slides_files/figure-html/unnamed-chunk-32-1.png)&lt;!-- --&gt;
 
 ---
 
@@ -865,7 +881,7 @@ Provides a summary of explainer model coefficients across the set of explanation
 - .red[Cells]: Intersections of quantile bins
 - .red[Color]: Average of ridge regression coefficients (or sum of ridge regression coefficients) for observations within a cell
 
-![](slides_files/figure-html/unnamed-chunk-34-1.png)&lt;!-- --&gt;
+![](slides_files/figure-html/unnamed-chunk-33-1.png)&lt;!-- --&gt;
 
 ---
 
@@ -883,7 +899,7 @@ Shows the relationship between the explainer model predictions and the quantile 
 ]
 
 .right-plot[
-![](slides_files/figure-html/unnamed-chunk-35-1.png)&lt;!-- --&gt;
+![](slides_files/figure-html/unnamed-chunk-34-1.png)&lt;!-- --&gt;
 ]
 
 ---
@@ -904,7 +920,7 @@ Shows the relationship between the explainer model and complex model predictions
 ]
 
 .right-plot[
-![](slides_files/figure-html/unnamed-chunk-36-1.png)&lt;!-- --&gt;
+![](slides_files/figure-html/unnamed-chunk-35-1.png)&lt;!-- --&gt;
 ]
 
 ---
@@ -925,7 +941,7 @@ Shows the relationship between the average explainer model predictions within a 
 ]
 
 .right-plot[
-![](slides_files/figure-html/unnamed-chunk-37-1.png)&lt;!-- --&gt;
+![](slides_files/figure-html/unnamed-chunk-36-1.png)&lt;!-- --&gt;
 
 ]
 
@@ -941,16 +957,24 @@ class: inverse-sub, middle, center
 
 # .medium[Diagnostics for Comparisons of Tuning Parameters]
 
-Applied LIME using *lime* R package [49]
-- All test data observations  
-- Number of features to return in explanation: 2
-- Multiple applications of LIME for each observation
-  - 2 to 6 quantile bins
+**LIME Application**
+
+.pull-left[
+- .red[Explanation Set]: All test data observations
+- .red[Implementation]: *lime* R package [49]
+- .red[Number Explanation Features]: 2
+- .red[Tuning Parameters]:
+  - 2 to 6 quantile bins 
   - Kernel density simulation
+]
 
-Plot of all explanations from *lime* R package: 
+.pull-right[
+- .red[Complex Model]: Random forest
+- .red[Explainer Model]: Ridge regression
+]
 
-&lt;img src="slides_files/figure-html/unnamed-chunk-38-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-37-1.png" width="100%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -970,14 +994,14 @@ Provides an overview of the features selected by LIME across observations and tu
 ]
 
 .right-plot[
-![](slides_files/figure-html/unnamed-chunk-39-1.png)&lt;!-- --&gt;
+![](slides_files/figure-html/unnamed-chunk-38-1.png)&lt;!-- --&gt;
 ]
 
 ---
 
 # .medium[Diagnostics for Comparisons of Tuning Parameters]
 
-### Notation for Assessment Metrics
+**Notation for Assessment Metrics**
 
 .pull-left[
 .red[**Data and Complex Model**]
@@ -1006,7 +1030,7 @@ For `\(x_e\)` and set of tuning parameters `\(t\)`
 
 # .medium[Diagnostics for Comparisons of Tuning Parameters]
 
-### Notation for Assessment Metrics
+**Notation for Assessment Metrics**
 
 .pull-left[
 .red[**Weights and Explainer Model**]
@@ -1034,7 +1058,7 @@ For `\(x_e\)` and set of tuning parameters `\(t\)`
 
 # .medium[Diagnostics for Comparisons of Tuning Parameters]
 
-### Metrics for the Assessment of LIME
+**Assessment Metrics**
 
 Over set of explanations; same set of tuning parameters:
 
@@ -1069,7 +1093,7 @@ Visualization of assessment metrics for comparing tuning parameter performance
 ]
 
 .right-plot[
-![](slides_files/figure-html/unnamed-chunk-40-1.png)&lt;!-- --&gt;
+![](slides_files/figure-html/unnamed-chunk-39-1.png)&lt;!-- --&gt;
 ]
 
 ---
@@ -1107,7 +1131,7 @@ feature_heatmap(
   )
 ```
 
-![](slides_files/figure-html/unnamed-chunk-42-1.png)&lt;!-- --&gt;
+![](slides_files/figure-html/unnamed-chunk-41-1.png)&lt;!-- --&gt;
 
 ]
 
@@ -1118,11 +1142,11 @@ feature_heatmap(
 Bullet random forest prediction example from motivation with the complex and explainer model comparison plot
 
 .pull-left[
-![](slides_files/figure-html/unnamed-chunk-43-1.png)&lt;!-- --&gt;
+![](slides_files/figure-html/unnamed-chunk-42-1.png)&lt;!-- --&gt;
 ]
 
 .pull-right[
-![](slides_files/figure-html/unnamed-chunk-44-1.png)&lt;!-- --&gt;
+![](slides_files/figure-html/unnamed-chunk-43-1.png)&lt;!-- --&gt;
 
 ]
 
@@ -1132,7 +1156,7 @@ Bullet random forest prediction example from motivation with the complex and exp
 
 Feature heatmap of LIME explanation from Hare, Hofmann, and Carriquiry [48] bullet comparison forest model 
 
-![](slides_files/figure-html/unnamed-chunk-45-1.png)&lt;!-- --&gt;
+![](slides_files/figure-html/unnamed-chunk-44-1.png)&lt;!-- --&gt;
 
 ---
 
@@ -1525,6 +1549,12 @@ https://github.com/thomasp85/lime. 2020.
 class: inverse, center, middle
 
 # Appendix
+
+---
+
+# .medium[Training and Testing Data for Bullet Random Forest]
+
+&lt;img src="figures/bullet_pcp.png" width="100%" style="display: block; margin: auto;" /&gt;
 
 ---
 
