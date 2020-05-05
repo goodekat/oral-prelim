@@ -974,8 +974,8 @@ For `\(x_e\)` and set of tuning parameters `\(t\)`
 
 For `\(x_e\)` and set of tuning parameters `\(t\)`
 
-- `\(\pi_t\)` = proximity distance metric
-- `\(\pi_t\left(x_e, x'_{e,t,s}\right)\)` = weight assigned to `\(x'_{e,t,s}\)` which are the proximity between `\(x_e\)` and `\(x'_{e,t,s}\)`
+- `\(\omega_t\)` = proximity distance metric
+- `\(\omega_t\left(x_e, x'_{e,t,s}\right)\)` = weight assigned to `\(x'_{e,t,s}\)` which are the proximity between `\(x_e\)` and `\(x'_{e,t,s}\)`
 - `\(g_{e,t}\)` = explainer model
 - `\(g_{e,t}(z'_{e,s,t})\)` = explainer model prediction for interpretability transformed simulated data observation `\(s\)`
 
@@ -1001,7 +1001,7 @@ For `\(x_e\)` and set of tuning parameters `\(t\)`
 
 .red[**Average Fidelity**]: Average of fidelity metric introduced in Ribeiro, Singh, and Guestrin (2016) over a set of explanations with the same tuning parameters to assess the explainer model approximation to the complex model
 
-`$$\mathcal{L}_{\mbox{ave}} \ = \ \frac{1}{E}\sum_{e=1}^E\mathcal{L}(f, \ g_{e,t}, \ \pi_{t}) \ =  \ \frac{1}{E}\sum_{e=1}^E\sum_{s=1}^{S}\pi_{t}\left(x'_e, x'_{e,t,s}\right)\left(f\left(x'_{e,t,s}\right)-g_{e,t}\left(z_{e,t,s}'\right)\right)^2$$`
+`$$\mathcal{L}_{\mbox{ave}} \ = \ \frac{1}{E}\sum_{e=1}^E\mathcal{L}(f, \ g_{e,t}, \ \pi_{t}) \ =  \ \frac{1}{E}\sum_{e=1}^E\sum_{s=1}^{S}\omega_{t}\left(x'_e, x'_{e,t,s}\right)\left(f\left(x'_{e,t,s}\right)-g_{e,t}\left(z_{e,t,s}'\right)\right)^2$$`
 
 
 .red[**Mean Squared Explanation Error (MSEE)**]: Comparable to an MSE for comparing complex model predictions to explainer model predictions for each explanation
