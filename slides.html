@@ -97,6 +97,7 @@ body {
   opacity: 1;
 }
 
+
 a, a &gt; code {
   color: #000000; /*default: rgb(249, 38, 114); || sets color of links */
   text-decoration: none; /* turns off background coloring of links */
@@ -152,11 +153,15 @@ Ph.D. in Statistics (in progress)
 - Lecturer at Lawrence University
 - Lecturer at ISU
 
+&lt;br&gt;
+
 **Consulting**
 
 - AES Statistical Consultant
 - NREM Research Assistant
   
+&lt;br&gt;
+
 **Internship**
 
 - Sandia National Labs: Statistical Sciences Research and Development Intern
@@ -167,18 +172,26 @@ Ph.D. in Statistics (in progress)
 
 # Overview of Talk
 
-1. Background and Overview of Thesis
+- Background and Overview of Thesis
 
-2. Detailed explanation of Chapter 1
+&lt;br&gt;
+
+- Detailed explanation of Chapter 1
   - Visual Diagnostics of a Model Explainer -- Tools for the Assessment of LIME Explanations
 
-3. Plan for Chapter 2
+&lt;br&gt;
+
+- Plan for Chapter 2
   - Explaining Random Forests using Clustering of Trees
 
-4. Plan for Chapter 3
+&lt;br&gt;
+
+- Plan for Chapter 3
   - Extensions of Neural Network Explanation Tools to Functional Data
 
-5. Timeline and Discussion Points
+&lt;br&gt;
+
+- Timeline and Discussion Points
 
 ---
 
@@ -192,7 +205,7 @@ class: middle, center, inverse
 
 - **Machine learning models**
   - Good in prediction problems
-  - Many considered "black-boxes" since too complex to directly interpret
+  - Many are considered "black-boxes" since too complex to directly interpret
 
 - **Explainable machine learning**
 
@@ -241,6 +254,8 @@ My definitions (implicitly used by Rudin (2018) and Ribeiro, Singh, and Guestrin
 - Removing the blindfold .small[(Wickham, Cook, and Hofmann, 2015)]
 ]
 
+&lt;br&gt;
+
 **Global Methods**: .red[Explanation for model as a whole]
 
 .medium[
@@ -283,6 +298,8 @@ My definitions (implicitly used by Rudin (2018) and Ribeiro, Singh, and Guestrin
 - breakDown .small[(Staniak and Biecek, 2018)]
 ]
 
+&lt;br&gt;
+
 **Example Based**: .red[Explanations based on examples from the data]
 
 .medium[
@@ -321,6 +338,8 @@ My definitions (implicitly used by Rudin (2018) and Ribeiro, Singh, and Guestrin
 Silva, Cook, and Lee, 2017)]
 ]
 
+&lt;br&gt;
+
 **Neural Networks**
 
 .medium[
@@ -351,27 +370,26 @@ Silva, Cook, and Lee, 2017)]
 .pull-left[
 **General**
 
-.red[Argument against black box model explanations] (Rudin, 2018):
-  - Title: ".blue[Stop explaining black box machine learning models for high stakes decisions and use interpretable models instead]"
+.red[Argument against black box model explanations] .medium[(Rudin, 2018)]:
+  - .blue["Stop explaining black box machine learning models for high stakes decisions and use interpretable models instead"]
   - "Explanations must be wrong."
   - Explanations may not:
       - be faithful to the original model
       - be detailed enough to understand the "black-box" model
       - make sense
-  - Use interpretable models for high-stakes decisions
   - Debunks accuracy and interpretability trade-off myth
 ]
 
 .pull-right[
 **Method Specific**
 
-.red[Assessment of LIME] (Laugel, Renard, Lesot, Marsala, and Detyniecki, 2018):
+.red[Assessment of LIME] .medium[(Laugel, Renard, Lesot, Marsala, and Detyniecki, 2018)]:
   - How to choose a local region?
-  
-.red[Assessment of counterfactual examples] (Laugel, Renard, Lesot, et al., 2018):
+
+.red[Assessment of counterfactual examples] .medium[(Laugel, Renard, Lesot, et al., 2018)]:
   - Issues with unjustified counterfactual examples
 
-.red[Assessment of saliency maps] (Kindermans, Hooker, Adebayo, Alber, Schütt, Dähne, Erhan, and Kim, 2017):
+.red[Assessment of saliency maps] .medium[(Kindermans, Hooker, Adebayo, Alber, Schütt, Dähne, Erhan, and Kim, 2017)]:
   - Transformation to input data affects saliency map but not model
 ]
 
@@ -431,7 +449,7 @@ Hare, Hofmann, and Carriquiry (2016):
 Hare, Hofmann, and Carriquiry (2016) approach: 
   - Random forest model
   - 9 signature similarity features
-  - Returns a score for the comparison of two lands
+  - Returns a score for a comparison
 
 &lt;img src="figures/bullet_pcp.png" width="100%" style="display: block; margin: auto;" /&gt;
 
@@ -580,8 +598,8 @@ Applied LIME using *lime* R package (Pedersen and Benesty, 2020)
 .left-desc[
 **Step 1a**: Data Simulation
 
-- Sample 4999 observations uniformly from 4 quantile bins for each feature in the training data 
-  
+- Sample 4999 observations uniformly from 4 quantile bins for each feature in the training data
+
 **Corresponding Diagnostic:**  
 *Training Data Plot*
 
@@ -978,6 +996,7 @@ For `\(x_e\)` and set of tuning parameters `\(t\)`
 - `\(\omega_t\left(x_e, x'_{e,t,s}\right)\)` = weight assigned to `\(x'_{e,t,s}\)` which are the proximity between `\(x_e\)` and `\(x'_{e,t,s}\)`
 - `\(g_{e,t}\)` = explainer model
 - `\(g_{e,t}(z'_{e,s,t})\)` = explainer model prediction for interpretability transformed simulated data observation `\(s\)`
+- `\(R_{e,t}^2\)` = `\(R^2\)` for `\(g_{e,t}\)`
 
 ]
 
@@ -996,15 +1015,17 @@ For `\(x_e\)` and set of tuning parameters `\(t\)`
 
 ### Metrics for the Assessment of LIME
 
-.red[**Average R Squared**]: Average of explainer model `\(R^2\)` values over a set of explanations with the same tuning parameters to assess the linearity claim where `\(R_{e,t}^2\)` is the `\(R^2\)` for `\(g_{e,t}\)`
+Over set of explanations; same set of tuning parameters:
+
+- .red[**Average R Squared**]: Average of explainer model `\(R^2\)` values
 `$$R^2_{\mbox{ave}} = \frac{1}{E}\sum_{e=1}^E R_{e,t}^2$$`
 
-.red[**Average Fidelity**]: Average of fidelity metric introduced in Ribeiro, Singh, and Guestrin (2016) over a set of explanations with the same tuning parameters to assess the explainer model approximation to the complex model
+- .red[**Average Faithfulness**]: Average weighted distance between explainer and complex model predictions for simulated data (based on metric introduced in Ribeiro, Singh, and Guestrin (2016))
 
-`$$\mathcal{L}_{\mbox{ave}} \ = \ \frac{1}{E}\sum_{e=1}^E\mathcal{L}(f, \ g_{e,t}, \ \pi_{t}) \ =  \ \frac{1}{E}\sum_{e=1}^E\sum_{s=1}^{S}\omega_{t}\left(x'_e, x'_{e,t,s}\right)\left(f\left(x'_{e,t,s}\right)-g_{e,t}\left(z_{e,t,s}'\right)\right)^2$$`
+`$$\mathcal{L}_{\mbox{ave}} \ = \ \frac{1}{E}\sum_{e=1}^E\mathcal{L}(f, \ g_{e,t}, \ \pi_{t}) \ =  \ \frac{1}{E}\sum_{e=1}^E\sum_{s=1}^{S}\omega_{t}\left(x_e, x'_{e,t,s}\right)\left(f\left(x'_{e,t,s}\right)-g_{e,t}\left(z_{e,t,s}'\right)\right)^2$$`
 
 
-.red[**Mean Squared Explanation Error (MSEE)**]: Comparable to an MSE for comparing complex model predictions to explainer model predictions for each explanation
+- .red[**Mean Squared Explanation Error (MSEE)**]: MSE for comparing complex to explainer predictions for explanations
 
 `$$MSEE=\frac{1}{E}\sum_{e=1}^E\left(f\left(x_e\right)-g_{e,t}\left(z_{e,t}\right)\right)^2$$`
 
@@ -1217,22 +1238,21 @@ class: middle, center, inverse
 
 **Summer 2020**
 
-- Chapter 1: Finish writing (possibly submit paper)
-- Chapter 2: Start on content (if time)
-- .blue[Chapter 3: Work on content (Sandia internship)]
+- Chapter 3: Work on content (Sandia internship)
+
+&lt;br&gt;
 
 **Fall 2020**
 
-- Chapter 1: Submit paper (if not already done)
-- .blue[Chapter 2: Work on content]
-- .blue[Chapter 3: Write up work]
+- Chapter 2: Work on content
+- Chapter 3: Write up work
+
+&lt;br&gt;
 
 **Spring 2021**
 
-- Chapter 1: Review process (if applicable)
-- .blue[Chapter 2: Write up work]
-- Chapter 3: Submit paper (if ready)
-- .blue[Defend dissertation]
+- Chapter 2: Write up work
+- Defend dissertation
 
 ---
 
@@ -1259,6 +1279,12 @@ Current ideas:
 - Present diagnostic plots
 - Demonstrate issues found with LIME explanations
 ]
+
+---
+
+class: inverse, center, middle
+
+# Questions?
 
 ---
 

@@ -89,6 +89,7 @@ body {
   opacity: 1;
 }
 
+
 a, a > code {
   color: #000000; /*default: rgb(249, 38, 114); || sets color of links */
   text-decoration: none; /* turns off background coloring of links */
@@ -178,11 +179,15 @@ Ph.D. in Statistics (in progress)
 - Lecturer at Lawrence University
 - Lecturer at ISU
 
+<br>
+
 **Consulting**
 
 - AES Statistical Consultant
 - NREM Research Assistant
   
+<br>
+
 **Internship**
 
 - Sandia National Labs: Statistical Sciences Research and Development Intern
@@ -193,18 +198,26 @@ Ph.D. in Statistics (in progress)
 
 # Overview of Talk
 
-1. Background and Overview of Thesis
+- Background and Overview of Thesis
 
-2. Detailed explanation of Chapter 1
+<br>
+
+- Detailed explanation of Chapter 1
   - Visual Diagnostics of a Model Explainer -- Tools for the Assessment of LIME Explanations
 
-3. Plan for Chapter 2
+<br>
+
+- Plan for Chapter 2
   - Explaining Random Forests using Clustering of Trees
 
-4. Plan for Chapter 3
+<br>
+
+- Plan for Chapter 3
   - Extensions of Neural Network Explanation Tools to Functional Data
 
-5. Timeline and Discussion Points
+<br>
+
+- Timeline and Discussion Points
 
 ---
 
@@ -218,7 +231,7 @@ class: middle, center, inverse
 
 - **Machine learning models**
   - Good in prediction problems
-  - Many considered "black-boxes" since too complex to directly interpret
+  - Many are considered "black-boxes" since too complex to directly interpret
 
 - **Explainable machine learning**
 
@@ -269,6 +282,8 @@ include_graphics("figures/lime.png")
 - Removing the blindfold .small[`r Citep(bib, "wickham:2015")`]
 ]
 
+<br>
+
 **Global Methods**: .red[Explanation for model as a whole]
 
 .medium[
@@ -309,6 +324,8 @@ include_graphics("./figures/pdp.png")
 - breakDown .small[`r Citep(bib, "staniak:2018")`]
 ]
 
+<br>
+
 **Example Based**: .red[Explanations based on examples from the data]
 
 .medium[
@@ -344,6 +361,8 @@ include_graphics("./figures/adversarial.png")
 - Interactive visualizations .small[`r Citep(bib, c("beckett:2018", "dasilva:2017"))`]
 ]
 
+<br>
+
 **Neural Networks**
 
 .medium[
@@ -372,27 +391,26 @@ include_graphics("./figures/saliency.png")
 .pull-left[
 **General**
 
-.red[Argument against black box model explanations] `r Citep(bib, "rudin:2018")`:
-  - Title: ".blue[Stop explaining black box machine learning models for high stakes decisions and use interpretable models instead]"
+.red[Argument against black box model explanations] .medium[`r Citep(bib, "rudin:2018")`]:
+  - .blue["Stop explaining black box machine learning models for high stakes decisions and use interpretable models instead"]
   - "Explanations must be wrong."
   - Explanations may not:
       - be faithful to the original model
       - be detailed enough to understand the "black-box" model
       - make sense
-  - Use interpretable models for high-stakes decisions
   - Debunks accuracy and interpretability trade-off myth
 ]
 
 .pull-right[
 **Method Specific**
 
-.red[Assessment of LIME] `r Citep(bib, "laugel:2018")`:
+.red[Assessment of LIME] .medium[`r Citep(bib, "laugel:2018")`]:
   - How to choose a local region?
-  
-.red[Assessment of counterfactual examples] `r Citep(bib, "laugel:2018")`:
+
+.red[Assessment of counterfactual examples] .medium[`r Citep(bib, "laugel:2018")`]:
   - Issues with unjustified counterfactual examples
 
-.red[Assessment of saliency maps] `r Citep(bib, "kindermans:2017")`:
+.red[Assessment of saliency maps] .medium[`r Citep(bib, "kindermans:2017")`]:
   - Transformation to input data affects saliency map but not model
 ]
 
@@ -458,7 +476,7 @@ include_graphics("figures/signatures.png")
 `r Citet(bib, "hare:2016")` approach: 
   - Random forest model
   - 9 signature similarity features
-  - Returns a score for the comparison of two lands
+  - Returns a score for a comparison
 
 ```{r out.width = "100%", fig.align = "center"}
 include_graphics("figures/bullet_pcp.png")
@@ -1075,8 +1093,8 @@ sine_poi_exp
 .left-desc[
 **Step 1a**: Data Simulation
 
-- Sample 4999 observations uniformly from 4 quantile bins for each feature in the training data 
-  
+- Sample 4999 observations uniformly from 4 quantile bins for each feature in the training data
+
 **Corresponding Diagnostic:**  
 *Training Data Plot*
 
@@ -2197,6 +2215,7 @@ For $x_e$ and set of tuning parameters $t$
 - $\omega_t\left(x_e, x'_{e,t,s}\right)$ = weight assigned to $x'_{e,t,s}$ which are the proximity between $x_e$ and $x'_{e,t,s}$
 - $g_{e,t}$ = explainer model
 - $g_{e,t}(z'_{e,s,t})$ = explainer model prediction for interpretability transformed simulated data observation $s$
+- $R_{e,t}^2$ = $R^2$ for $g_{e,t}$
 
 ]
 
@@ -2215,15 +2234,17 @@ For $x_e$ and set of tuning parameters $t$
 
 ### Metrics for the Assessment of LIME
 
-.red[**Average R Squared**]: Average of explainer model $R^2$ values over a set of explanations with the same tuning parameters to assess the linearity claim where $R_{e,t}^2$ is the $R^2$ for $g_{e,t}$
+Over set of explanations; same set of tuning parameters:
+
+- .red[**Average R Squared**]: Average of explainer model $R^2$ values
 $$R^2_{\mbox{ave}} = \frac{1}{E}\sum_{e=1}^E R_{e,t}^2$$
 
-.red[**Average Fidelity**]: Average of fidelity metric introduced in `r Citet(bib, "ribeiro:2016")` over a set of explanations with the same tuning parameters to assess the explainer model approximation to the complex model
+- .red[**Average Faithfulness**]: Average weighted distance between explainer and complex model predictions for simulated data (based on metric introduced in `r Citet(bib, "ribeiro:2016")`)
 
-$$\mathcal{L}_{\mbox{ave}} \ = \ \frac{1}{E}\sum_{e=1}^E\mathcal{L}(f, \ g_{e,t}, \ \pi_{t}) \ =  \ \frac{1}{E}\sum_{e=1}^E\sum_{s=1}^{S}\omega_{t}\left(x'_e, x'_{e,t,s}\right)\left(f\left(x'_{e,t,s}\right)-g_{e,t}\left(z_{e,t,s}'\right)\right)^2$$
+$$\mathcal{L}_{\mbox{ave}} \ = \ \frac{1}{E}\sum_{e=1}^E\mathcal{L}(f, \ g_{e,t}, \ \pi_{t}) \ =  \ \frac{1}{E}\sum_{e=1}^E\sum_{s=1}^{S}\omega_{t}\left(x_e, x'_{e,t,s}\right)\left(f\left(x'_{e,t,s}\right)-g_{e,t}\left(z_{e,t,s}'\right)\right)^2$$
 
 
-.red[**Mean Squared Explanation Error (MSEE)**]: Comparable to an MSE for comparing complex model predictions to explainer model predictions for each explanation
+- .red[**Mean Squared Explanation Error (MSEE)**]: MSE for comparing complex to explainer predictions for explanations
 
 $$MSEE=\frac{1}{E}\sum_{e=1}^E\left(f\left(x_e\right)-g_{e,t}\left(z_{e,t}\right)\right)^2$$
 
@@ -2564,22 +2585,21 @@ class: middle, center, inverse
 
 **Summer 2020**
 
-- Chapter 1: Finish writing (possibly submit paper)
-- Chapter 2: Start on content (if time)
-- .blue[Chapter 3: Work on content (Sandia internship)]
+- Chapter 3: Work on content (Sandia internship)
+
+<br>
 
 **Fall 2020**
 
-- Chapter 1: Submit paper (if not already done)
-- .blue[Chapter 2: Work on content]
-- .blue[Chapter 3: Write up work]
+- Chapter 2: Work on content
+- Chapter 3: Write up work
+
+<br>
 
 **Spring 2021**
 
-- Chapter 1: Review process (if applicable)
-- .blue[Chapter 2: Write up work]
-- Chapter 3: Submit paper (if ready)
-- .blue[Defend dissertation]
+- Chapter 2: Write up work
+- Defend dissertation
 
 ---
 
@@ -2606,6 +2626,12 @@ Current ideas:
 - Present diagnostic plots
 - Demonstrate issues found with LIME explanations
 ]
+
+---
+
+class: inverse, center, middle
+
+# Questions?
 
 ---
 
