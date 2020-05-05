@@ -493,7 +493,7 @@ include_graphics("figures/signatures.png")
 `r Citet(bib, "hare:2016")` approach: 
   - Random forest model
   - 9 signature similarity features
-  - Returns a score for a comparison
+  - Returns a match score for a signature comparison
 
 <br>
 
