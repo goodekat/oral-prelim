@@ -109,6 +109,7 @@ a, a > code {
 .tiny{font-size: 30%}
 .small{font-size: 50%}
 .medium{font-size: 75%}
+.large{font-size: 85%}
 .red{color: #9A3324}
 .blue{color: #006BA6}
 .tan{color: #9B945F}
@@ -123,6 +124,7 @@ library(cowplot)
 library(dplyr)
 library(forcats)
 library(ggforce)
+library(ggpcp)
 library(ggplot2)
 library(glmnet)
 library(gower)
@@ -137,12 +139,12 @@ library(RefManageR)
 library(tidyr)
 
 # R markdown options
-opts_chunk$set(echo = FALSE, dpi = 150, cache = FALSE)
+opts_chunk$set(echo = FALSE, dpi = 150, cache = TRUE)
 
 # Biboptions
 BibOptions(check.entries = FALSE,
-           bib.style = "authoryear",
-           cite.style = "authoryear",
+           bib.style = "numeric",
+           cite.style = "numeric",
            style = "markdown",
            hyperlink = FALSE,
            dashed = FALSE)
@@ -248,11 +250,12 @@ class: middle, center, inverse
 
 # Explainability versus Interpretability
 
-No accepted definitions for explainability and interpretability 
-  - .medium[`r Citet(bib, c("gilpin:2018", "lipton:2016", "molnar:2019", "montavon:2017", "murdoch:2019"))`]  
+No accepted definitions for explainability and interpretability `r Citep(bib, c("gilpin:2018", "lipton:2016", "molnar:2019", "montavon:2017", "murdoch:2019"))`
 
-My definitions (implicitly used by `r Citet(bib, "rudin:2018")` and `r Citet(bib, "ribeiro:2016")`):
-
+### My definitions
+  - In regards to a model
+  - Implicitly used by `r Citet(bib, "rudin:2018")` and `r Citet(bib, "ribeiro:2016")`
+  
 .pull-left[
 **Interpretability** is the ability to .blue[directly use model parameters] to understand the .red[mechanism of how the model makes predictions].
 
@@ -265,7 +268,7 @@ $$\hat{y}=\hat{\beta}_0+\hat{\beta}_1x_1+\cdots+\hat{\beta}_px_p$$
 
 - LIME: local interpretable model-agnostic explanations `r Citep(bib, "ribeiro:2016")`
 
-```{r out.width = "50%", fig.align = "center"}
+```{r out.width = "55%", fig.align = "center"}
 include_graphics("figures/lime.png")
 ```
 
@@ -276,24 +279,28 @@ include_graphics("figures/lime.png")
 # Model Agnostic Methods
 
 .pull-left[
-**General Model Visualizations**: .red[Strategies for understanding any model]
+**General Model Visualizations**
 
-.medium[
-- Removing the blindfold .small[`r Citep(bib, "wickham:2015")`]
+.red[Strategies for understanding any model]
+
+.large[
+- Removing the blindfold `r Citep(bib, "wickham:2015")`
 ]
 
 <br>
 
-**Global Methods**: .red[Explanation for model as a whole]
+**Global Methods**
 
-.medium[
-- Partial dependence plots .small[`r Citep(bib, "friedman:2001")`] and extensions:
-  - Interactive partial dependence plots .small[`r Citep(bib, "krause:2016")`]
-  - Individual conditional expectation plots .small[`r Citep(bib, "goldstein:2013")`]
-  - Accumulated local effect plots .small[`r Citep(bib, "apley:2016")`]
-  - Feature interaction plots .small[`r Citep(bib, c("friedman:2008", "greenwell:2018", "hooker:2004"))`]
-- Global feature importance plots .small[`r Citep(bib, c("fisher:2018", "altmann:2010", "casalicchio:2019"))`]
-- Global surrogate models .small[`r Citep(bib, "molnar:2019")`]
+.red[Explanation for model as a whole]
+
+.large[
+- Partial dependence plots `r Citep(bib, "friedman:2001", .opts = list(cite.style = "numeric"))` and extensions:
+  - Interactive partial dependence plots `r Citep(bib, "krause:2016")`
+  - Individual conditional expectation plots `r Citep(bib, "goldstein:2013")`
+  - Accumulated local effect plots `r Citep(bib, "apley:2016")`
+  - Feature interaction plots `r Citep(bib, c("friedman:2008", "greenwell:2018", "hooker:2004"))`
+- Global feature importance plots `r Citep(bib, c("fisher:2018", "altmann:2010", "casalicchio:2019"))`
+- Global surrogate models `r Citep(bib, "molnar:2019")`
 ]
 
 ]
@@ -313,26 +320,30 @@ include_graphics("./figures/pdp.png")
 # Model Agnostic Methods
 
 .pull-left[
-**Local Methods**: .red[Explanation for an individual prediction]
+**Local Methods**
 
-.medium[
-- Individual conditional importance plots .small[`r Citep(bib, "casalicchio:2019")`]
-- LIME .small[`r Citep(bib, "ribeiro:2016")`]
-- Anchors (scoped rules) .small[`r Citep(bib, "ribeiro:2018")`]
-- Shapely values .small[`r Citep(bib, "štrumbelj:2014")`]
-- SHAP .small[`r Citep(bib, "lundberg:2017")`]
-- breakDown .small[`r Citep(bib, "staniak:2018")`]
+.red[Explanation for an individual prediction]
+
+.large[
+- Individual conditional importance plots `r Citep(bib, "casalicchio:2019")`
+- LIME `r Citep(bib, "ribeiro:2016")`
+- Anchors (scoped rules) `r Citep(bib, "ribeiro:2018")`
+- Shapely values `r Citep(bib, "štrumbelj:2014")`
+- SHAP `r Citep(bib, "lundberg:2017")`
+- breakDown `r Citep(bib, "staniak:2018")`
 ]
 
 <br>
 
-**Example Based**: .red[Explanations based on examples from the data]
+**Example Based**
 
-.medium[
-- Counterfactual examples .small[`r Citep(bib, c("wachter:2017", "martens:2014", "looveren:2019", "laugel:2017"))`]
-- Adversarial examples .small[`r Citep(bib, c("szegedy:2013", "goodfellow:2014", "biggio:2018", "su:2019"))`]
-- Prototypes and criticisms .small[`r Citep(bib, "kim:1016")`]
-- Influential instances .small[`r Citep(bib, "koh:2017")`]
+.red[Explanations based on examples from the data]
+
+.large[
+- Counterfactual examples `r Citep(bib, c("wachter:2017", "martens:2014", "looveren:2019", "laugel:2017"))`
+- Adversarial examples `r Citep(bib, c("szegedy:2013", "goodfellow:2014", "biggio:2018", "su:2019"))`
+- Prototypes and criticisms `r Citep(bib, "kim:1016")`
+- Influential instances `r Citep(bib, "koh:2017")`
 ]
 ]
 
@@ -352,25 +363,25 @@ include_graphics("./figures/adversarial.png")
 .pull-left[
 **Random Forests**
 
-.medium[
-- Random forest impurity based feature importance .small[`r Citep(bib, "breiman:2001")`]
-- Sectioned scatterplots .small[`r Citep(bib, "urbanek:2008")`]
-- Trace plots of trees .small[`r Citep(bib, "urbanek:2008")`]
-- Simplified model .small[`r Citep(bib, "hara:2016")`]
-- Forest floor visualizations .small[`r Citep(bib, "welling:2016")`]
-- Interactive visualizations .small[`r Citep(bib, c("beckett:2018", "dasilva:2017"))`]
+.large[
+- Random forest impurity based feature importance `r Citep(bib, "breiman:2001")`
+- Sectioned scatterplots `r Citep(bib, "urbanek:2008")`
+- Trace plots of trees `r Citep(bib, "urbanek:2008")`
+- Simplified model `r Citep(bib, "hara:2016")`
+- Forest floor visualizations `r Citep(bib, "welling:2016")`
+- Interactive visualizations `r Citep(bib, c("beckett:2018", "dasilva:2017"))`
 ]
 
 <br>
 
 **Neural Networks**
 
-.medium[
-- Extracting tree structures .small[`r Citep(bib, "craven:1996")`]
-- Saliency maps .small[`r Citep(bib, "simonyan:2013")`]
-- Feature visualization .small[`r Citep(bib, "olah:2017")`]
-- Grand tours .small[`r Citep(bib, "li:2020")`]
-- Flows .small[`r Citep(bib, "halnaut:2020")`]
+.large[
+- Extracting tree structures `r Citep(bib, "craven:1996")`
+- Saliency maps `r Citep(bib, "simonyan:2013")`
+- Feature visualization `r Citep(bib, "olah:2017")`
+- Grand tours `r Citep(bib, "li:2020")`
+- Flows `r Citep(bib, "halnaut:2020")`
 ]
 ]
 
@@ -391,26 +402,32 @@ include_graphics("./figures/saliency.png")
 .pull-left[
 **General**
 
-.red[Argument against black box model explanations] .medium[`r Citep(bib, "rudin:2018")`]:
+.red[Argument against black box model explanations] by `r Citet(bib, "rudin:2018")`:
+  
   - .blue["Stop explaining black box machine learning models for high stakes decisions and use interpretable models instead"]
-  - "Explanations must be wrong."
+  
   - Explanations may not:
       - be faithful to the original model
       - be detailed enough to understand the "black-box" model
       - make sense
+  
   - Debunks accuracy and interpretability trade-off myth
 ]
 
 .pull-right[
 **Method Specific**
 
-.red[Assessment of LIME] .medium[`r Citep(bib, "laugel:2018")`]:
+.red[Assessment of LIME] `r Citep(bib, "laugel:2018")`:
   - How to choose a local region?
 
-.red[Assessment of counterfactual examples] .medium[`r Citep(bib, "laugel:2018")`]:
+<br>
+
+.red[Assessment of counterfactual examples] `r Citep(bib, "laugel:2018")`:
   - Issues with unjustified counterfactual examples
 
-.red[Assessment of saliency maps] .medium[`r Citep(bib, "kindermans:2017")`]:
+<br>
+
+.red[Assessment of saliency maps] `r Citep(bib, "kindermans:2017")`:
   - Transformation to input data affects saliency map but not model
 ]
 
@@ -478,23 +495,9 @@ include_graphics("figures/signatures.png")
   - 9 signature similarity features
   - Returns a score for a comparison
 
-```{r out.width = "100%", fig.align = "center"}
-include_graphics("figures/bullet_pcp.png")
-```
+<br>
 
----
-
-# Motivation
-
-**Our Original Goal**: Provide explanations for specific signatures comparisons
-
-**Attempt**: Applied LIME
-
-**Result**: Unreasonable explanations (e.g., LIME explanation does not agree with random forest prediction)
-
-**Example**: Known non-match
-
-```{r fig.width = 7, fig.height = 5, out.width = "60%", message = FALSE, fig.align = "center"}
+```{r}
 # Load the hamby data
 bullet_train <- read.csv("../lime/data/hamby173and252_train.csv")
 bullet_test <- read.csv("../lime/data/hamby224_test.csv")
@@ -517,7 +520,55 @@ bullet_features_ordered <-
                               "Sum Peaks" = "sum_peaks"))
 bullet_features_ordered <- bullet_features_ordered %>%
   mutate(feature = factor(feature, levels = bullet_features_ordered$feature))
+```
 
+```{r fig.width = 9, fig.height = 3.35}
+#set.seed(20200505)
+bullet_train %>%
+  select(all_of(bullet_features), samesource, rfscore) %>%
+  #slice(sample(1:83028, 1000, replace = FALSE)) %>%
+  mutate(samesource = fct_recode(factor(samesource),
+                                  "Match = TRUE" = "TRUE",
+                                  "Match = FALSE" = "FALSE")) %>%
+    rename("CCF" = "ccf", "CMS" = "cms", "Matches" = "matches",
+           "Mismatches" = "mismatches", "Non-CMS" = "non_cms",
+           "Rough Correlation" = "rough_cor", "Distance Std Dev" = "sd_D",
+           "Distance" = "D", "Sum Peaks" = "sum_peaks") %>%
+    na.omit() %>%
+    ggplot(aes(color = rfscore)) +
+    geom_pcp(aes(vars = vars(bullet_features_ordered$feature)),
+             alpha = 0.2) +
+    facet_grid(. ~ samesource) +
+    scale_color_gradient2(low = "grey50",
+                          high = "darkorange",
+                          midpoint = 0.5) +
+    theme_bw(base_family = "Times", base_size = 10) +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          strip.placement = "outside",
+          strip.background = element_rect(color = "white",
+                                          fill = "white")) +
+    labs(x = "Features Ordered by Random Forest Variable Importance \n(highest to lowest from left to right)",
+         y = "Standardized Feature Values",
+         color = "Random \nForest \nProbability \nof a Match")
+```
+
+```{r out.width = "100%", fig.align = "center"}
+#include_graphics("figures/bullet_pcp.png")
+```
+
+---
+
+# Motivation
+
+**Our Original Goal**: Provide explanations for specific signatures comparisons
+
+**Attempt**: Applied LIME
+
+**Result**: Unreasonable explanations (e.g., LIME explanation does not agree with random forest prediction)
+
+**Example**: Known non-match
+
+```{r fig.width = 7, fig.height = 5, out.width = "60%", message = FALSE, fig.align = "center"}
 # Load the files
 bullet_explain_noperms <- readRDS("../lime/data/hamby_explain.rds")
 
@@ -586,7 +637,7 @@ bullet_explain %>%
 
 # Conceptual Depiction of LIME
 
-.pull-left[LIME `r Citep(bib, "ribeiro:2016")`:
+.pull-left[LIME `r Citet(bib, "ribeiro:2016")`:
 
 - .orange[**L**ocal]
 - .blue[**I**nterpretable]
@@ -881,7 +932,7 @@ ggplot() +
 
 # Visualizations for Model Assessment
 
-Claims about LIME `r Citep(bib, "ribeiro:2016")`:
+Claims about LIME in `r Citet(bib, "ribeiro:2016")`:
 
 - .red[**Interpretability**]: Easy to interpret the explainer model
 
