@@ -509,7 +509,7 @@ Questions raised:
 - Explainer model a good approximation?
 - Appropriate local region?
 - Relationship linear in the local region?
-- Which tuning parameter settings to use when applying LIME?
+- Which tuning parameters to use when applying LIME?
 ]
 
 &lt;br&gt;
@@ -1020,7 +1020,7 @@ Over set of explanations; same set of tuning parameters:
 - .red[**Average R Squared**]: Average of explainer model `\(R^2\)` values
 `$$R^2_{\mbox{ave}} = \frac{1}{E}\sum_{e=1}^E R_{e,t}^2$$`
 
-- .red[**Average Faithfulness**]: Average weighted distance between explainer and complex model predictions for simulated data (based on metric introduced in Ribeiro, Singh, and Guestrin (2016))
+- .red[**Average Fidelity**]: Average weighted distance between explainer and complex model predictions for simulated data (based on metric introduced in Ribeiro, Singh, and Guestrin (2016))
 
 `$$\mathcal{L}_{\mbox{ave}} \ = \ \frac{1}{E}\sum_{e=1}^E\mathcal{L}(f, \ g_{e,t}, \ \pi_{t}) \ =  \ \frac{1}{E}\sum_{e=1}^E\sum_{s=1}^{S}\omega_{t}\left(x_e, x'_{e,t,s}\right)\left(f\left(x'_{e,t,s}\right)-g_{e,t}\left(z_{e,t,s}'\right)\right)^2$$`
 
