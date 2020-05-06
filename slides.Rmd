@@ -554,7 +554,7 @@ if (file.exists("figures/bullet_pcp.png")) {
             strip.background = element_rect(color = "white",
                                             fill = "white")) +
       labs(x = "Features Ordered by Random Forest Variable Importance \n(highest to lowest from left to right)",
-           y = "Standardized Feature Values",
+           y = "Scaled Feature Values",
            color = "Random \nForest \nProbability \nof a Match")
 
   # Save the plot
