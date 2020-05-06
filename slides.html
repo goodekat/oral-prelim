@@ -223,7 +223,7 @@ class: middle, center, inverse
 
 # Explainability versus Interpretability
 
-No accepted definitions for explainability and interpretability [1; 7; 5; 8; 9]
+No accepted definitions for explainability and interpretability .medium[(Gilpin, Bau, Yuan, et al. [1]; Lipton [7]; Molnar [5]; Montavon, Samek, and Müller [8]; Murdoch, Singh, Kumbier, Abbasi-Asl, and Yu [9])]
 
 **My definitions**:
   - In regards to a model
@@ -241,7 +241,7 @@ No accepted definitions for explainability and interpretability [1; 7; 5; 8; 9]
 
 - LIME: local interpretable model-agnostic explanations [11]
 
-&lt;img src="figures/lime.png" width="55%" style="display: block; margin: auto;" /&gt;
+&lt;img src="figures/lime.png" width="50%" style="display: block; margin: auto;" /&gt;
 
 ]
 
@@ -394,17 +394,14 @@ No accepted definitions for explainability and interpretability [1; 7; 5; 8; 9]
 .pull-right[
 **Method Specific**
 
-.red[Assessment of LIME] [46]:
+.red[Assessment of LIME] (Laugel, Renard, Lesot, Marsala, and Detyniecki [46]):
   - How to choose a local region?
 
-&lt;br&gt;
-
-.red[Assessment of counterfactual examples] [46]:
+.red[Assessment of counterfactual examples] (Laugel, Renard, Lesot, et al. [46]):
   - Issues with unjustified counterfactual examples
 
-&lt;br&gt;
 
-.red[Assessment of saliency maps] [47]:
+.red[Assessment of saliency maps] (Kindermans, Hooker, Adebayo, Alber, Schütt, Dähne, Erhan, and Kim [47]):
   - Transformation to input data affects saliency map but not model
 ]
 
@@ -542,11 +539,11 @@ Questions raised:
 
 Claims about LIME in Ribeiro, Singh, and Guestrin [11]:
 
-- .red[**Interpretability**]: Easy to interpret the explainer model
+- .red[**Interpretability**]: Interpretable explainer model
 
-- .red[**Faithfulness**]: Explainer model captures relationship between complex model predictions and features (in local region)
+- .red[**Faithfulness**]: Explainer model approximates complex model (in local region)
 
-- .red[**Linearity**]: Ridge regression assumes linear relationship between complex model predictions and features
+- .red[**Linearity**]: Ridge regression assumes linearity
 
 - .red[**Localness**]: Explanations are local in regards to prediction of interest
 
@@ -557,6 +554,8 @@ We suggest visual diagnostics to assess these claims:
 - .blue[**Diagnostics for individual explanations**]
 - .blue[**Diagnostics for sets of explanations**]
 - .blue[**Diagnostics for comparisons of tuning parameters**]
+
+&lt;br&gt;
 
 **Note**: We focus on binary response variable and continuous predictor variables
 
@@ -604,7 +603,7 @@ class: inverse-sub, middle, center
 .pull-left[
 - .red[Explanation Set]: Prediction of interest
 - .red[Implementation]: *lime* R package [49]
-- .red[Number Explanation Features]: 2
+- .red[Number of Explanation Features]: 2
 - .red[Tuning Parameters]: Default
 ]
 
@@ -625,7 +624,7 @@ class: inverse-sub, middle, center
 **Step 1a**: Data Simulation
 
 - .red[Sample Size]: 4999 observations 
-- .red[Sample Method]: Uniformly from 4 quantile bins for each training data feature
+- .red[Sample Method]: Uniformly sample from 4 quantile bins for each training data feature
 
 **Corresponding Diagnostic:**  
 *Training Data Plot*
@@ -843,7 +842,7 @@ class: inverse-sub, middle, center
 .pull-left[
 - .red[Explanation Set]: All test data observations
 - .red[Implementation]: *lime* R package [49]
-- .red[Number Explanation Features]: 2
+- .red[Number of Explanation Features]: 2
 - .red[Tuning Parameters]: Default
 ]
 
@@ -962,7 +961,7 @@ class: inverse-sub, middle, center
 .pull-left[
 - .red[Explanation Set]: All test data observations
 - .red[Implementation]: *lime* R package [49]
-- .red[Number Explanation Features]: 2
+- .red[Number of Explanation Features]: 2
 - .red[Tuning Parameters]:
   - 2 to 6 quantile bins 
   - Kernel density simulation

@@ -250,7 +250,7 @@ class: middle, center, inverse
 
 # Explainability versus Interpretability
 
-No accepted definitions for explainability and interpretability `r Citep(bib, c("gilpin:2018", "lipton:2016", "molnar:2019", "montavon:2017", "murdoch:2019"))`
+No accepted definitions for explainability and interpretability .medium[(`r Citet(bib, c("gilpin:2018", "lipton:2016", "molnar:2019", "montavon:2017", "murdoch:2019"))`)]
 
 **My definitions**:
   - In regards to a model
@@ -268,7 +268,7 @@ $$\hat{y}=\hat{\beta}_0+\hat{\beta}_1x_1+\cdots+\hat{\beta}_px_p$$
 
 - LIME: local interpretable model-agnostic explanations `r Citep(bib, "ribeiro:2016")`
 
-```{r out.width = "55%", fig.align = "center"}
+```{r out.width = "50%", fig.align = "center"}
 include_graphics("figures/lime.png")
 ```
 
@@ -417,17 +417,14 @@ include_graphics("./figures/saliency.png")
 .pull-right[
 **Method Specific**
 
-.red[Assessment of LIME] `r Citep(bib, "laugel:2018")`:
+.red[Assessment of LIME] (`r Citet(bib, "laugel:2018")`):
   - How to choose a local region?
 
-<br>
-
-.red[Assessment of counterfactual examples] `r Citep(bib, "laugel:2018")`:
+.red[Assessment of counterfactual examples] (`r Citet(bib, "laugel:2018")`):
   - Issues with unjustified counterfactual examples
 
-<br>
 
-.red[Assessment of saliency maps] `r Citep(bib, "kindermans:2017")`:
+.red[Assessment of saliency maps] (`r Citet(bib, "kindermans:2017")`):
   - Transformation to input data affects saliency map but not model
 ]
 
@@ -537,8 +534,8 @@ if (file.exists("figures/bullet_pcp.png")) {
     select(all_of(bullet_features), samesource, rfscore) %>%
     #slice(sample(1:83028, 1000, replace = FALSE)) %>%
     mutate(samesource = fct_recode(factor(samesource),
-                                    "Match = TRUE" = "TRUE",
-                                    "Match = FALSE" = "FALSE")) %>%
+                                    "Known Matches" = "TRUE",
+                                    "Known Non-Matches" = "FALSE")) %>%
       rename("CCF" = "ccf", "CMS" = "cms", "Matches" = "matches",
              "Mismatches" = "mismatches", "Non-CMS" = "non_cms",
              "Rough Correlation" = "rough_cor", "Distance Std Dev" = "sd_D",
@@ -948,11 +945,11 @@ ggplot() +
 
 Claims about LIME in `r Citet(bib, "ribeiro:2016")`:
 
-- .red[**Interpretability**]: Easy to interpret the explainer model
+- .red[**Interpretability**]: Interpretable explainer model
 
-- .red[**Faithfulness**]: Explainer model captures relationship between complex model predictions and features (in local region)
+- .red[**Faithfulness**]: Explainer model approximates complex model (in local region)
 
-- .red[**Linearity**]: Ridge regression assumes linear relationship between complex model predictions and features
+- .red[**Linearity**]: Ridge regression assumes linearity
 
 - .red[**Localness**]: Explanations are local in regards to prediction of interest
 
@@ -963,6 +960,8 @@ We suggest visual diagnostics to assess these claims:
 - .blue[**Diagnostics for individual explanations**]
 - .blue[**Diagnostics for sets of explanations**]
 - .blue[**Diagnostics for comparisons of tuning parameters**]
+
+<br>
 
 **Note**: We focus on binary response variable and continuous predictor variables
 
@@ -1129,7 +1128,7 @@ class: inverse-sub, middle, center
 .pull-left[
 - .red[Explanation Set]: Prediction of interest
 - .red[Implementation]: *lime* R package `r Citep(bib, "pedersen:2020")`
-- .red[Number Explanation Features]: 2
+- .red[Number of Explanation Features]: 2
 - .red[Tuning Parameters]: Default
 ]
 
@@ -1165,7 +1164,7 @@ sine_poi_exp
 **Step 1a**: Data Simulation
 
 - .red[Sample Size]: 4999 observations 
-- .red[Sample Method]: Uniformly from 4 quantile bins for each training data feature
+- .red[Sample Method]: Uniformly sample from 4 quantile bins for each training data feature
 
 **Corresponding Diagnostic:**  
 *Training Data Plot*
@@ -1734,7 +1733,7 @@ class: inverse-sub, middle, center
 .pull-left[
 - .red[Explanation Set]: All test data observations
 - .red[Implementation]: *lime* R package `r Citep(bib, "pedersen:2020")`
-- .red[Number Explanation Features]: 2
+- .red[Number of Explanation Features]: 2
 - .red[Tuning Parameters]: Default
 ]
 
@@ -2214,7 +2213,7 @@ class: inverse-sub, middle, center
 .pull-left[
 - .red[Explanation Set]: All test data observations
 - .red[Implementation]: *lime* R package `r Citep(bib, "pedersen:2020")`
-- .red[Number Explanation Features]: 2
+- .red[Number of Explanation Features]: 2
 - .red[Tuning Parameters]:
   - 2 to 6 quantile bins 
   - Kernel density simulation
